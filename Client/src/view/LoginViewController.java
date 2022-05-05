@@ -25,6 +25,8 @@ public class LoginViewController extends ViewController
     public void reset()
     {
         loginViewModel.clear();
+        usernameField.setText("");
+        passwordField.setText("");
     }
 
     @FXML private void clickLogin() throws IOException
