@@ -3,13 +3,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-public class ModelManager implements Model
+public class ModelManager implements ModelUser, ModelEmployee
 {
   private ProductList productList;
   private ArrayList<Order> orderList;
   private PropertyChangeSupport property;
   private ItemList itemList;
   private ModelPersistence modelPersistence;
+  private UserList userList;
 
   public ModelManager() throws ClassNotFoundException
   {
@@ -18,7 +19,7 @@ public class ModelManager implements Model
     this.productList = modelPersistence.loadProducts();
     this.itemList = modelPersistence.loadItems();
 
-
+    userList = new UserList();
     orderList = new ArrayList<>();
     orderList.add(new Order());
     property = new PropertyChangeSupport(this);
@@ -138,5 +139,15 @@ public class ModelManager implements Model
   @Override public void removeListener(PropertyChangeListener listener)
   {
     property.removePropertyChangeListener(listener);
+  }
+
+  @Override public void addUser(String username, String password)
+  {
+
+  }
+
+  @Override public User getUser(String username, String password)
+  {
+    return null;
   }
 }

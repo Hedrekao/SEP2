@@ -1,7 +1,6 @@
 package viewmodel;
 
-import model.Model;
-import view.ViewHandler;
+import model.ModelUser;
 
 public class ViewModelFactory
 {
@@ -11,7 +10,7 @@ public class ViewModelFactory
     private BagViewModel bagViewModel;
     private ItemViewState itemViewState;
 
-    public ViewModelFactory(Model model)
+    public ViewModelFactory(ModelUser model)
     {
         itemViewState = new ItemViewState();
         productsViewModel = new ProductsViewModel(model, itemViewState);

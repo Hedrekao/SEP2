@@ -4,18 +4,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Model;
+import model.ModelUser;
 import model.Product;
 
 public class ProductsViewModel
 {
-    private Model model;
+    private ModelUser model;
     private ObservableList<ProductsTableVM> products;
     private ObservableList<String> pickedCategory;
     private StringProperty bagCounter;
     private ItemViewState itemViewState;
 
-    public ProductsViewModel(Model model, ItemViewState itemViewState)
+    public ProductsViewModel(ModelUser model, ItemViewState itemViewState)
     {
         this.model = model;
         this.itemViewState = itemViewState;

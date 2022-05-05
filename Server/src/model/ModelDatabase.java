@@ -15,9 +15,9 @@ public class ModelDatabase implements ModelPersistence
   private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
   private static final String USER = "postgres";
   private static final String PASSWORD = "tom2002";
-  private Model model;
+  private ModelUser model;
 
-  public ModelDatabase(Model model) throws ClassNotFoundException
+  public ModelDatabase(ModelUser model) throws ClassNotFoundException
   {
     this.db = new MyDatabasev2(DRIVER, URL, USER, PASSWORD);
     this.model = model;
@@ -76,10 +76,29 @@ public class ModelDatabase implements ModelPersistence
     }
   }
 
-//  @Override public UserList loadUsers()
-//  {
-//    return null;
-//  }
+  @Override public UserList loadUsers()
+  {
+
+    UserList list = new UserList();
+    String sql = "SELECT users.username, users.hashPassword, users.isEmployee FROM food_waste.users";
+
+    try
+    {
+      ArrayList<Object[]> results = db.query(sql);
+
+      for (int i = 0; i < results.size(); i++)
+      {
+        Object[] result = results.get(i);
+        list.addUser(new Product((String) result[1], (int) result[0], categories));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+
+    return list;
+  }
 
 
   @Override public ProductList loadProducts()

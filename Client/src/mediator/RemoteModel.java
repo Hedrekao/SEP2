@@ -23,6 +23,8 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   Item getSpecificItem(Date expirationDate, int productId) throws RemoteException;
   Order getCurrentOrder() throws RemoteException;
   int getQuantityOfItemsInBag() throws RemoteException;
+  void addUser(String username, String password) throws RemoteException;
+  User getUser(String username, String password) throws RemoteException;
 
 
 }

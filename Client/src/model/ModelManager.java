@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ModelManager implements Model
+public class ModelManager implements ModelUser, ModelEmployee
 {
 
   private PropertyChangeSupport property;
@@ -87,5 +87,15 @@ public class ModelManager implements Model
   @Override public void removeListener(PropertyChangeListener listener)
   {
     property.removePropertyChangeListener(listener);
+  }
+
+  @Override public void addUser(String username, String password)
+  {
+    client.addUser(username, password);
+  }
+
+  @Override public User getUser(String username, String password)
+  {
+    return client.getUser(username,password);
   }
 }

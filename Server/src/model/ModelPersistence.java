@@ -5,7 +5,7 @@ public interface ModelPersistence
 {
 //  void clear();
   void save(Order order);
-//  UserList loadUsers();
+  UserList loadUsers();
   ProductList loadProducts();
   ItemList loadItems();
   ArrayList<Order> loadOrders();
