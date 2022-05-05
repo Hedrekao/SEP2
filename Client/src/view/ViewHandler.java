@@ -47,7 +47,15 @@ public class ViewHandler extends ViewCreator
             case "Login":
                 viewController = getViewController("LoginView");
                 root = viewController.getRoot();
-                break; 
+                break;
+            case "AddProduct":
+                viewController = getViewController("AddProduct");
+                root = viewController.getRoot();
+                break;
+            case "Employee":
+                viewController = getViewController("EmployeeView");
+                root = viewController.getRoot();
+                break;
         }
         currentScene.setRoot(root);
 

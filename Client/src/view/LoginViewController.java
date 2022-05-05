@@ -17,6 +17,8 @@ public class LoginViewController extends ViewController
 
     protected void init()
     {
+        loginViewModel = getViewModelFactory().getLoginViewModel();
+
         usernameField.textProperty().bindBidirectional(loginViewModel.usernameProperty());
         passwordField.textProperty().bindBidirectional(loginViewModel.passwordProperty());
         errorLabel.textProperty().bind(loginViewModel.errorProperty());
@@ -31,7 +33,7 @@ public class LoginViewController extends ViewController
 
     @FXML private void clickLogin() throws IOException
     {
-        getViewHandler().openView("ProductView");
+        getViewHandler().openView("EmployeeView");
     }
 
 
