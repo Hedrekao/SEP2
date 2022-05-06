@@ -8,7 +8,8 @@ public class RunServer
   public static void main(String[] args)
       throws ClassNotFoundException, IOException
   {
-    ModelUser model = new ModelManager();
+    Model model = new ModelManager();
     Server server = new Server(model);
+
   }
 }

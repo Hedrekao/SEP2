@@ -36,6 +36,13 @@ public class UserList implements Serializable
     }
   }
 
+  public void addUser(User user)
+  {
+
+      list.add(user);
+
+  }
+
   public boolean isLegalUsername(String username)
   {
     for(User u : list)
