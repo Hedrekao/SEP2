@@ -3,7 +3,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-public class ModelManager implements ModelUser, ModelEmployee
+public class ModelManager implements Model
 {
   private ProductList productList;
   private ArrayList<Order> orderList;
@@ -19,7 +19,7 @@ public class ModelManager implements ModelUser, ModelEmployee
     this.productList = modelPersistence.loadProducts();
     this.itemList = modelPersistence.loadItems();
 
-    userList = new UserList();
+    userList = modelPersistence.loadUsers();
     orderList = new ArrayList<>();
     orderList.add(new Order());
     property = new PropertyChangeSupport(this);
@@ -143,11 +143,28 @@ public class ModelManager implements ModelUser, ModelEmployee
 
   @Override public void addUser(String username, String password)
   {
-
+    userList.addUser(username, password);
   }
 
   @Override public User getUser(String username, String password)
   {
-    return null;
+    return userList.getUser(username, password);
   }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    Product product = new Product(productName, productID, categories);
+    modelPersistence.save(product);
+    productList.addProduct(product);
+
+    // add observers imo w chuj
+
+    // kurwa tez not sure
+    Item item = new Item(product, price, expirationDate, quantity);
+    modelPersistence.save(product);
+    itemList.addItem(item);
+    //jebie chujem
+  }
+
 }
