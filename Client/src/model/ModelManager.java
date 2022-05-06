@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ModelManager implements ModelUser, ModelEmployee
+public class ModelManager implements Model
 {
 
   private PropertyChangeSupport property;
@@ -98,4 +98,11 @@ public class ModelManager implements ModelUser, ModelEmployee
   {
     return client.getUser(username,password);
   }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    client.addItem(productName, productID, price, expirationDate, quantity, categories);
+  }
+
 }

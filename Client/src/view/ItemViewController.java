@@ -72,4 +72,9 @@ public class ItemViewController extends ViewController
         listOfItems.setItems(itemViewModel.getItems());
     }
 
+
+    @FXML private void loginButton() throws IOException
+    {
+        getViewHandler().openView("Login");
+    }
 }

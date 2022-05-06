@@ -16,7 +16,7 @@ public class UserList implements Serializable
   {
     for(User u : list)
     {
-      if(u.getPassword().equals(password) && u.getUsername().equals(username))
+      if(u.getHashPassword() == password.hashCode() && u.getUsername().equals(username))
       {
         return u;
       }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable
 {
   private String username;
-  private String password;
+  private int hashPassword;
 
   public User(String username, String password)
   {
@@ -14,17 +14,22 @@ public class User implements Serializable
       throw new IllegalArgumentException("Username and password needs to have between 8 and 20 characters");
     }
     this.username = username;
-    this.password = password;
+    this.hashPassword = hash(password);
   }
-
-  public String getPassword()
+  public User(String username, int hashValue)
   {
-    return password;
+    this.username = username;
+    this.hashPassword = hashValue;
   }
 
   public String getUsername()
   {
     return username;
+  }
+
+  public int getHashPassword()
+  {
+    return hashPassword;
   }
 
   public boolean equals(Object obj)
@@ -34,6 +39,11 @@ public class User implements Serializable
       return false;
     }
     User other = (User) obj;
-    return this.password.equals(other.password) && this.username.equals(other.username);
+    return this.hashPassword == other.hashPassword && this.username.equals(other.username);
+  }
+
+  private int hash(String password)
+  {
+    return password.hashCode();
   }
 }

@@ -1,40 +1,49 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import viewmodel.LoginViewModel;
 
 import java.io.IOException;
 
-
 public class LoginViewController extends ViewController
 {
-    @FXML private TextField usernameField;
-    @FXML private TextField passwordField;
-    @FXML private Label errorLabel;
+  @FXML private TextField usernameField;
+  @FXML private TextField passwordField;
+  @FXML private Label errorLabel;
 
-    private LoginViewModel loginViewModel;
+  private LoginViewModel loginViewModel;
 
-    protected void init()
+  protected void init()
+  {
+    loginViewModel = getViewModelFactory().getLoginViewModel();
+
+    usernameField.textProperty()
+        .bindBidirectional(loginViewModel.getUsernameProperty());
+    passwordField.textProperty()
+        .bindBidirectional(loginViewModel.getPasswordProperty());
+    errorLabel.textProperty().bind(loginViewModel.getErrorLabelProperty());
+  }
+
+  public void reset()
+  {
+    loginViewModel.clear();
+  }
+
+  @FXML private void clickLogin() throws IOException
+  {
+    if (loginViewModel.login())
     {
-        loginViewModel = getViewModelFactory().getLoginViewModel();
+      getViewHandler().openView("Employee");
 
-        usernameField.textProperty().bindBidirectional(loginViewModel.usernameProperty());
-        passwordField.textProperty().bindBidirectional(loginViewModel.passwordProperty());
-        errorLabel.textProperty().bind(loginViewModel.errorProperty());
     }
 
-    public void reset()
-    {
-        loginViewModel.clear();
-        usernameField.setText("");
-        passwordField.setText("");
-    }
+  }
 
-    @FXML private void clickLogin() throws IOException
-    {
-        getViewHandler().openView("EmployeeView");
-    }
-
-
+  @FXML private void backButton() throws IOException
+  {
+    getViewHandler().openView("Product");
+  }
 }
