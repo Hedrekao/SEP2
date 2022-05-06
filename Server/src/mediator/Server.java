@@ -17,17 +17,15 @@ import java.util.ArrayList;
 
 public class Server implements RemoteModel, PropertyChangeListener
 {
-  private ModelUser modelUser;
-  private ModelEmployee modelEmployee;
+  private Model model;
   private PropertyChangeHandler<Item, String> property;
 
-  public Server(ModelUser modelUser, ModelEmployee modelEmployee) throws IOException
+  public Server(Model model) throws IOException
   {
 
-    this.modelUser = modelUser;
-    this.modelEmployee = modelEmployee;
+    this.model = model;
     property = new PropertyChangeHandler<>(this,true);
-    this.modelUser.addListener(this);
+    this.model.addListener(this);
     startRegistry();
     startServer();
   }
@@ -58,80 +56,87 @@ public class Server implements RemoteModel, PropertyChangeListener
 
   @Override public Product getProduct(int productNumber) throws RemoteException
   {
-    return modelUser.getProduct(productNumber);
+    return model.getProduct(productNumber);
   }
 
 
   @Override public void removeItemFromOrder(Item item) throws RemoteException
   {
-    modelUser.removeItemFromOrder(item);
+    model.removeItemFromOrder(item);
   }
 
   @Override public ArrayList<Item> getItemsByProduct(Product product)
       throws RemoteException
   {
-    return modelUser.getItemsByProduct(product);
+    return model.getItemsByProduct(product);
   }
 
   @Override public ArrayList<Product> getAllProducts() throws RemoteException
   {
-    return modelUser.getAllProducts();
+    return model.getAllProducts();
   }
 
   @Override public ArrayList<Product> getProductsByCategory(
       ArrayList<String> categories) throws RemoteException
   {
-    return modelUser.getProductsByCategory(categories);
+    return model.getProductsByCategory(categories);
   }
 
   @Override public void addItemToOrder(Item item) throws RemoteException
   {
-    modelUser.addItemToOrder(item);
+    model.addItemToOrder(item);
   }
 
   @Override public void completeOrder(Order order) throws RemoteException
   {
-    modelUser.completeOrder(order);
+    model.completeOrder(order);
   }
 
   @Override public double getLowestPriceOfProduct(Product product)
       throws RemoteException
   {
-    return modelUser.getLowestPriceOfProduct(product);
+    return model.getLowestPriceOfProduct(product);
   }
 
   @Override public int getQuantityOfCertainProduct(Product product)
       throws RemoteException
   {
-    return modelUser.getQuantityOfCertainProduct(product);
+    return model.getQuantityOfCertainProduct(product);
   }
 
   @Override public Item getSpecificItem(Date expirationDate, int productId)
       throws RemoteException
   {
-    return modelUser.getSpecificItem(expirationDate,productId);
+    return model.getSpecificItem(expirationDate,productId);
   }
 
   @Override public Order getCurrentOrder() throws RemoteException
   {
-    return modelUser.getCurrentOrder();
+    return model.getCurrentOrder();
   }
 
   @Override public void addUser(String username, String password)
       throws RemoteException
   {
-    modelEmployee.addUser(username, password);
+    model.addUser(username,password);
   }
 
   @Override public User getUser(String username, String password)
       throws RemoteException
   {
-    return modelEmployee.getUser(username,password);
+    return model.getUser(username,password);
   }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    model.addItem(productName, productID, price, expirationDate, quantity, categories);
+  }
+
 
   @Override public int getQuantityOfItemsInBag() throws RemoteException
   {
-    return modelUser.getQuantityOfItemsInBag();
+    return model.getQuantityOfItemsInBag();
   }
 
   @Override public boolean addListener(GeneralListener<Item, String> listener,

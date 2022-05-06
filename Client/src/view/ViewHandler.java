@@ -49,7 +49,7 @@ public class ViewHandler extends ViewCreator
                 root = viewController.getRoot();
                 break;
             case "AddProduct":
-                viewController = getViewController("AddProduct");
+                viewController = getViewController("AddProductView");
                 root = viewController.getRoot();
                 break;
             case "Employee":

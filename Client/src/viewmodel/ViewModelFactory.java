@@ -1,5 +1,7 @@
 package viewmodel;
 
+import model.Model;
+import model.ModelEmployee;
 import model.ModelUser;
 
 public class ViewModelFactory
@@ -9,13 +11,15 @@ public class ViewModelFactory
     private ItemsViewModel itemsViewModel;
     private BagViewModel bagViewModel;
     private ItemViewState itemViewState;
+    private LoginViewModel loginViewModel;
 
-    public ViewModelFactory(ModelUser model)
+    public ViewModelFactory(Model model)
     {
         itemViewState = new ItemViewState();
         productsViewModel = new ProductsViewModel(model, itemViewState);
         itemsViewModel = new ItemsViewModel(model, itemViewState);
         bagViewModel = new BagViewModel(model);
+        loginViewModel = new LoginViewModel(model);
     }
 
 
@@ -32,5 +36,10 @@ public class ViewModelFactory
     public BagViewModel getBagViewModel()
     {
         return bagViewModel;
+    }
+
+    public LoginViewModel getLoginViewModel()
+    {
+        return loginViewModel;
     }
 }

@@ -41,8 +41,17 @@ public class LoginViewModel
         return errorLabel;
     }
 
-    public void login()
+    public boolean login()
     {
-        model.login();
+        try
+        {
+            model.getUser(username.get(), password.get());
+            return true;
+        }
+        catch (Exception e)
+        {
+            errorLabel.set(e.getMessage());
+            return false;
+        }
     }
 }
