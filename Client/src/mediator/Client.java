@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client implements RemoteListener<Item, String>, ModelUser, ModelEmployee
+public class Client implements RemoteListener<Item, String>, Model
 {
     private RemoteModel server;
     private PropertyChangeSupport property;
@@ -229,6 +229,20 @@ public class Client implements RemoteListener<Item, String>, ModelUser, ModelEmp
       return null;
     }
   }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    try
+    {
+      server.addItem(productName, productID, price, expirationDate, quantity, categories);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
 }
 
 
