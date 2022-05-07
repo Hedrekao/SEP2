@@ -1,9 +1,6 @@
 package mediator;
 
-import model.Date;
-import model.Item;
-import model.Order;
-import model.Product;
+import model.*;
 import utility.observer.subject.RemoteSubject;
 
 import java.rmi.RemoteException;
@@ -23,4 +20,7 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   Item getSpecificItem(Date expirationDate, int productId) throws RemoteException;
   Order getCurrentOrder() throws RemoteException;
   int getQuantityOfItemsInBag() throws RemoteException;
+  void addUser(String username, String password) throws RemoteException;
+  User getUser(String username, String password) throws RemoteException;
+  void addItem(String productName, int productID, double price, Date expirationDate, int quantity, ArrayList<Category> categories) throws RemoteException;
 }

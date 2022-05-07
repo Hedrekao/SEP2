@@ -51,7 +51,7 @@ public class Server implements RemoteModel, PropertyChangeListener
 
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
-//    property.firePropertyChange();
+    property.firePropertyChange(evt.getPropertyName(), null, "New stock");
   }
 
   @Override public Product getProduct(int productNumber) throws RemoteException
@@ -114,6 +114,25 @@ public class Server implements RemoteModel, PropertyChangeListener
   {
     return model.getCurrentOrder();
   }
+
+  @Override public void addUser(String username, String password)
+      throws RemoteException
+  {
+    model.addUser(username,password);
+  }
+
+  @Override public User getUser(String username, String password)
+      throws RemoteException
+  {
+    return model.getUser(username,password);
+  }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    model.addItem(productName, productID, price, expirationDate, quantity, categories);
+  }
+
 
   @Override public int getQuantityOfItemsInBag() throws RemoteException
   {

@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Item;
-import model.Model;
+import model.ModelUser;
 
 import java.util.Map;
 
@@ -14,9 +14,9 @@ public class BagViewModel
     private StringProperty errorProperty;
     private StringProperty priceProperty;
     private ObservableList<ItemsTableVM> items;
-    private Model model;
+    private ModelUser model;
 
-    public BagViewModel(Model model)
+    public BagViewModel(ModelUser model)
     {
         this.model = model;
         errorProperty = new SimpleStringProperty();

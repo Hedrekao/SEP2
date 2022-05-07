@@ -98,6 +98,10 @@ public class ProductViewController extends ViewController
         table.setItems(productViewModel.getProducts());
     }
 
+    @FXML private void loginButton() throws IOException
+    {
+        getViewHandler().openView("Login");
+    }
 
 
 

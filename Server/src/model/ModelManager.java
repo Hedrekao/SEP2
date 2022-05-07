@@ -10,6 +10,7 @@ public class ModelManager implements Model
   private PropertyChangeSupport property;
   private ItemList itemList;
   private ModelPersistence modelPersistence;
+  private UserList userList;
 
   public ModelManager() throws ClassNotFoundException
   {
@@ -18,7 +19,7 @@ public class ModelManager implements Model
     this.productList = modelPersistence.loadProducts();
     this.itemList = modelPersistence.loadItems();
 
-
+    userList = modelPersistence.loadUsers();
     orderList = new ArrayList<>();
     orderList.add(new Order());
     property = new PropertyChangeSupport(this);
@@ -139,4 +140,60 @@ public class ModelManager implements Model
   {
     property.removePropertyChangeListener(listener);
   }
+
+  @Override public void addUser(String username, String password)
+  {
+    userList.addUser(username, password);
+  }
+
+  @Override public User getUser(String username, String password)
+  {
+    return userList.getUser(username, password);
+  }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+
+    if (expirationDate.isBefore(new Date()))
+    {
+      throw new IllegalArgumentException("Expiration date cannot be before today's date");
+    }
+
+    Product searchedProduct = getProduct(productID);
+
+    if(searchedProduct == null)
+    {
+      Product product = new Product(productName, productID, categories);
+      modelPersistence.save(product);
+      productList.addProduct(product);
+      Item item = new Item(product, price, expirationDate, quantity);
+      modelPersistence.save(item);
+      itemList.addItem(item);
+    }
+    else
+    {
+      if (!searchedProduct.getProductName().equals(productName) ||
+      !searchedProduct.getCategories().containsAll(categories))
+      {
+        throw new IllegalStateException("There already exists product with such product id");
+      }
+      Item searchedItem = getSpecificItem(expirationDate, productID);
+      if (searchedItem == null)
+      {
+        Item item = new Item(getProduct(productID), price, expirationDate, quantity);
+        modelPersistence.save(item);
+        itemList.addItem(item);
+      }
+      else
+      {
+        searchedItem.setCurrentPrice(price);
+        searchedItem.setQuantity(quantity);
+        modelPersistence.update(searchedItem);
+      }
+    }
+
+    property.firePropertyChange("StockUpdate", null, 1);
+  }
+
 }

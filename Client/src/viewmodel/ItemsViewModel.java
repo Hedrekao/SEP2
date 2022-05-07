@@ -1,19 +1,20 @@
 package viewmodel;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Date;
 import model.Item;
-import model.Model;
+import model.ModelUser;
 import model.Product;
 
-public class ItemsViewModel
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class ItemsViewModel implements PropertyChangeListener
 {
-    private Model model;
+    private ModelUser model;
     private StringProperty errorProperty;
     private StringProperty productIdProperty;
     private StringProperty productNameProperty;
@@ -21,7 +22,7 @@ public class ItemsViewModel
     private StringProperty bagCounter;
     private ItemViewState itemViewState;
 
-    public ItemsViewModel(Model model, ItemViewState itemViewState)
+    public ItemsViewModel(ModelUser model, ItemViewState itemViewState)
     {
         this.model = model;
         this.itemViewState = itemViewState;
@@ -30,6 +31,7 @@ public class ItemsViewModel
         bagCounter = new SimpleStringProperty();
         productIdProperty = new SimpleStringProperty();
         productNameProperty = new SimpleStringProperty();
+        this.model.addListener(this);
 
         clear();
 
@@ -95,5 +97,13 @@ public class ItemsViewModel
     public StringProperty getBagCounterProperty()
     {
         return bagCounter;
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("StockUpdate"))
+        {
+            update(itemViewState.getProduct());
+        }
     }
 }

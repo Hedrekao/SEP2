@@ -54,4 +54,8 @@ public class BagViewController extends ViewController
     }
 
 
+    @FXML private void loginButton() throws IOException
+    {
+        getViewHandler().openView("Login");
+    }
 }

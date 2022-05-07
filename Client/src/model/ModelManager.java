@@ -1,12 +1,13 @@
 package model;
 import mediator.Client;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ModelManager implements Model
+public class ModelManager implements Model, PropertyChangeListener
 {
 
   private PropertyChangeSupport property;
@@ -16,6 +17,7 @@ public class ModelManager implements Model
   {
     client = new Client();
     property = new PropertyChangeSupport(this);
+    client.addListener(this);
   }
 
   @Override public ArrayList<Product> getAllProducts()
@@ -87,5 +89,26 @@ public class ModelManager implements Model
   @Override public void removeListener(PropertyChangeListener listener)
   {
     property.removePropertyChangeListener(listener);
+  }
+
+  @Override public void addUser(String username, String password)
+  {
+    client.addUser(username, password);
+  }
+
+  @Override public User getUser(String username, String password)
+  {
+    return client.getUser(username,password);
+  }
+
+  @Override public void addItem(String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    client.addItem(productName, productID, price, expirationDate, quantity, categories);
+  }
+
+  @Override public void propertyChange(PropertyChangeEvent evt)
+  {
+    property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
   }
 }
