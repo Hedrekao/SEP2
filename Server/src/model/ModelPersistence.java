@@ -7,6 +7,7 @@ public interface ModelPersistence
   void save(Order order);
   void save(Item item);
   void save(Product product);
+  void update(Item item);
   UserList loadUsers();
   ProductList loadProducts();
   ItemList loadItems();

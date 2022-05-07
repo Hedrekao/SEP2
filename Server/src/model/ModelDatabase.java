@@ -106,9 +106,23 @@ public class ModelDatabase implements ModelPersistence
           "INSERT INTO food_waste.product (product_number, category, name)"
               + " VALUES (? , ? , ? )";
       Object[] updateResult = db.update(sql, product.getProductID(),
-          product.getProductName(), product.getCategories().get(0));
+          product.getCategories().get(0).getName(), product.getProductName());
 
       //change shit with categories
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  @Override public void update(Item item)
+  {
+    String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ? WHERE product_number = ? AND expiration_date = ?";
+
+    try
+    {
+      db.update(sql,item.getQuantity(), item.getCurrentPrice(), item.getProduct().getProductID(), java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()));
     }
     catch (SQLException e)
     {

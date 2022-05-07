@@ -154,17 +154,46 @@ public class ModelManager implements Model
   @Override public void addItem(String productName, int productID, double price,
       Date expirationDate, int quantity, ArrayList<Category> categories)
   {
-    Product product = new Product(productName, productID, categories);
-    modelPersistence.save(product);
-    productList.addProduct(product);
 
-    // add observers imo w chuj
+    if (expirationDate.isBefore(new Date()))
+    {
+      throw new IllegalArgumentException("Expiration date cannot be before today's date");
+    }
 
-    // kurwa tez not sure
-    Item item = new Item(product, price, expirationDate, quantity);
-    modelPersistence.save(product);
-    itemList.addItem(item);
-    //jebie chujem
+    Product searchedProduct = getProduct(productID);
+
+    if(searchedProduct == null)
+    {
+      Product product = new Product(productName, productID, categories);
+      modelPersistence.save(product);
+      productList.addProduct(product);
+      Item item = new Item(product, price, expirationDate, quantity);
+      modelPersistence.save(item);
+      itemList.addItem(item);
+    }
+    else
+    {
+      if (!searchedProduct.getProductName().equals(productName) ||
+      !searchedProduct.getCategories().containsAll(categories))
+      {
+        throw new IllegalStateException("There already exists product with such product id");
+      }
+      Item searchedItem = getSpecificItem(expirationDate, productID);
+      if (searchedItem == null)
+      {
+        Item item = new Item(getProduct(productID), price, expirationDate, quantity);
+        modelPersistence.save(item);
+        itemList.addItem(item);
+      }
+      else
+      {
+        searchedItem.setCurrentPrice(price);
+        searchedItem.setQuantity(quantity);
+        modelPersistence.update(searchedItem);
+      }
+    }
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
 }

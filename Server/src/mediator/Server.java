@@ -51,7 +51,7 @@ public class Server implements RemoteModel, PropertyChangeListener
 
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
-//    property.firePropertyChange();
+    property.firePropertyChange(evt.getPropertyName(), null, "New stock");
   }
 
   @Override public Product getProduct(int productNumber) throws RemoteException
