@@ -62,7 +62,7 @@
             <Font name="Arial" size="24.0" />
          </font>
       </Button>
-      <TableView fx:id="table" layoutX="380.0" layoutY="259.0" prefHeight="395.0" prefWidth="759.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
+      <TableView fx:id="table" layoutX="380.0" layoutY="259.0" prefHeight="377.0" prefWidth="759.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
         <columns>
           <TableColumn fx:id="productName" prefWidth="458.0" text="Name" />
           <TableColumn fx:id="productId" minWidth="0.0" prefWidth="100.0" text="ID" />
@@ -75,7 +75,7 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="891.0" layoutY="104.0" mnemonicParsing="false" onAction="#loginButton" text="Login">
+      <Button layoutX="855.0" layoutY="104.0" mnemonicParsing="false" onAction="#loginButton" text="Login" AnchorPane.rightAnchor="40.0">
          <font>
             <Font name="Arial" size="18.0" />
          </font>

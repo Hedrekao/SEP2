@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddProductView">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddProductViewController">
    <children>
-      <Button layoutX="124.0" layoutY="65.0" mnemonicParsing="false" text="&lt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+      <Button layoutX="124.0" layoutY="65.0" mnemonicParsing="false" onAction="#backButton" text="&lt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
@@ -128,7 +128,7 @@
             </TextField>
          </children>
       </VBox>
-      <Label layoutX="479.0" layoutY="442.0" text="errorLabel" textFill="RED">
+      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="481.0" layoutY="449.0" text="errorLabel" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Arial" size="16.0" />
          </font>

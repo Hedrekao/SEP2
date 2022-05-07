@@ -12,14 +12,20 @@ public class ViewModelFactory
     private BagViewModel bagViewModel;
     private ItemViewState itemViewState;
     private LoginViewModel loginViewModel;
+    private AddProductViewModel addProductViewModel;
+    private EmployeeViewModel employeeViewModel;
+    private UserViewState userViewState;
 
     public ViewModelFactory(Model model)
     {
+        userViewState = new UserViewState();
         itemViewState = new ItemViewState();
         productsViewModel = new ProductsViewModel(model, itemViewState);
         itemsViewModel = new ItemsViewModel(model, itemViewState);
         bagViewModel = new BagViewModel(model);
-        loginViewModel = new LoginViewModel(model);
+        loginViewModel = new LoginViewModel(model, userViewState);
+        addProductViewModel = new AddProductViewModel(model);
+        employeeViewModel = new EmployeeViewModel(model, userViewState);
     }
 
 
@@ -41,5 +47,15 @@ public class ViewModelFactory
     public LoginViewModel getLoginViewModel()
     {
         return loginViewModel;
+    }
+
+    public EmployeeViewModel getEmployeeViewModel()
+    {
+        return employeeViewModel;
+    }
+
+    public AddProductViewModel getAddProductViewModel()
+    {
+        return addProductViewModel;
     }
 }

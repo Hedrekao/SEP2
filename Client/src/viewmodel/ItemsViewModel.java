@@ -9,7 +9,10 @@ import model.Item;
 import model.ModelUser;
 import model.Product;
 
-public class ItemsViewModel
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class ItemsViewModel implements PropertyChangeListener
 {
     private ModelUser model;
     private StringProperty errorProperty;
@@ -28,6 +31,7 @@ public class ItemsViewModel
         bagCounter = new SimpleStringProperty();
         productIdProperty = new SimpleStringProperty();
         productNameProperty = new SimpleStringProperty();
+        this.model.addListener(this);
 
         clear();
 
@@ -93,5 +97,13 @@ public class ItemsViewModel
     public StringProperty getBagCounterProperty()
     {
         return bagCounter;
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("StockUpdate"))
+        {
+            update(itemViewState.getProduct());
+        }
     }
 }

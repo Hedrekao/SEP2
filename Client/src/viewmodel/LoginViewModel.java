@@ -10,10 +10,12 @@ public class LoginViewModel
     private StringProperty password;
     private StringProperty errorLabel;
     private ModelEmployee model;
+    private UserViewState viewState;
 
-    public LoginViewModel(ModelEmployee model)
+    public LoginViewModel(ModelEmployee model, UserViewState userViewState)
     {
         this.model = model;
+        viewState = userViewState;
         username = new SimpleStringProperty();
         password = new SimpleStringProperty();
         errorLabel = new SimpleStringProperty();
@@ -46,11 +48,14 @@ public class LoginViewModel
         try
         {
             model.getUser(username.get(), password.get());
+            viewState.setUsername(username.get());
             return true;
         }
         catch (Exception e)
         {
             errorLabel.set(e.getMessage());
+            username.set("");
+            password.set("");
             return false;
         }
     }

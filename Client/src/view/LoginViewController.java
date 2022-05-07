@@ -3,6 +3,7 @@ package view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import viewmodel.LoginViewModel;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
 public class LoginViewController extends ViewController
 {
   @FXML private TextField usernameField;
-  @FXML private TextField passwordField;
+  @FXML private PasswordField passwordField;
   @FXML private Label errorLabel;
 
   private LoginViewModel loginViewModel;

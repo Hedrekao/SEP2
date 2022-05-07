@@ -7,7 +7,10 @@ import javafx.collections.ObservableList;
 import model.ModelUser;
 import model.Product;
 
-public class ProductsViewModel
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class ProductsViewModel implements PropertyChangeListener
 {
     private ModelUser model;
     private ObservableList<ProductsTableVM> products;
@@ -22,6 +25,7 @@ public class ProductsViewModel
         this.products = FXCollections.observableArrayList();
         this.pickedCategory = FXCollections.observableArrayList();
         this.bagCounter = new SimpleStringProperty();
+        this.model.addListener(this);
 
         update();
         clear();
@@ -96,5 +100,13 @@ public class ProductsViewModel
     {
         Product product = model.getProduct(productsTableVM.getId());
         itemViewState.setProduct(product);
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("StockUpdate"))
+        {
+            update();
+        }
     }
 }
