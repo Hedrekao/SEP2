@@ -30,6 +30,8 @@ public class ShopsViewController extends ViewController
 
         table.setItems(shopsViewModel.getShops());
         bagButton.textProperty().bindBidirectional(shopsViewModel.getBagCounter());
+        
+//         selected shop method does not exist in the view model, copy the method from products view model 
 
         table.setOnMouseClicked(event -> {
 
@@ -57,12 +59,14 @@ public class ShopsViewController extends ViewController
 
 //    @FXML private void loginButton() throws IOException
 //    {
-//        getViewHandler().openView("Login");
+//        getViewHandler().openView("LoginUser");
 //    }
 
-    public void reset()
-    {
-        shopsViewModel.clear();
-        table.setItems(shopsViewModel.getProducts());
-    }
+//     public void reset()
+//     {
+//         shopsViewModel.clear();
+//         table.setItems(shopsViewModel.getProducts());
+//
+//          (reset method does not exist in the view model)
+//     }
 }
