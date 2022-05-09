@@ -54,9 +54,9 @@ public class Server implements RemoteModel, PropertyChangeListener
     property.firePropertyChange(evt.getPropertyName(), null, "New stock");
   }
 
-  @Override public Product getProduct(int productNumber) throws RemoteException
+  @Override public Product getProduct(String address, int productNumber) throws RemoteException
   {
-    return model.getProduct(productNumber);
+    return model.getProduct(address, productNumber);
   }
 
 
@@ -65,26 +65,26 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.removeItemFromOrder(item);
   }
 
-  @Override public ArrayList<Item> getItemsByProduct(Product product)
+  @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
       throws RemoteException
   {
-    return model.getItemsByProduct(product);
+    return model.getItemsByProduct(address, product);
   }
 
-  @Override public ArrayList<Product> getAllProducts() throws RemoteException
+  @Override public ArrayList<Product> getAllProducts(String address) throws RemoteException
   {
-    return model.getAllProducts();
+    return model.getAllProducts(address);
   }
 
   @Override public ArrayList<Product> getProductsByCategory(
-      ArrayList<String> categories) throws RemoteException
+      String address, ArrayList<String> categories) throws RemoteException
   {
-    return model.getProductsByCategory(categories);
+    return model.getProductsByCategory(address, categories);
   }
 
-  @Override public void addItemToOrder(Item item) throws RemoteException
+  @Override public void addItemToOrder(String address, Item item) throws RemoteException
   {
-    model.addItemToOrder(item);
+    model.addItemToOrder(address,item);
   }
 
   @Override public void completeOrder(Order order) throws RemoteException
@@ -92,22 +92,22 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.completeOrder(order);
   }
 
-  @Override public double getLowestPriceOfProduct(Product product)
+  @Override public double getLowestPriceOfProduct(String address, Product product)
       throws RemoteException
   {
-    return model.getLowestPriceOfProduct(product);
+    return model.getLowestPriceOfProduct(address, product);
   }
 
-  @Override public int getQuantityOfCertainProduct(Product product)
+  @Override public int getQuantityOfCertainProduct(String address, Product product)
       throws RemoteException
   {
-    return model.getQuantityOfCertainProduct(product);
+    return model.getQuantityOfCertainProduct(address, product);
   }
 
-  @Override public Item getSpecificItem(Date expirationDate, int productId)
+  @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
       throws RemoteException
   {
-    return model.getSpecificItem(expirationDate,productId);
+    return model.getSpecificItem(address, expirationDate,productId);
   }
 
   @Override public Order getCurrentOrder() throws RemoteException
@@ -115,28 +115,25 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getCurrentOrder();
   }
 
-  @Override public void addUser(String username, String password)
-      throws RemoteException
-  {
-    model.addUser(username,password);
-  }
-
-  @Override public User getUser(String username, String password)
-      throws RemoteException
-  {
-    return model.getUser(username,password);
-  }
-
-  @Override public void addItem(String productName, int productID, double price,
-      Date expirationDate, int quantity, ArrayList<Category> categories)
-  {
-    model.addItem(productName, productID, price, expirationDate, quantity, categories);
-  }
-
-
   @Override public int getQuantityOfItemsInBag() throws RemoteException
   {
     return model.getQuantityOfItemsInBag();
+  }
+
+  @Override public void addUser(String username, String password)
+  {
+    model.addUser(username, password);
+  }
+
+  @Override public User getUser(String username, String password)
+  {
+    return model.getUser(username, password);
+  }
+
+  @Override public void addItem(String address, String productName, int productID, double price,
+      Date expirationDate, int quantity, ArrayList<Category> categories)
+  {
+    model.addItem(address,productName, productID, price, expirationDate, quantity, categories);
   }
 
   @Override public boolean addListener(GeneralListener<Item, String> listener,

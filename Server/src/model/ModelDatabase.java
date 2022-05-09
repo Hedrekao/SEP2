@@ -14,9 +14,9 @@ public class ModelDatabase implements ModelPersistence
   private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
   private static final String USER = "postgres";
   private static final String PASSWORD = "tom2002";
-  private ModelUser model;
+  private Model model;
 
-  public ModelDatabase(ModelUser model) throws ClassNotFoundException
+  public ModelDatabase(Model model) throws ClassNotFoundException
   {
     this.db = new MyDatabasev2(DRIVER, URL, USER, PASSWORD);
     this.model = model;
@@ -102,11 +102,18 @@ public class ModelDatabase implements ModelPersistence
   {
     try
     {
-      String sql =
-          "INSERT INTO food_waste.product (product_number, category, name)"
-              + " VALUES (? , ? , ? )";
-      Object[] updateResult = db.update(sql, product.getProductID(),
-          product.getCategories().get(0).getName(), product.getProductName());
+      String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+
+      ArrayList<Object[]> results = db.query(sql, product.getProductID());
+
+      if (results.size() == 0)
+      {
+        sql =
+            "INSERT INTO food_waste.product (product_number, category, name)"
+                + " VALUES (? , ? , ? )";
+        Object[] updateResult = db.update(sql, product.getProductID(),
+            product.getCategories().get(0).getName(), product.getProductName());
+      }
 
       //change shit with categories
     }
@@ -122,7 +129,9 @@ public class ModelDatabase implements ModelPersistence
 
     try
     {
-      db.update(sql,item.getQuantity(), item.getCurrentPrice(), item.getProduct().getProductID(), java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()));
+      db.update(sql, item.getQuantity(), item.getCurrentPrice(),
+          item.getProduct().getProductID(),
+          java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()));
     }
     catch (SQLException e)
     {
@@ -134,7 +143,7 @@ public class ModelDatabase implements ModelPersistence
   {
 
     UserList list = new UserList();
-    String sql = "SELECT users.username, users.hashPassword, users.isEmployee FROM food_waste.users";
+    String sql = "SELECT employee.username, employee.hash_password, employee.shop_address FROM food_waste.employee";
 
     try
     {
@@ -143,7 +152,9 @@ public class ModelDatabase implements ModelPersistence
       for (int i = 0; i < results.size(); i++)
       {
         Object[] result = results.get(i);
-        list.addUser(new User((String) result[0], (int) result[1]));
+        User user = new User((String) result[0], (int) result[1]);
+        user.setShopAddress((String) result[2]);
+        list.addUser(user);
       }
     }
     catch (SQLException e)
@@ -154,22 +165,50 @@ public class ModelDatabase implements ModelPersistence
     return list;
   }
 
-  @Override public ProductList loadProducts()
+  @Override public ShopList loadShops()
   {
-    ProductList list = new ProductList();
-    String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product";
+    ShopList shopList = new ShopList();
+
+    String sql = "SELECT shop.name, shop.address FROM food_waste.shop";
 
     try
     {
       ArrayList<Object[]> results = db.query(sql);
+
+      for (int i = 0; i < results.size(); i++)
+      {
+        Object[] result = results.get(i);
+        Object[] itemAndProductList = loadItemsAndProductsFromShop((String) result[1]);
+        ProductList productList = (ProductList) itemAndProductList[1];
+        ItemList itemList = (ItemList) itemAndProductList[0];
+        Shop shop = new Shop((String) result[0], (String) result[1], itemList,
+            productList);
+        shopList.addShop(shop);
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+
+    return shopList;
+  }
+
+  private Product loadProduct(int productNumber)
+  {
+    Product product = null;
+    String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+
+    try
+    {
+      ArrayList<Object[]> results = db.query(sql, productNumber);
 
       for (int i = 0; i < results.size(); i++)
       {
         Object[] result = results.get(i);
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(new Category((String) result[2]));
-        list.addProduct(
-            new Product((String) result[1], (int) result[0], categories));
+        product = new Product((String) result[1], (int) result[0], categories);
       }
     }
     catch (SQLException e)
@@ -177,24 +216,28 @@ public class ModelDatabase implements ModelPersistence
       e.printStackTrace();
     }
 
-    return list;
+    return product;
   }
 
-  @Override public ItemList loadItems()
+  private Object[] loadItemsAndProductsFromShop(String address)
   {
-    ItemList list = new ItemList();
-    String sql = "SELECT item.product_number,  item.price, item.quantity_in_stock, item.expiration_date FROM food_waste.item";
+    ItemList itemList = new ItemList();
+    ProductList productList = new ProductList();
+
+    String sql = "SELECT item.product_number,  item.price, item.quantity_in_stock, item.expiration_date FROM food_waste.item WHERE item.shop_address = ?";
 
     try
     {
-      ArrayList<Object[]> results = db.query(sql);
+      ArrayList<Object[]> results = db.query(sql, address);
 
       for (int i = 0; i < results.size(); i++)
       {
         Object[] result = results.get(i);
-        Product product = model.getProduct((int) result[0]);
-        list.addItem(new Item(product, ((BigDecimal) result[1]).doubleValue(),
-            new Date((result[3]).toString()), (int) result[2]));
+        Product product = loadProduct((int) result[0]);
+        productList.addProduct(product);
+        itemList.addItem(
+            new Item(product, ((BigDecimal) result[1]).doubleValue(),
+                new Date((result[3]).toString()), (int) result[2]));
       }
     }
     catch (SQLException e)
@@ -202,7 +245,7 @@ public class ModelDatabase implements ModelPersistence
       e.printStackTrace();
     }
 
-    return list;
+    return new Object[] {itemList, productList};
   }
 
   @Override public ArrayList<Order> loadOrders()

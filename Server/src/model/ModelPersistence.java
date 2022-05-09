@@ -9,7 +9,6 @@ public interface ModelPersistence
   void save(Product product);
   void update(Item item);
   UserList loadUsers();
-  ProductList loadProducts();
-  ItemList loadItems();
+  ShopList loadShops();
   ArrayList<Order> loadOrders();
 }
