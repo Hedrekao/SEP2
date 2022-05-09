@@ -20,15 +20,15 @@ public class ModelManager implements Model, PropertyChangeListener
     client.addListener(this);
   }
 
-  @Override public ArrayList<Product> getAllProducts()
+  @Override public ArrayList<Product> getAllProducts(String address)
   {
-    return client.getAllProducts();
+    return client.getAllProducts(address);
   }
 
-  @Override public ArrayList<Product> getProductsByCategory(
+  @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {
-    return client.getProductsByCategory(categories);
+    return client.getProductsByCategory(address, categories);
   }
 
   @Override public void completeOrder(Order order)
@@ -36,9 +36,9 @@ public class ModelManager implements Model, PropertyChangeListener
     client.completeOrder(order);
   }
 
-  @Override public void addItemToOrder(Item item)
+  @Override public void addItemToOrder(String address,Item item)
   {
-    client.addItemToOrder(item);
+    client.addItemToOrder(address,item);
   }
 
   @Override public void removeItemFromOrder(Item item)
@@ -46,29 +46,29 @@ public class ModelManager implements Model, PropertyChangeListener
     client.removeItemFromOrder(item);
   }
 
-  @Override public Product getProduct(int productNumber)
+  @Override public Product getProduct(String address, int productNumber)
   {
-    return client.getProduct(productNumber);
+    return client.getProduct(address, productNumber);
   }
 
-  @Override public ArrayList<Item> getItemsByProduct(Product product)
+  @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
   {
-    return client.getItemsByProduct(product);
+    return client.getItemsByProduct(address, product);
   }
 
-  @Override public double getLowestPriceOfProduct(Product product)
+  @Override public double getLowestPriceOfProduct(String address, Product product)
   {
-    return client.getLowestPriceOfProduct(product);
+    return client.getLowestPriceOfProduct(address, product);
   }
 
-  @Override public int getQuantityOfCertainProduct(Product product)
+  @Override public int getQuantityOfCertainProduct(String address, Product product)
   {
-    return client.getQuantityOfCertainProduct(product);
+    return client.getQuantityOfCertainProduct(address, product);
   }
 
-  @Override public Item getSpecificItem(Date expirationDate, int productId)
+  @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
   {
-    return client.getSpecificItem(expirationDate, productId);
+    return client.getSpecificItem(address, expirationDate, productId);
   }
 
   @Override public Order getCurrentOrder()
@@ -80,6 +80,8 @@ public class ModelManager implements Model, PropertyChangeListener
   {
     return client.getQuantityOfItemsInBag();
   }
+
+
 
   @Override public void addListener(PropertyChangeListener listener)
   {
@@ -101,10 +103,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getUser(username,password);
   }
 
-  @Override public void addItem(String productName, int productID, double price,
+  @Override public void addItem(String address, String productName, int productID, double price,
       Date expirationDate, int quantity, ArrayList<Category> categories)
   {
-    client.addItem(productName, productID, price, expirationDate, quantity, categories);
+    client.addItem(address, productName, productID, price, expirationDate, quantity,
+        categories);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
