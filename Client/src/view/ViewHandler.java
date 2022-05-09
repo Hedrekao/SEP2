@@ -56,6 +56,10 @@ public class ViewHandler extends ViewCreator
                 viewController = getViewController("EmployeeView");
                 root = viewController.getRoot();
                 break;
+            case "Shop":
+                viewController = getViewController("ShopView");
+                root = viewController.getRoot();
+                break;
         }
         currentScene.setRoot(root);
 
