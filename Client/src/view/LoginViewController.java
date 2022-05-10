@@ -45,6 +45,6 @@ public class LoginViewController extends ViewController
 
   @FXML private void backButton() throws IOException
   {
-    getViewHandler().openView("Product");
+    getViewHandler().openView("Shop");
   }
 }

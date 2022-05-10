@@ -50,7 +50,7 @@ public class BagViewController extends ViewController
 
     @FXML private void goBackButton() throws IOException
     {
-        getViewHandler().openView("Product");
+        getViewHandler().openView("Shop");
     }
 
 

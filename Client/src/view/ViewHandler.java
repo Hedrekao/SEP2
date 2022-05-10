@@ -23,7 +23,7 @@ public class ViewHandler extends ViewCreator
     {
         this.primaryStage = primaryStage;
         this.currentScene = new Scene(new Region());
-        openView("Product");
+        openView("Shop");
     }
 
     public void openView(String id) throws IOException
@@ -57,7 +57,27 @@ public class ViewHandler extends ViewCreator
                 root = viewController.getRoot();
                 break;
             case "Shop":
-                viewController = getViewController("ShopView");
+                viewController = getViewController("ShopsView");
+                root = viewController.getRoot();
+                break;
+            case "Delivery":
+                viewController = getViewController("DeliveryView");
+                root = viewController.getRoot();
+                break;
+            case "Pickup":
+                viewController = getViewController("PickUpView");
+                root = viewController.getRoot();
+                break;
+            case "Payment":
+                viewController = getViewController("PaymentView");
+                root = viewController.getRoot();
+                break;
+            case "Order":
+                viewController = getViewController("OrderView");
+                root = viewController.getRoot();
+                break;
+            case "Address":
+                viewController = getViewController("AddressView");
                 root = viewController.getRoot();
                 break;
         }

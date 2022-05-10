@@ -136,6 +136,11 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.addItem(address,productName, productID, price, expirationDate, quantity, categories);
   }
 
+  @Override public ArrayList<Shop> getAllShops() throws RemoteException
+  {
+    return model.getAllShops();
+  }
+
   @Override public boolean addListener(GeneralListener<Item, String> listener,
       String... propertyNames) throws RemoteException
   {

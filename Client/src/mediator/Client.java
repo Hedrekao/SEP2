@@ -144,9 +144,20 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
+  @Override public ArrayList<Shop> getAllShops()
+  {
+    try
+    {
+      return server.getAllShops();
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
 
-
-    public void addItemToOrder(String address, Item item)
+  public void addItemToOrder(String address, Item item)
     {
       try
       {
