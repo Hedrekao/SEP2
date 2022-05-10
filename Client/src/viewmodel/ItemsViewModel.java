@@ -21,10 +21,12 @@ public class ItemsViewModel implements PropertyChangeListener
     private ObservableList<ItemsTableVM> items;
     private StringProperty bagCounter;
     private ItemViewState itemViewState;
+    private ShopViewState shopViewState;
 
-    public ItemsViewModel(ModelUser model, ItemViewState itemViewState)
+    public ItemsViewModel(ModelUser model, ItemViewState itemViewState, ShopViewState shopViewState)
     {
         this.model = model;
+        this.shopViewState = shopViewState;
         this.itemViewState = itemViewState;
         errorProperty = new SimpleStringProperty();
         items = FXCollections.observableArrayList();
@@ -52,7 +54,7 @@ public class ItemsViewModel implements PropertyChangeListener
     public void update(Product product)
     {
         items.clear();
-        for (Item item : model.getItemsByProduct(product))
+        for (Item item : model.getItemsByProduct(shopViewState.getShopAddress(),product))
         {
             add(item);
         }
@@ -76,8 +78,8 @@ public class ItemsViewModel implements PropertyChangeListener
 
     public boolean addToBag(ItemsTableVM selectedItem)
     {
-        Item item = model.getSpecificItem(new Date(selectedItem.getDateProperty().get()), itemViewState.getProduct().getProductID());
-        model.addItemToOrder(item);
+        Item item = model.getSpecificItem(shopViewState.getShopAddress(),new Date(selectedItem.getDateProperty().get()), itemViewState.getProduct().getProductID());
+        model.addItemToOrder(shopViewState.getShopAddress(), item);
         update(itemViewState.getProduct());
         bagCounter.set("Bag ("+model.getQuantityOfItemsInBag()+")");
 

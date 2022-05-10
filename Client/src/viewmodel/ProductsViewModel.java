@@ -17,24 +17,25 @@ public class ProductsViewModel implements PropertyChangeListener
     private ObservableList<String> pickedCategory;
     private StringProperty bagCounter;
     private ItemViewState itemViewState;
+    private ShopViewState shopViewState;
 
-    public ProductsViewModel(ModelUser model, ItemViewState itemViewState)
+    public ProductsViewModel(ModelUser model, ItemViewState itemViewState, ShopViewState shopViewState)
     {
         this.model = model;
+        this.shopViewState = shopViewState;
         this.itemViewState = itemViewState;
         this.products = FXCollections.observableArrayList();
         this.pickedCategory = FXCollections.observableArrayList();
         this.bagCounter = new SimpleStringProperty();
         this.model.addListener(this);
 
-        update();
-        clear();
+
     }
 
     public void update()
     {
         products.clear();
-        for (Product product : model.getAllProducts())
+        for (Product product : model.getAllProducts(shopViewState.getShopAddress()))
         {
            add(product);
         }
@@ -42,8 +43,8 @@ public class ProductsViewModel implements PropertyChangeListener
 
     public void add(Product product)
     {
-        double lowestPrice = model.getLowestPriceOfProduct(product);
-        int quantity = model.getQuantityOfCertainProduct(product);
+        double lowestPrice = model.getLowestPriceOfProduct(shopViewState.getShopAddress(),product);
+        int quantity = model.getQuantityOfCertainProduct(shopViewState.getShopAddress(),product);
         if (quantity != 0)
         {
             products.add(new ProductsTableVM(product, lowestPrice, quantity));
@@ -98,7 +99,7 @@ public class ProductsViewModel implements PropertyChangeListener
 
     public void chooseProduct(ProductsTableVM productsTableVM)
     {
-        Product product = model.getProduct(productsTableVM.getId());
+        Product product = model.getProduct(shopViewState.getShopAddress(),productsTableVM.getId());
         itemViewState.setProduct(product);
     }
 
