@@ -37,9 +37,11 @@ public class BagViewController extends ViewController
 
     }
 
-    @FXML private void goToCheckOut()
+    @FXML private void goToCheckOut() throws IOException
     {
         bagViewModel.checkout();
+        getViewHandler().openView("Delivery");
+        // after clicking check out, we take user to select the delivery method
     }
 
     public void reset()
