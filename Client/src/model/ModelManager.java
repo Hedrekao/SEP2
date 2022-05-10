@@ -81,7 +81,10 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getQuantityOfItemsInBag();
   }
 
-
+  @Override public ArrayList<Shop> getAllShops()
+  {
+    return client.getAllShops();
+  }
 
   @Override public void addListener(PropertyChangeListener listener)
   {

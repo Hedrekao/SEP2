@@ -33,4 +33,16 @@ public class ItemList implements Serializable
     }
     return temp;
   }
+
+  public int getQuantityOfAllItems()
+  {
+    int sum = 0;
+
+    for (Item item : list)
+    {
+      sum += item.getQuantity();
+    }
+
+    return sum;
+  }
 }

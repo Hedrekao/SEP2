@@ -2,6 +2,7 @@ package model;
 
 import utility.observer.javaobserver.UnnamedPropertyChangeSubject;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface ModelUser extends UnnamedPropertyChangeSubject
@@ -19,5 +20,5 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
   Item getSpecificItem(String address, Date expirationDate, int productId);
   Order getCurrentOrder();
   int getQuantityOfItemsInBag();
-
+  ArrayList<Shop> getAllShops();
 }
