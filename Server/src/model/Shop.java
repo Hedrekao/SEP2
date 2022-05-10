@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Shop
+public class Shop implements Serializable
 {
   private String name;
   private String address;
@@ -16,6 +17,11 @@ public class Shop
    this.name = name;
    this.productList = productList;
    this.itemList = itemList;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 
   public String getAddress()
@@ -79,6 +85,7 @@ public class Shop
 
   public int getQuantityOfCertainProduct(Product product)
   {
+
     int sum = 0;
     ArrayList<Item> items = itemList.getItems(product);
     for (int i = 0; i < items.size(); i++)
@@ -110,5 +117,10 @@ public class Shop
   public void addItem(Item item)
   {
     itemList.addItem(item);
+  }
+
+  public int getQuantityOfAllItemsInShop()
+  {
+    return itemList.getQuantityOfAllItems();
   }
 }

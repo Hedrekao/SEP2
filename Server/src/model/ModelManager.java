@@ -101,6 +101,11 @@ public class ModelManager implements Model
     return sum;
   }
 
+  @Override public ArrayList<Shop> getAllShops()
+  {
+    return shopList.getShops();
+  }
+
   @Override public void addListener(PropertyChangeListener listener)
   {
     property.addPropertyChangeListener(listener);

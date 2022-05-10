@@ -20,5 +20,6 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
    Item getSpecificItem(String address, Date expirationDate, int productId);
    Order getCurrentOrder();
    int getQuantityOfItemsInBag();
+   ArrayList<Shop> getAllShops();
 
 }

@@ -23,4 +23,5 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   void addUser(String username, String password) throws RemoteException;
   User getUser(String username, String password) throws RemoteException;
   void addItem(String address, String productName, int productID, double price, Date expirationDate, int quantity, ArrayList<Category> categories) throws RemoteException;
+  ArrayList<Shop> getAllShops() throws RemoteException;
 }

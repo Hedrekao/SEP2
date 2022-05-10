@@ -11,6 +11,11 @@ public class ShopList
     this.list = new ArrayList<>();
   }
 
+  public ArrayList<Shop> getShops()
+  {
+    return list;
+  }
+
   public Shop getShop(String address)
   {
     for (Shop s : list)
@@ -20,7 +25,7 @@ public class ShopList
         return s;
       }
     }
-    throw new IllegalArgumentException();
+    return null;
   }
 
   public void addShop(Shop shop)
