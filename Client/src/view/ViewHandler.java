@@ -23,7 +23,7 @@ public class ViewHandler extends ViewCreator
     {
         this.primaryStage = primaryStage;
         this.currentScene = new Scene(new Region());
-        openView("Product");
+        openView("Shop");
     }
 
     public void openView(String id) throws IOException
