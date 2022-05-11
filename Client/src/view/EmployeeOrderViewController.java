@@ -47,6 +47,9 @@ public class EmployeeOrderViewController extends ViewController
         employeeOrderViewModel.removeOrderFromView();
         //same remove method as in view order
     }
-
-
+    
+    @FXML public void reset()
+    {
+        employeeOrderViewModel.clear();
+    }
 }
