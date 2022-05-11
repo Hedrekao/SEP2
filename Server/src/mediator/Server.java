@@ -59,10 +59,19 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getProduct(address, productNumber);
   }
 
-
-  @Override public void removeItemFromOrder(Item item) throws RemoteException
+  @Override public void addItemToOrder(String address, Item item) throws RemoteException
   {
-    model.removeItemFromOrder(item);
+    model.addItemToOrder(address,item);
+  }
+
+  @Override public void completeOrder(String address, Order order) throws RemoteException
+  {
+    model.completeOrder(address, order);
+  }
+
+  @Override public void removeItemFromOrder(String address, Item item) throws RemoteException
+  {
+    model.removeItemFromOrder(address, item);
   }
 
   @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
@@ -82,16 +91,6 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getProductsByCategory(address, categories);
   }
 
-  @Override public void addItemToOrder(String address, Item item) throws RemoteException
-  {
-    model.addItemToOrder(address,item);
-  }
-
-  @Override public void completeOrder(Order order) throws RemoteException
-  {
-    model.completeOrder(order);
-  }
-
   @Override public double getLowestPriceOfProduct(String address, Product product)
       throws RemoteException
   {
@@ -108,16 +107,6 @@ public class Server implements RemoteModel, PropertyChangeListener
       throws RemoteException
   {
     return model.getSpecificItem(address, expirationDate,productId);
-  }
-
-  @Override public Order getCurrentOrder() throws RemoteException
-  {
-    return model.getCurrentOrder();
-  }
-
-  @Override public int getQuantityOfItemsInBag() throws RemoteException
-  {
-    return model.getQuantityOfItemsInBag();
   }
 
   @Override public void addUser(String username, String password)
@@ -152,5 +141,11 @@ public class Server implements RemoteModel, PropertyChangeListener
       throws RemoteException
   {
     return property.removeListener(listener,propertyNames);
+  }
+
+  //not needed
+  @Override public int getQuantityOfItemsInBag() throws RemoteException
+  {
+    return 0;
   }
 }

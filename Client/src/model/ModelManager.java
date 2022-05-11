@@ -12,12 +12,14 @@ public class ModelManager implements Model, PropertyChangeListener
 
   private PropertyChangeSupport property;
   private Client client;
+  private Order order;
 
   public ModelManager() throws ClassNotFoundException, IOException
   {
     client = new Client();
     property = new PropertyChangeSupport(this);
     client.addListener(this);
+    order = new Order();
   }
 
   @Override public ArrayList<Product> getAllProducts(String address)
@@ -31,19 +33,45 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getProductsByCategory(address, categories);
   }
 
-  @Override public void completeOrder(Order order)
+  @Override public Order getOrder()
   {
-    client.completeOrder(order);
+    return order;
+  }
+
+  @Override public void completeOrder(String address)
+  {
+    //might be this.order instead of passed variable
+    client.completeOrder(address, order);
+    order = new Order();
   }
 
   @Override public void addItemToOrder(String address,Item item)
   {
+    order.addItem(item);
     client.addItemToOrder(address,item);
   }
 
-  @Override public void removeItemFromOrder(Item item)
+  @Override public void removeItemFromOrder(String address, Item item)
   {
-    client.removeItemFromOrder(item);
+    order.removeItem(item);
+    client.removeItemFromOrder(address, item);
+  }
+
+  @Override public void setDelivery(String pickUpTime)
+  {
+    order.setDelivery(pickUpTime);
+  }
+
+  @Override public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode)
+  {
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode);
+  }
+
+  @Override public void setPayment(String cardName, long cardNumber,
+      int expirationMonth, int expirationYear, int securityCode)
+  {
+    order.setPayment(cardName, cardNumber, expirationMonth, expirationYear, securityCode);
   }
 
   @Override public Product getProduct(String address, int productNumber)
@@ -69,11 +97,6 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
   {
     return client.getSpecificItem(address, expirationDate, productId);
-  }
-
-  @Override public Order getCurrentOrder()
-  {
-    return client.getCurrentOrder();
   }
 
   @Override public int getQuantityOfItemsInBag()
