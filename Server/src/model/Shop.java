@@ -9,6 +9,7 @@ public class Shop implements Serializable
   private String address;
   private ProductList productList;
   private ItemList itemList;
+  private ArrayList<Order> orderList;
 
 
   public Shop(String name, String address, ItemList itemList, ProductList productList)
@@ -17,11 +18,19 @@ public class Shop implements Serializable
    this.name = name;
    this.productList = productList;
    this.itemList = itemList;
+   this.orderList = new ArrayList<>();
+
+
   }
 
   public String getName()
   {
     return name;
+  }
+
+  public void setOrderList(ArrayList<Order> orderList)
+  {
+    this.orderList = orderList;
   }
 
   public String getAddress()
@@ -122,5 +131,10 @@ public class Shop implements Serializable
   public int getQuantityOfAllItemsInShop()
   {
     return itemList.getQuantityOfAllItems();
+  }
+
+  public void addOrder(Order order)
+  {
+    orderList.add(order);
   }
 }
