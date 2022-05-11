@@ -8,11 +8,11 @@ import java.io.IOException;
 
 public class EmployeeOrderViewController extends ViewController
 {
-    @FXML private TableView<SomeTableVM> table;
-    @FXML private TableColumn<SomeTableVM, String> nameOfProduct;
-    @FXML private TableColumn<SomeTableVM, Number> quantity;
-    @FXML private TableColumn<SomeTableVM, String> expiration;
-    @FXML private TableColumn<SomeTableVM, Number> price;
+    @FXML private TableView<EmployeeOrderTableVM> table;
+    @FXML private TableColumn<EmployeeOrderTableVM, String> nameOfProduct;
+    @FXML private TableColumn<EmployeeOrderTableVM, Number> quantity;
+    @FXML private TableColumn<EmployeeOrderTableVM, String> expiration;
+    @FXML private TableColumn<EmployeeOrderTableVM, Number> price;
     @FXML private Label orderLabel;
     @FXML private TextArea textArea;
 
