@@ -6,10 +6,8 @@ import java.util.Map;
 
 public class Order implements Serializable
 {
-  private boolean completed;
   private HashMap<Item, Integer> items;
   private Date date;
-  private boolean is_Delivery;
   private String addressLinePrimary;
   private String addressLineSecondary;
   private String city;
@@ -22,17 +20,58 @@ public class Order implements Serializable
   private int expirationMonth;
   private int expirationYear;
   private int securityCode;
+  private String email;
+  private String shopAddress;
 
   public Order()
   {
     items = new HashMap<>();
-    completed = false;
     date = new Date();
+    addressLinePrimary = null;
+    addressLineSecondary = null;
+    city = null;
+    postalCode = 0;
+    pickUpTime = null;
+    email = null;
+    cardName = null;
+    cardNumber = 0;
+    expirationMonth = 0;
+    expirationYear = 0;
+    securityCode = 0;
+    shopAddress = null;
+  }
+
+  public Order(Date date)
+  {
+    items = new HashMap<>();
+    this.date = date;
+    addressLinePrimary = null;
+    addressLineSecondary = null;
+    city = null;
+    postalCode = 0;
+    pickUpTime = null;
+    email = null;
+    cardName = null;
+    cardNumber = 0;
+    expirationMonth = 0;
+    expirationYear = 0;
+    securityCode = 0;
+    shopAddress = null;
   }
 
   public HashMap<Item, Integer> getItems()
   {
     return items;
+  }
+
+  public void setShopAddress(String shopAddress)
+  {
+    this.shopAddress = shopAddress;
+  }
+
+  public String getShopAddress()
+  {
+    return shopAddress;
   }
 
   public void addItem(Item item)
@@ -47,19 +86,25 @@ public class Order implements Serializable
     }
   }
 
-  public void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode)
+  public void addItem(Item item, int quantity)
   {
-    if(addressLinePrimary == null || city == null || postalCode < 1)
+
+      items.put(item, quantity);
+  }
+
+  public void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode, String email)
+  {
+    if(addressLinePrimary == null || city == null || postalCode < 1 || !email.contains("@"))
     {
       throw new IllegalArgumentException("Check input fields.");
     }
     else
     {
-      is_Delivery = true;
       this.addressLinePrimary = addressLinePrimary;
       this.addressLineSecondary = addressLineSecondary;
       this.city = city;
       this.postalCode = postalCode;
+      this.email = email;
     }
   }
 
@@ -71,7 +116,6 @@ public class Order implements Serializable
     }
     else
     {
-      is_Delivery = false;
       this.pickUpTime = pickUpTime;
     }
   }
@@ -92,17 +136,38 @@ public class Order implements Serializable
     }
   }
 
-
-
-  public void removeItem(Item item)
+  public int getPostalCode()
   {
-    items.remove(item);
+    return postalCode;
   }
 
-  public void completeOrder()
+  public String getAddressLinePrimary()
   {
-    completed = true;
+    return addressLinePrimary;
   }
+
+  public String getAddressLineSecondary()
+  {
+    return addressLineSecondary;
+  }
+
+  public String getCity()
+  {
+    return city;
+  }
+
+  public String getEmail()
+  {
+    return email;
+  }
+
+  public String getPickUpTime()
+  {
+    return pickUpTime;
+  }
+
+
+  public void removeItem(Item item) {items.remove(item);}
 
   public Date getDate()
   {
@@ -119,9 +184,27 @@ public class Order implements Serializable
     return sum;
   }
 
-  public boolean isCompleted()
+  public int getQuantityOfItemsInOrder()
   {
-    return completed;
+    int sum = 0;
+
+    for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+      sum += entry.getValue();
+    }
+    return sum;
+  }
+
+  public String getOrderDescription()
+  {
+    if(addressLinePrimary == null)
+    {
+      return "Pick-up time: " + pickUpTime + "\n";
+    }
+    else
+    {
+      return "Address 1: " + addressLinePrimary + "\n" + "Address 2: " + addressLineSecondary + "\n" + "City: " + city
+          + "\n" + "Postal code: " + postalCode + "\n" + "Email: " + email;
+    }
   }
 
   public boolean equals(Object obj)
@@ -131,6 +214,6 @@ public class Order implements Serializable
       return false;
     }
     Order other = (Order) obj;
-    return this.completed == other.completed && this.items.equals(other.items) && this.date.equals(other.date);
+    return this.items.equals(other.items) && this.date.equals(other.date);
   }
 }
