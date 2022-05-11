@@ -26,7 +26,7 @@ public class ViewModelFactory
         shopsViewModel = new ShopsViewModel(model, shopViewState);
         productsViewModel = new ProductsViewModel(model, itemViewState, shopViewState);
         itemsViewModel = new ItemsViewModel(model, itemViewState, shopViewState);
-        bagViewModel = new BagViewModel(model);
+        bagViewModel = new BagViewModel(model, shopViewState);
         loginViewModel = new LoginViewModel(model, userViewState);
         addProductViewModel = new AddProductViewModel(model,userViewState);
         employeeViewModel = new EmployeeViewModel(model, userViewState);

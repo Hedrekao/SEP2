@@ -28,7 +28,6 @@ public class Client implements RemoteListener<Item, String>, Model
         System.out.println("xd");
         e.printStackTrace();
       }
-
       UnicastRemoteObject.exportObject(this, 0);
       server.addListener(this);
       property = new PropertyChangeSupport(this);
@@ -36,11 +35,11 @@ public class Client implements RemoteListener<Item, String>, Model
 
 
 
-    public void removeItemFromOrder(Item item)
+   @Override public void removeItemFromOrder(String address, Item item)
     {
       try
       {
-        server.removeItemFromOrder(item);
+        server.removeItemFromOrder(address, item);
       }
       catch (RemoteException e)
       {
@@ -117,20 +116,6 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-
-  @Override public Order getCurrentOrder()
-  {
-    try
-    {
-      return server.getCurrentOrder();
-    }
-    catch (RemoteException e)
-    {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
   @Override public int getQuantityOfItemsInBag()
   {
     try
@@ -196,11 +181,16 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-  public void completeOrder(Order order)
+  @Override public Order getOrder()
+  {
+    return null;
+  }
+
+  public void completeOrder(String address, Order order)
     {
       try
       {
-        server.completeOrder(order);
+        server.completeOrder(address, order);
       }
       catch (RemoteException e)
       {
@@ -262,6 +252,30 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
+
+  //not needed
+  @Override public void setDelivery(String pickUpTime)
+  {
+
+  }
+
+  @Override public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode)
+  {
+
+  }
+
+  @Override public void setPayment(String cardName, long cardNumber,
+      int expirationMonth, int expirationYear, int securityCode)
+  {
+
+  }
+
+  //not needed
+  @Override public void completeOrder(String address)
+  {
+
+  }
 }
 
 

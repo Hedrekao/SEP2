@@ -10,15 +10,14 @@ public interface RemoteModel extends RemoteSubject<Item, String>
 {
   Product getProduct(String address, int productNumber) throws RemoteException;
   ArrayList<Item> getItemsByProduct(String address, Product product) throws RemoteException;
-  void removeItemFromOrder(Item item) throws RemoteException;
+  void removeItemFromOrder(String address, Item item) throws RemoteException;
   ArrayList<Product> getAllProducts(String address) throws RemoteException;
   ArrayList<Product> getProductsByCategory(String address, ArrayList<String> categories) throws RemoteException;
   void addItemToOrder(String address, Item item) throws RemoteException;
-  void completeOrder(Order order) throws RemoteException;
+  void completeOrder(String address, Order order) throws RemoteException;
   double getLowestPriceOfProduct(String address, Product product) throws RemoteException;
   int getQuantityOfCertainProduct(String address, Product product) throws RemoteException;
   Item getSpecificItem(String address, Date expirationDate, int productId) throws RemoteException;
-  Order getCurrentOrder() throws RemoteException;
   int getQuantityOfItemsInBag() throws RemoteException;
   void addUser(String username, String password) throws RemoteException;
   User getUser(String username, String password) throws RemoteException;

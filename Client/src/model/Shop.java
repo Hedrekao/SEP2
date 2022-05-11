@@ -9,6 +9,7 @@ public class Shop implements Serializable
   private String address;
   private ProductList productList;
   private ItemList itemList;
+  private ArrayList<Order> orderList;
 
 
   public Shop(String name, String address, ItemList itemList, ProductList productList)
