@@ -23,7 +23,7 @@
                   <Font name="Arial" size="24.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="timeSelection" onDragDetected="#timeDropDownButton" prefWidth="200.0">
+            <ChoiceBox fx:id="timeSelection" prefWidth="200.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
