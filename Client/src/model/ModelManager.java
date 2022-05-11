@@ -136,6 +136,23 @@ public class ModelManager implements Model, PropertyChangeListener
         categories);
   }
 
+  @Override public Order getOrder(String shopAddress ,int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    return client.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return client.getOrderList(shopAddress);
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    client.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());

@@ -3,13 +3,16 @@ package model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalTime;
+
+
 
 public class Order implements Serializable
 {
   private boolean completed;
   private HashMap<Item, Integer> items;
+  private LocalTime localTime;
   private Date date;
-  private boolean is_Delivery;
   private String addressLinePrimary;
   private String addressLineSecondary;
   private String city;
@@ -28,6 +31,7 @@ public class Order implements Serializable
     items = new HashMap<>();
     completed = false;
     date = new Date();
+    localTime = LocalTime.now();
   }
 
   public HashMap<Item, Integer> getItems()
@@ -55,7 +59,6 @@ public class Order implements Serializable
     }
     else
     {
-      is_Delivery = true;
       this.addressLinePrimary = addressLinePrimary;
       this.addressLineSecondary = addressLineSecondary;
       this.city = city;
@@ -71,7 +74,6 @@ public class Order implements Serializable
     }
     else
     {
-      is_Delivery = false;
       this.pickUpTime = pickUpTime;
     }
   }
@@ -99,11 +101,6 @@ public class Order implements Serializable
     items.remove(item);
   }
 
-  public void completeOrder()
-  {
-    completed = true;
-  }
-
   public Date getDate()
   {
     return date;
@@ -117,11 +114,6 @@ public class Order implements Serializable
       sum += entry.getValue() * entry.getKey().getCurrentPrice();
     }
     return sum;
-  }
-
-  public boolean isCompleted()
-  {
-    return completed;
   }
 
   public boolean equals(Object obj)

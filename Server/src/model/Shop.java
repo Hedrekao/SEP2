@@ -9,6 +9,7 @@ public class Shop implements Serializable
   private String address;
   private ProductList productList;
   private ItemList itemList;
+  private ArrayList<Order> orderList;
 
 
   public Shop(String name, String address, ItemList itemList, ProductList productList)
@@ -117,6 +118,40 @@ public class Shop implements Serializable
   public void addItem(Item item)
   {
     itemList.addItem(item);
+  }
+
+  public Order getOrder(int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    Date date = new Date();
+    date.set(day, month, year);
+    for(Order o : orderList)
+    {
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && addressLinePrimary.equals(o.getAddressLinePrimary()))
+      {
+        return o;
+      }
+    }
+    throw new IllegalArgumentException("Order does not exist.");
+  }
+
+  public void removeOrder(int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    Date date = new Date();
+    date.set(day, month, year);
+    for(Order o : orderList)
+    {
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && addressLinePrimary.equals(o.getAddressLinePrimary()))
+      {
+        orderList.remove(o);
+      }
+    }
+  }
+
+  public ArrayList<Order> getOrderList()
+  {
+    return orderList;
   }
 
   public int getQuantityOfAllItemsInShop()

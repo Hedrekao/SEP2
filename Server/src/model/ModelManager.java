@@ -33,7 +33,7 @@ public class ModelManager implements Model
 
   @Override public void completeOrder(String address, Order order)
   {
-    modelPersistence.save(address, order);//todo
+    //modelPersistence.save(address, order); //todo
   }
 
   @Override public void addItemToOrder(String address, Item item)
@@ -46,8 +46,8 @@ public class ModelManager implements Model
   {
     //tomciu czy to ci doda do systemu ten item co jest usuwany
 
-    //Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
-    //item1.setQuantity(item1.getQuantity() + 1);
+    Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
+    item1.setQuantity(item1.getQuantity() + 1);
   }
 
   @Override public Product getProduct(String address, int productNumber)
@@ -148,5 +148,21 @@ public class ModelManager implements Model
 
   }
 
+  @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    return shopList.getShop(addressLinePrimary).getOrder(day,month,year,hour,minute,second,addressLinePrimary);
+  }
 
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    shopList.getShop(shopAddress).removeOrder(day,month,year,hour,minute,second,addressLinePrimary);
+    //modelPersistance.removeOrder() czy cos
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return shopList.getShop(shopAddress).getOrderList();
+  }
 }

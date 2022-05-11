@@ -252,6 +252,22 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
+  @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    return server.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return null;
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    server.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
 
   //not needed
   @Override public void setDelivery(String pickUpTime)

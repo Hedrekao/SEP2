@@ -130,6 +130,23 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getAllShops();
   }
 
+  @Override public Order getOrder(String shopAddress, int day, int month,
+      int year, int hour, int minute, int second, String addressLinePrimary)
+  {
+    return model.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month,
+      int year, int hour, int minute, int second, String addressLinePrimary)
+  {
+    model.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return model.getOrderList(shopAddress);
+  }
+
   @Override public boolean addListener(GeneralListener<Item, String> listener,
       String... propertyNames) throws RemoteException
   {
