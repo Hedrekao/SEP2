@@ -1,6 +1,7 @@
 package viewmodel;
 
 import javafx.beans.property.*;
+import model.Item;
 import model.Order;
 
 public class OrderTableVM
@@ -10,12 +11,12 @@ public class OrderTableVM
     private StringProperty date;
     private DoubleProperty price;
 
-    public OrderTableVM(Order order)
+    public OrderTableVM(Item item, int quantity)
     {
-        productName = new SimpleStringProperty(order.getName());
-        quantity = new SimpleIntegerProperty(order.getQuantity());
-        date = new SimpleStringProperty(order.getDate().toString());
-        price = new SimpleDoubleProperty(order.getTotalPrice());
+        productName = new SimpleStringProperty(item.getProduct().getProductName());
+        this.quantity = new SimpleIntegerProperty(quantity);
+        date = new SimpleStringProperty(item.getExpirationDate().toString());
+        price = new SimpleDoubleProperty(item.getCurrentPrice());
     }
 
     public String getProductName()

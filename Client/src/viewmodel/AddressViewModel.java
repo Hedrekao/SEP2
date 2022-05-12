@@ -14,21 +14,46 @@ public class AddressViewModel
     private StringProperty city;
     private IntegerProperty postalCode;
     private StringProperty email;
+    private StringProperty error;
     private Model model;
 
-    public AddressViewModel(Model model, Order order)
+    public AddressViewModel(Model model)
     {
         this.model = model;
-        address1 = new SimpleStringProperty(order.getAddress1());
-        address2 = new SimpleStringProperty(order.getAddress2());
-        city = new SimpleStringProperty(order.getCity());
-        postalCode = new SimpleIntegerProperty(order.getPostalCode());
-        email = new SimpleStringProperty(order.getEmail());
+        address1 = new SimpleStringProperty();
+        address2 = new SimpleStringProperty();
+        city = new SimpleStringProperty();
+        postalCode = new SimpleIntegerProperty();
+        email = new SimpleStringProperty();
+        error = new SimpleStringProperty();
     }
 
-    public void submit()
+    public void clear()
     {
-        model.submit();
+        address1.set("");
+        address2.set("");
+        city.set("");
+        email.set("");
+        postalCode.set(0);
+        error.set("");
+
+    }
+
+    public boolean setDeliveryOptions()
+    {
+
+        try
+        {
+            model.setDelivery(address1.get(), address2.get(), city.get(), postalCode.get(),
+                email.get());
+            return true;
+        }
+        catch (Exception e)
+        {
+            error.set(e.getMessage());
+            return false;
+        }
+
     }
 
     public StringProperty getAddress1()
@@ -54,5 +79,10 @@ public class AddressViewModel
     public StringProperty getEmail()
     {
         return email;
+    }
+
+    public StringProperty getError()
+    {
+        return error;
     }
 }

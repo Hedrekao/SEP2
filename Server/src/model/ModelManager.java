@@ -16,6 +16,12 @@ public class ModelManager implements Model
 
     this.shopList = modelPersistence.loadShops();
 
+    for (Shop shop : getAllShops())
+    {
+      shop.setOrderList(modelPersistence.loadOrdersFromShop(shop.getAddress()));
+
+    }
+
     userList = modelPersistence.loadUsers();
     property = new PropertyChangeSupport(this);
   }
@@ -40,11 +46,12 @@ public class ModelManager implements Model
   {
     Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
     item1.setQuantity(item1.getQuantity() - 1);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item)
+  @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
   {
-    //tomciu czy to ci doda do systemu ten item co jest usuwany
 
     Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
     item1.setQuantity(item1.getQuantity() + 1);
