@@ -1,6 +1,5 @@
 package viewmodel;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -35,15 +34,11 @@ public class ProductsViewModel implements PropertyChangeListener
 
     public void update()
     {
-        if(shopViewState.getShopAddress() != null)
+        products.clear();
+        for (Product product : model.getAllProducts(shopViewState.getShopAddress()))
         {
-            products.clear();
-            for (Product product : model.getAllProducts(shopViewState.getShopAddress()))
-            {
-                add(product);
-            }
+           add(product);
         }
-
     }
 
     public void add(Product product)
@@ -112,8 +107,7 @@ public class ProductsViewModel implements PropertyChangeListener
     {
         if (evt.getPropertyName().equals("StockUpdate"))
         {
-            Platform.runLater(this::update);
-
+            update();
         }
     }
 }

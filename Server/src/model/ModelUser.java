@@ -12,7 +12,7 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
        ArrayList<String> categories);
    void completeOrder(String address, Order order);
    void addItemToOrder(String address, Item item);
-   void removeItemFromOrder(String address, Item item,int quantityOfItem);
+   void removeItemFromOrder(String address, Item item);
    Product getProduct(String address, int productNumber);
    ArrayList<Item> getItemsByProduct(String address, Product product);
    double getLowestPriceOfProduct(String address, Product product);

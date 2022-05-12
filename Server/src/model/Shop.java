@@ -18,19 +18,11 @@ public class Shop implements Serializable
    this.name = name;
    this.productList = productList;
    this.itemList = itemList;
-   this.orderList = new ArrayList<>();
-
-
   }
 
   public String getName()
   {
     return name;
-  }
-
-  public void setOrderList(ArrayList<Order> orderList)
-  {
-    this.orderList = orderList;
   }
 
   public String getAddress()
@@ -165,10 +157,5 @@ public class Shop implements Serializable
   public int getQuantityOfAllItemsInShop()
   {
     return itemList.getQuantityOfAllItems();
-  }
-
-  public void addOrder(Order order)
-  {
-    orderList.add(order);
   }
 }

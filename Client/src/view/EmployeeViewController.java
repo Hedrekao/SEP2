@@ -35,9 +35,4 @@ public class EmployeeViewController extends ViewController
     {
         getViewHandler().openView("Login");
     }
-    
-     @FXML private void manageOrdersButton()throws IOException
-    {
-        getViewHandler().openView("EmployeeViewOrderList");
-    }
 }

@@ -1,8 +1,7 @@
-package view;
+package Client.src.view;
 
 import javafx.fxml.FXML;
 import view.ViewController;
-import viewmodel.DeliveryViewModel;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class DeliveryViewController extends ViewController
 
     @FXML private void pickUpButton() throws IOException
     {
-        getViewHandler().openView("Pickup");
+        getViewHandler().openView("Payment");
     }
 
 

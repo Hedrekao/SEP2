@@ -1,62 +1,46 @@
-package view;
+package Client.src.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import utility.NumberStringConverter;
 import view.ViewController;
-import viewmodel.AddressViewModel;
 
 import java.io.IOException;
 
 public class AddressViewController extends ViewController
 {
-  @FXML private TextField addressPrimaryField;
-  @FXML private TextField addressSecondaryField;
-  @FXML private TextField cityField;
-  @FXML private TextField postalCodeField;
-  @FXML private TextField emailField;
-  @FXML private Label errorLabel;
+    @FXML private TextField addressPrimaryField;
+    @FXML private TextField addressSecondaryField;
+    @FXML private TextField cityField;
+    @FXML private TextField postalCodeField;
+    @FXML private TextField emailField;
 
-  private AddressViewModel addressViewModel;
+    private AddressViewModel addressViewModel;
 
-  @Override protected void init()
-  {
-    addressViewModel = getViewModelFactory().getAddressViewModel();
-
-    errorLabel.textProperty().bind(addressViewModel.getError());
-
-    addressPrimaryField.textProperty()
-        .bindBidirectional(addressViewModel.getAddress1());
-    addressSecondaryField.textProperty()
-        .bindBidirectional(addressViewModel.getAddress2());
-    cityField.textProperty().bindBidirectional(addressViewModel.getCity());
-
-    Bindings.bindBidirectional(postalCodeField.textProperty(),
-        addressViewModel.getPostalCode(), new NumberStringConverter());
-    emailField.textProperty().bindBidirectional(addressViewModel.getEmail());
-
-  }
-
-  @FXML private void submitButton() throws IOException
-  {
-
-    if (addressViewModel.setDeliveryOptions())
+    @Override
+    protected void init()
     {
-      getViewHandler().openView("Payment");
+        addressViewModel = getViewModelFactory().getAddressViewModel();
+
+        addressPrimaryField.textProperty().bindBidirectional(addressViewModel.getAddress());
+        addressSecondaryField.textProperty().bindBidirectional(addressViewModel.getAddressSecond());
+        cityField.textProperty().bindBidirectional(addressViewModel.getCity());
+
+        Bindings.bindBidirectional(postalCodeField.textProperty(), addressViewModel.getPostCode(), new NumberStringConverter());
+        emailField.textProperty().bindBidirectional(addressViewModel.getEmail());
+
+        //Not sure how to bind email, since it can contain numbers inside
     }
 
-  }
+    @FXML
+    private void submitButton() throws IOException
+    {
+        getViewHandler().openView("Payment");
+    }
 
-  @FXML private void goBackButton() throws IOException
-  {
-    getViewHandler().openView("Delivery");
-  }
-
-  public void reset()
-  {
-    addressViewModel.clear();
-  }
+    public void reset()
+    {
+        addressViewModel.clear();
+    }
 
 }

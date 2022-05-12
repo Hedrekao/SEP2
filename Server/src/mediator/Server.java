@@ -69,9 +69,9 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.completeOrder(address, order);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem) throws RemoteException
+  @Override public void removeItemFromOrder(String address, Item item) throws RemoteException
   {
-    model.removeItemFromOrder(address, item,quantityOfItem);
+    model.removeItemFromOrder(address, item);
   }
 
   @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
@@ -160,4 +160,9 @@ public class Server implements RemoteModel, PropertyChangeListener
     return property.removeListener(listener,propertyNames);
   }
 
+  //not needed
+  @Override public int getQuantityOfItemsInBag() throws RemoteException
+  {
+    return 0;
+  }
 }

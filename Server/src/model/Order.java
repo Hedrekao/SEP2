@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class Order implements Serializable
 {
+  private boolean completed;
   private HashMap<Item, Integer> items;
   private LocalTime localTime;
   private Date date;
@@ -26,6 +27,7 @@ public class Order implements Serializable
   public Order()
   {
     items = new HashMap<>();
+    completed = false;
     date = new Date();
     localTime = LocalTime.now();
   }
@@ -33,16 +35,6 @@ public class Order implements Serializable
   public HashMap<Item, Integer> getItems()
   {
     return items;
-  }
-
-  public void setShopAddress(String shopAddress)
-  {
-    this.shopAddress = shopAddress;
-  }
-
-  public String getShopAddress()
-  {
-    return shopAddress;
   }
 
   public void addItem(Item item)
@@ -120,10 +112,9 @@ public class Order implements Serializable
     return addressLinePrimary;
   }
 
-  public void addItem(Item item, int quantity)
+  public void removeItem(Item item)
   {
-
-      items.put(item, quantity);
+    items.remove(item);
   }
 
   public Date getDate()

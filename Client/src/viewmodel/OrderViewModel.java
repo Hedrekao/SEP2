@@ -1,63 +1,19 @@
 package viewmodel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.Item;
+import javafx.beans.property.DoubleProperty;
 import model.Model;
-import model.ModelUser;
-import model.Order;
 
-import java.util.Map;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class OrderViewModel
+public class OrderViewModel implements PropertyChangeListener
 {
-  private ModelUser model;
-  private ObservableList<OrderTableVM> orderItems;
-  private StringProperty orderTitle;
-  private OrderViewState orderViewState;
+    private Model model;
+    private DoubleProperty
 
-  public OrderViewModel(Model model, OrderViewState orderViewState)
-  {
-    this.model = model;
-    this.orderViewState = orderViewState;
-    this.orderItems = FXCollections.observableArrayList();
-    orderTitle = new SimpleStringProperty("Order summary");
-  }
-
-
-    public void update()
-    {
-        Order order = orderViewState.getOrder();
-
-        orderItems.clear();
-        for (Map.Entry<Item, Integer> entry : order.getItems().entrySet())
-        {
-            int orderQuantity = entry.getValue();
-            add(entry.getKey(), orderQuantity);
-        }
-    }
-
-    public void add(Item item, int quantity)
-    {
-            orderItems.add(new OrderTableVM(item, quantity));
-
-    }
-
-    public void clear()
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
     {
 
-        update();
-    }
-
-    public ObservableList<OrderTableVM> getOrderItems()
-    {
-        return orderItems;
-    }
-
-    public StringProperty getOrderTitle()
-    {
-        return orderTitle;
     }
 }
