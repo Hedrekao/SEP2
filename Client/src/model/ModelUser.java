@@ -9,7 +9,7 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
 {
   ArrayList<Product> getAllProducts(String address);
   ArrayList<Product> getProductsByCategory(String address, ArrayList<String> categories);
-
+  Order getOrder();
   Product getProduct(String address, int productNumber);
   ArrayList<Item> getItemsByProduct(String address, Product product);
   double getLowestPriceOfProduct(String address, Product product);
@@ -18,9 +18,11 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
   int getQuantityOfItemsInBag();
   ArrayList<Shop> getAllShops();
 
-  void completeOrder(String address, Order order);
+  void completeOrder(String address);
   void addItemToOrder(String address, Item item);
-  void removeItemFromOrder(String address, Item item,int quantityOfItem);
+  void removeItemFromOrder(String address, Item item);
 
-
+  void setDelivery(String pickUpTime);
+  void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode);
+  void setPayment(String cardName, long cardNumber, int expirationMonth, int expirationYear, int securityCode);
 }

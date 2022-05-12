@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client implements RemoteListener<Item, String>, ModelEmployee, ModelUser
+public class Client implements RemoteListener<Item, String>, Model
 {
     private RemoteModel server;
     private PropertyChangeSupport property;
@@ -35,11 +35,11 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
 
 
 
-   @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
+   @Override public void removeItemFromOrder(String address, Item item)
     {
       try
       {
-        server.removeItemFromOrder(address, item, quantityOfItem);
+        server.removeItemFromOrder(address, item);
       }
       catch (RemoteException e)
       {
@@ -118,7 +118,15 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
 
   @Override public int getQuantityOfItemsInBag()
   {
-    return -1;
+    try
+    {
+      return server.getQuantityOfItemsInBag();
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return 0;
+    }
   }
 
   @Override public ArrayList<Shop> getAllShops()
@@ -173,6 +181,10 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
     }
   }
 
+  @Override public Order getOrder()
+  {
+    return null;
+  }
 
   public void completeOrder(String address, Order order)
     {
@@ -257,8 +269,29 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
     server.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
   }
 
+  //not needed
+  @Override public void setDelivery(String pickUpTime)
+  {
 
+  }
 
+  @Override public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode)
+  {
+
+  }
+
+  @Override public void setPayment(String cardName, long cardNumber,
+      int expirationMonth, int expirationYear, int securityCode)
+  {
+
+  }
+
+  //not needed
+  @Override public void completeOrder(String address)
+  {
+
+  }
 }
 
 

@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.ClientUserModel;
 import model.Item;
 import model.ModelUser;
 
@@ -15,10 +14,10 @@ public class BagViewModel
     private StringProperty errorProperty;
     private StringProperty priceProperty;
     private ObservableList<ItemsTableVM> items;
-    private ClientUserModel model;
+    private ModelUser model;
     private ShopViewState shopViewState;
 
-    public BagViewModel(ClientUserModel model, ShopViewState shopViewState)
+    public BagViewModel(ModelUser model, ShopViewState shopViewState)
     {
         this.model = model;
         errorProperty = new SimpleStringProperty();
@@ -60,6 +59,11 @@ public class BagViewModel
         update();
     }
 
+    public void checkout()
+    {
+        //call method taking two arguments I beg
+        model.completeOrder(shopViewState.getShopAddress());
+    }
 
     public StringProperty getErrorProperty()
     {

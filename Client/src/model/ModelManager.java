@@ -6,7 +6,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
@@ -39,34 +38,23 @@ public class ModelManager implements Model, PropertyChangeListener
     return order;
   }
 
-  @Override public void clearBag()
+  @Override public void completeOrder(String address)
   {
-    for(Map.Entry<Item, Integer> entry : order.getItems().entrySet())
-    {
-      client.removeItemFromOrder(order.getShopAddress(), entry.getKey(), entry.getValue());
-    }
-  }
-
-  @Override public void completeOrder(String address, Order order)
-  {
+    //might be this.order instead of passed variable
     client.completeOrder(address, order);
-    this.order = new Order();
+    order = new Order();
   }
 
   @Override public void addItemToOrder(String address,Item item)
   {
-    if (order.getItems().size() == 0)
-    {
-      order.setShopAddress(address);
-    }
     order.addItem(item);
     client.addItemToOrder(address,item);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item, int quantityOfItem)
+  @Override public void removeItemFromOrder(String address, Item item)
   {
     order.removeItem(item);
-    client.removeItemFromOrder(address, item,quantityOfItem);
+    client.removeItemFromOrder(address, item);
   }
 
   @Override public void setDelivery(String pickUpTime)
@@ -75,9 +63,9 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode, String email)
+      String addressLineSecondary, String city, int postalCode)
   {
-    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode, email);
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode);
   }
 
   @Override public void setPayment(String cardName, long cardNumber,
@@ -113,7 +101,7 @@ public class ModelManager implements Model, PropertyChangeListener
 
   @Override public int getQuantityOfItemsInBag()
   {
-    return order.getQuantityOfItemsInOrder();
+    return client.getQuantityOfItemsInBag();
   }
 
   @Override public ArrayList<Shop> getAllShops()

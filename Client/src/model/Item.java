@@ -78,9 +78,4 @@ public class Item implements Serializable
     Item other = (Item) obj;
     return this.expirationDate.equals(other.expirationDate) && product.equals(other.product);
   }
-
-  @Override public int hashCode()
-  {
-    return product.getProductID() + expirationDate.toString().hashCode();
-  }
 }
