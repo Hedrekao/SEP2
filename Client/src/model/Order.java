@@ -9,7 +9,6 @@ import java.time.LocalTime;
 
 public class Order implements Serializable
 {
-  private boolean completed;
   private HashMap<Item, Integer> items;
   private LocalTime localTime;
   private Date date;
@@ -25,11 +24,12 @@ public class Order implements Serializable
   private int expirationMonth;
   private int expirationYear;
   private int securityCode;
+  private String email;
+  private String shopAddress;
 
   public Order()
   {
     items = new HashMap<>();
-    completed = false;
     date = new Date();
     localTime = LocalTime.now();
   }
@@ -37,6 +37,16 @@ public class Order implements Serializable
   public HashMap<Item, Integer> getItems()
   {
     return items;
+  }
+
+  public void setShopAddress(String shopAddress)
+  {
+    this.shopAddress = shopAddress;
+  }
+
+  public String getShopAddress()
+  {
+    return shopAddress;
   }
 
   public void addItem(Item item)
@@ -51,9 +61,15 @@ public class Order implements Serializable
     }
   }
 
-  public void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode)
+  public void addItem(Item item, int quantity)
   {
-    if(addressLinePrimary == null || city == null || postalCode < 1)
+
+      items.put(item, quantity);
+  }
+
+  public void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode, String email)
+  {
+    if(addressLinePrimary == null || city == null || postalCode < 1 || !email.contains("@"))
     {
       throw new IllegalArgumentException("Check input fields.");
     }
@@ -63,6 +79,7 @@ public class Order implements Serializable
       this.addressLineSecondary = addressLineSecondary;
       this.city = city;
       this.postalCode = postalCode;
+      this.email = email;
     }
   }
 
@@ -94,11 +111,9 @@ public class Order implements Serializable
     }
   }
 
-
-
-  public void removeItem(Item item)
+  public int getPostalCode()
   {
-    items.remove(item);
+    return postalCode;
   }
 
   public Date getDate()
@@ -123,6 +138,6 @@ public class Order implements Serializable
       return false;
     }
     Order other = (Order) obj;
-    return this.completed == other.completed && this.items.equals(other.items) && this.date.equals(other.date);
+    return this.items.equals(other.items) && this.date.equals(other.date);
   }
 }

@@ -1,5 +1,6 @@
 package viewmodel;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -71,7 +72,8 @@ public class ShopsViewModel implements PropertyChangeListener
   {
     if (evt.getPropertyName().equals("StockUpdate"))
     {
-      update();
+      Platform.runLater(this::update);
+
     }
   }
 }

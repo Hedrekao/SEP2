@@ -60,6 +60,35 @@ public class ViewHandler extends ViewCreator
                 viewController = getViewController("ShopsView");
                 root = viewController.getRoot();
                 break;
+            case "Delivery":
+                viewController = getViewController("DeliveryView");
+                root = viewController.getRoot();
+                break;
+            case "Pickup":
+                viewController = getViewController("PickUpView");
+                root = viewController.getRoot();
+                break;
+            case "Payment":
+                viewController = getViewController("PaymentView");
+                root = viewController.getRoot();
+                break;
+            case "Order":
+                viewController = getViewController("OrderView");
+                root = viewController.getRoot();
+                break;
+            case "Address":
+                viewController = getViewController("AddressView");
+                root = viewController.getRoot();
+                break;
+            case "EmployeeViewOrderList":
+                viewController = getViewController("OrderListView");
+                root = viewController.getRoot();
+                break;
+            case "EmployeeOrderOverview":
+                viewController = getViewController("EmployeeOrderView");
+                root = viewController.getRoot();
+                break;  
+                
         }
         currentScene.setRoot(root);
 

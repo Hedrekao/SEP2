@@ -6,7 +6,6 @@ public class ShopList
 {
   private ArrayList<Shop> list;
 
-
   public ShopList()
   {
     this.list = new ArrayList<>();
@@ -82,5 +81,4 @@ public class ShopList
   {
     getShop(address).addItem(item);
   }
-
 }
