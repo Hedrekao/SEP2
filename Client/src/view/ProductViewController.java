@@ -103,6 +103,11 @@ public class ProductViewController extends ViewController
         getViewHandler().openView("Login");
     }
 
+    @FXML private void backButton() throws IOException
+    {
+        getViewHandler().openView("Shop");
+    }
+
 
 
 }

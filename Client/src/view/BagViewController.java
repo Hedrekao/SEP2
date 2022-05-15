@@ -37,9 +37,9 @@ public class BagViewController extends ViewController
 
     }
 
-    @FXML private void goToCheckOut()
+    @FXML private void goToCheckOut() throws IOException
     {
-        bagViewModel.checkout();
+        getViewHandler().openView("Delivery");
     }
 
     public void reset()
@@ -50,7 +50,7 @@ public class BagViewController extends ViewController
 
     @FXML private void goBackButton() throws IOException
     {
-        getViewHandler().openView("Product");
+        getViewHandler().openView("Shop");
     }
 
 

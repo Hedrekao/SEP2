@@ -3,7 +3,6 @@ package viewmodel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.DatePicker;
 import model.Category;
 import model.Date;
 import model.Model;
@@ -22,10 +21,12 @@ public class AddProductViewModel
     private StringProperty errorLabel;
     private ObservableList<String> pickedCategory;
     private ModelEmployee modelEmployee;
+    private UserViewState userViewState;
 
-    public AddProductViewModel(Model model)
+    public AddProductViewModel(Model model, UserViewState userViewState)
     {
         this.modelEmployee = model;
+        this.userViewState = userViewState;
         productName = new SimpleStringProperty();
         productNumber = new SimpleLongProperty();
         price = new SimpleDoubleProperty();
@@ -69,7 +70,9 @@ public class AddProductViewModel
         }
         try
         {
-            modelEmployee.addItem(productName.get(), (int) productNumber.get(), price.get(),date, quantity.get(),  categories);
+            modelEmployee.addItem(userViewState.getShopAddress(), productName.get(),
+                (int) productNumber.get(), price.get(), date, quantity.get(),
+                categories);
             clear();
         }
         catch (Exception e)

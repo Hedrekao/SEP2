@@ -6,6 +6,7 @@ public class User implements Serializable
 {
   private String username;
   private int hashPassword;
+  private String shopAddress; // not sure about this one
 
   public User(String username, String password)
   {
@@ -15,11 +16,23 @@ public class User implements Serializable
     }
     this.username = username;
     this.hashPassword = hash(password);
+    shopAddress = null;
   }
   public User(String username, int hashValue)
   {
     this.username = username;
     this.hashPassword = hashValue;
+    shopAddress = null;
+  }
+
+  public String getShopAddress()
+  {
+    return shopAddress;
+  }
+
+  public void setShopAddress(String shopAddress)
+  {
+    this.shopAddress = shopAddress;
   }
 
   public String getUsername()

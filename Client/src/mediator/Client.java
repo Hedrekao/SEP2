@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client implements RemoteListener<Item, String>, Model
+public class Client implements RemoteListener<Item, String>, ModelEmployee, ModelUser
 {
     private RemoteModel server;
     private PropertyChangeSupport property;
@@ -28,7 +28,6 @@ public class Client implements RemoteListener<Item, String>, Model
         System.out.println("xd");
         e.printStackTrace();
       }
-
       UnicastRemoteObject.exportObject(this, 0);
       server.addListener(this);
       property = new PropertyChangeSupport(this);
@@ -36,11 +35,11 @@ public class Client implements RemoteListener<Item, String>, Model
 
 
 
-    public void removeItemFromOrder(Item item)
+   @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
     {
       try
       {
-        server.removeItemFromOrder(item);
+        server.removeItemFromOrder(address, item, quantityOfItem);
       }
       catch (RemoteException e)
       {
@@ -48,24 +47,11 @@ public class Client implements RemoteListener<Item, String>, Model
       }
     }
 
-    @Override public Product getProduct(int productNumber)
-    {
-      try
-      {
-        return server.getProduct(productNumber);
-      }
-      catch (RemoteException e)
-      {
-        e.printStackTrace();
-        return null;
-      }
-    }
-
-  @Override public ArrayList<Item> getItemsByProduct(Product product)
+  @Override public Product getProduct(String address, int productNumber)
   {
     try
     {
-      return server.getItemsByProduct(product);
+      return server.getProduct(address, productNumber);
     }
     catch (RemoteException e)
     {
@@ -74,37 +60,12 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-  @Override public double getLowestPriceOfProduct(Product product)
+  @Override public ArrayList<Item> getItemsByProduct(String address,
+      Product product)
   {
     try
     {
-      return server.getLowestPriceOfProduct(product);
-    }
-    catch (RemoteException e)
-    {
-      e.printStackTrace();
-      return -1;
-    }
-  }
-
-  @Override public int getQuantityOfCertainProduct(Product product)
-  {
-    try
-    {
-      return server.getQuantityOfCertainProduct(product);
-    }
-    catch (RemoteException e)
-    {
-      e.printStackTrace();
-      return -1;
-    }
-  }
-
-  @Override public Item getSpecificItem(Date expirationDate, int productId)
-  {
-    try
-    {
-      return server.getSpecificItem(expirationDate,productId);
+      return server.getItemsByProduct(address, product);
     }
     catch (RemoteException e)
     {
@@ -113,11 +74,40 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-  @Override public Order getCurrentOrder()
+  @Override public double getLowestPriceOfProduct(String address,
+      Product product)
   {
     try
     {
-      return server.getCurrentOrder();
+      return server.getLowestPriceOfProduct(address, product);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return 0;
+    }
+  }
+
+  @Override public int getQuantityOfCertainProduct(String address,
+      Product product)
+  {
+    try
+    {
+      return server.getQuantityOfCertainProduct(address, product);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return 0;
+    }
+  }
+
+  @Override public Item getSpecificItem(String address, Date expirationDate,
+      int productId)
+  {
+    try
+    {
+      return server.getSpecificItem(address, expirationDate, productId);
     }
     catch (RemoteException e)
     {
@@ -128,48 +118,27 @@ public class Client implements RemoteListener<Item, String>, Model
 
   @Override public int getQuantityOfItemsInBag()
   {
+    return -1;
+  }
+
+  @Override public ArrayList<Shop> getAllShops()
+  {
     try
     {
-      return server.getQuantityOfItemsInBag();
+      return server.getAllShops();
     }
     catch (RemoteException e)
     {
       e.printStackTrace();
-      return 0;
+      return null;
     }
   }
 
-  public ArrayList<Product> getAllProducts()
+  public void addItemToOrder(String address, Item item)
     {
       try
       {
-        return server.getAllProducts();
-      }
-      catch (RemoteException e)
-      {
-        e.printStackTrace();
-        return null;
-      }
-    }
-
-    public ArrayList<Product> getProductsByCategory(ArrayList<String> categories)
-    {
-      try
-      {
-        return server.getProductsByCategory(categories);
-      }
-      catch (RemoteException e)
-      {
-        e.printStackTrace();
-        return null;
-      }
-    }
-
-    public void addItemToOrder(Item item)
-    {
-      try
-      {
-        server.addItemToOrder(item);
+        server.addItemToOrder(address,item);
       }
       catch (RemoteException e)
       {
@@ -177,11 +146,39 @@ public class Client implements RemoteListener<Item, String>, Model
       }
     }
 
-    public void completeOrder(Order order)
+  @Override public ArrayList<Product> getAllProducts(String address)
+  {
+    try
+    {
+      return server.getAllProducts(address);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override public ArrayList<Product> getProductsByCategory(String address,
+      ArrayList<String> categories)
+  {
+    try
+    {
+      return server.getProductsByCategory(address, categories);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+
+  public void completeOrder(String address, Order order)
     {
       try
       {
-        server.completeOrder(order);
+        server.completeOrder(address, order);
       }
       catch (RemoteException e)
       {
@@ -230,18 +227,62 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-  @Override public void addItem(String productName, int productID, double price,
+  @Override public void addItem(String address, String productName, int productID, double price,
       Date expirationDate, int quantity, ArrayList<Category> categories)
   {
     try
     {
-      server.addItem(productName, productID, price, expirationDate, quantity, categories);
+      server.addItem(address, productName, productID, price, expirationDate, quantity, categories);
     }
     catch (RemoteException e)
     {
       e.printStackTrace();
     }
   }
+
+
+  @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    try
+    {
+      return server.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    try
+    {
+      return server.getOrderList(shopAddress);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    try
+    {
+      server.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+
+
 
 }
 

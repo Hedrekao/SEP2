@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public interface ModelUser extends UnnamedPropertyChangeSubject
 {
-   ArrayList<Product> getAllProducts();
-   ArrayList<Product> getProductsByCategory(ArrayList<String> categories);
-   void completeOrder(Order order);
-   void addItemToOrder(Item item);
-   void removeItemFromOrder(Item item);
-   Product getProduct(int productNumber);
-   ArrayList<Item> getItemsByProduct(Product product);
-   double getLowestPriceOfProduct(Product product);
-   int getQuantityOfCertainProduct(Product product);
-   Item getSpecificItem(Date expirationDate, int productId);
-   Order getCurrentOrder();
-   int getQuantityOfItemsInBag();
+   ArrayList<Product> getAllProducts(String address);
+   ArrayList<Product> getProductsByCategory(String address,
+       ArrayList<String> categories);
+   void completeOrder(String address, Order order);
+   void addItemToOrder(String address, Item item);
+   void removeItemFromOrder(String address, Item item,int quantityOfItem);
+   Product getProduct(String address, int productNumber);
+   ArrayList<Item> getItemsByProduct(String address, Product product);
+   double getLowestPriceOfProduct(String address, Product product);
+   int getQuantityOfCertainProduct(String address, Product product);
+   Item getSpecificItem(String address, Date expirationDate, int productId);
+   ArrayList<Shop> getAllShops();
 
 }

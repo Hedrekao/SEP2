@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 public class ModelManager implements Model
 {
-  private ProductList productList;
-  private ArrayList<Order> orderList;
   private PropertyChangeSupport property;
-  private ItemList itemList;
+  private ShopList shopList;
   private ModelPersistence modelPersistence;
   private UserList userList;
 
@@ -16,119 +14,84 @@ public class ModelManager implements Model
   {
     this.modelPersistence = new ModelDatabase(this);
 
-    this.productList = modelPersistence.loadProducts();
-    this.itemList = modelPersistence.loadItems();
+    this.shopList = modelPersistence.loadShops();
+
+    for (Shop shop : getAllShops())
+    {
+      shop.setOrderList(modelPersistence.loadOrdersFromShop(shop.getAddress()));
+
+    }
 
     userList = modelPersistence.loadUsers();
-    orderList = new ArrayList<>();
-    orderList.add(new Order());
     property = new PropertyChangeSupport(this);
   }
 
-  @Override public ArrayList<Product> getAllProducts()
+  @Override public ArrayList<Product> getAllProducts(String address)
   {
-    return productList.getAllProducts();
+    return shopList.getAllProducts(address);
   }
 
-  @Override public ArrayList<Product> getProductsByCategory(
+  @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {
-    return null;
+    return shopList.getProductsByCategory(address,categories);
   }
 
-  @Override public void completeOrder(Order order)
+  @Override public void completeOrder(String address, Order order)
   {
-
-    orderList.get(orderList.size() - 1).completeOrder();
-    modelPersistence.save(order);
-    orderList.add(new Order());
+    shopList.getShop(address).addOrder(order);
+    modelPersistence.save(address, order);
   }
 
-  @Override public void addItemToOrder(Item item)
+  @Override public void addItemToOrder(String address, Item item)
   {
-    Item item1 = getSpecificItem(item.getExpirationDate(), item.getProduct().getProductID());
+    Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
     item1.setQuantity(item1.getQuantity() - 1);
-    orderList.get(orderList.size() - 1).addItem(item1);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
-  @Override public void removeItemFromOrder(Item item)
+  @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
   {
-    orderList.get(orderList.size() - 1).removeItem(item);
+
+    Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
+    item1.setQuantity(item1.getQuantity() + quantityOfItem);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
-  @Override public Product getProduct(int productNumber)
+  @Override public Product getProduct(String address, int productNumber)
   {
-    return productList.getProduct(productNumber);
+    return shopList.getProduct(address, productNumber);
   }
 
-  @Override public ArrayList<Item> getItemsByProduct(Product product)
+  @Override public ArrayList<Item> getItemsByProduct(String address,
+      Product product)
   {
-    return itemList.getItems(product);
+    return shopList.getItemsByProduct(address, product);
   }
 
-  @Override public double getLowestPriceOfProduct(Product product)
+  @Override public double getLowestPriceOfProduct(String address,
+      Product product)
   {
-    ArrayList<Item> items = itemList.getItems(product);
-    double lowestSum;
-    if (items.size() != 0)
-    {
-      lowestSum = items.get(0).getCurrentPrice();
-
-      for (int i = 0; i < items.size(); i++)
-      {
-        if (items.get(i).getCurrentPrice() < lowestSum)
-        {
-          lowestSum = items.get(i).getCurrentPrice();
-        }
-      }
-    }
-    else
-    {
-      lowestSum = 0;
-    }
-
-
-    return lowestSum;
+    return shopList.getLowestPriceOfProduct(address, product);
   }
 
-  @Override public int getQuantityOfCertainProduct(Product product)
+  @Override public int getQuantityOfCertainProduct(String address,
+      Product product)
   {
-    int sum = 0;
-    ArrayList<Item> items = itemList.getItems(product);
-    for (int i = 0; i < items.size(); i++)
-    {
-      sum += items.get(i).getQuantity();
-    }
-    return sum;
+    return shopList.getQuantityOfCertainProduct(address, product);
   }
 
-  @Override public Item getSpecificItem(Date expirationDate, int productId)
+  @Override public Item getSpecificItem(String address, Date expirationDate,
+      int productId)
   {
-    ArrayList<Item> items = itemList.getItems(getProduct(productId));
-    for (Item item : items)
-    {
-      if (item.getExpirationDate().equals(expirationDate))
-      {
-        return item;
-      }
-    }
-    return null;
+    return shopList.getSpecificItem(address, expirationDate, productId);
   }
 
-  @Override public Order getCurrentOrder()
+  @Override public ArrayList<Shop> getAllShops()
   {
-    return orderList.get(orderList.size() - 1);
-  }
-
-  @Override public int getQuantityOfItemsInBag()
-  {
-    Order order = getCurrentOrder();
-    int sum = 0;
-    for (int quantity : order.getItems().values())
-    {
-      sum += quantity;
-    }
-    return sum;
+    return shopList.getShops();
   }
 
   @Override public void addListener(PropertyChangeListener listener)
@@ -151,39 +114,37 @@ public class ModelManager implements Model
     return userList.getUser(username, password);
   }
 
-  @Override public void addItem(String productName, int productID, double price,
-      Date expirationDate, int quantity, ArrayList<Category> categories)
+  @Override public void addItem(String address, String productName,
+      int productID, double price, Date expirationDate, int quantity,
+      ArrayList<Category> categories)
   {
-
     if (expirationDate.isBefore(new Date()))
     {
       throw new IllegalArgumentException("Expiration date cannot be before today's date");
     }
-
-    Product searchedProduct = getProduct(productID);
+    Product searchedProduct = getProduct(address,productID);
 
     if(searchedProduct == null)
     {
       Product product = new Product(productName, productID, categories);
       modelPersistence.save(product);
-      productList.addProduct(product);
       Item item = new Item(product, price, expirationDate, quantity);
       modelPersistence.save(item);
-      itemList.addItem(item);
+      shopList.addItem(address,item,product);
     }
     else
     {
       if (!searchedProduct.getProductName().equals(productName) ||
-      !searchedProduct.getCategories().containsAll(categories))
+          !searchedProduct.getCategories().containsAll(categories))
       {
         throw new IllegalStateException("There already exists product with such product id");
       }
-      Item searchedItem = getSpecificItem(expirationDate, productID);
+      Item searchedItem = getSpecificItem(address,expirationDate, productID);
       if (searchedItem == null)
       {
-        Item item = new Item(getProduct(productID), price, expirationDate, quantity);
+        Item item = new Item(getProduct(address,productID), price, expirationDate, quantity);
         modelPersistence.save(item);
-        itemList.addItem(item);
+        shopList.addItem(address,item);
       }
       else
       {
@@ -194,6 +155,26 @@ public class ModelManager implements Model
     }
 
     property.firePropertyChange("StockUpdate", null, 1);
+
   }
 
+  @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String deliveryOptions)
+  {
+    return shopList.getShop(shopAddress).getOrder(day,month,year,hour,minute,second,deliveryOptions);
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String deliveryOptions)
+  {
+
+    shopList.getShop(shopAddress).removeOrder(day,month,year,hour,minute,second,deliveryOptions);
+    modelPersistence.updateCompletedOrder(getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions));
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return shopList.getShop(shopAddress).getOrderList();
+
+  }
 }

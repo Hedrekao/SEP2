@@ -6,79 +6,119 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
 
   private PropertyChangeSupport property;
   private Client client;
+  private Order order;
 
   public ModelManager() throws ClassNotFoundException, IOException
   {
     client = new Client();
     property = new PropertyChangeSupport(this);
     client.addListener(this);
+    order = new Order();
   }
 
-  @Override public ArrayList<Product> getAllProducts()
+  @Override public ArrayList<Product> getAllProducts(String address)
   {
-    return client.getAllProducts();
+    return client.getAllProducts(address);
   }
 
-  @Override public ArrayList<Product> getProductsByCategory(
+  @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {
-    return client.getProductsByCategory(categories);
+    return client.getProductsByCategory(address, categories);
   }
 
-  @Override public void completeOrder(Order order)
+  @Override public Order getOrder()
   {
-    client.completeOrder(order);
+    return order;
   }
 
-  @Override public void addItemToOrder(Item item)
+  @Override public void clearBag()
   {
-    client.addItemToOrder(item);
+    for(Map.Entry<Item, Integer> entry : order.getItems().entrySet())
+    {
+      client.removeItemFromOrder(order.getShopAddress(), entry.getKey(), entry.getValue());
+    }
   }
 
-  @Override public void removeItemFromOrder(Item item)
+  @Override public void completeOrder(String address, Order order)
   {
-    client.removeItemFromOrder(item);
+    client.completeOrder(address, order);
+    this.order = new Order();
   }
 
-  @Override public Product getProduct(int productNumber)
+  @Override public void addItemToOrder(String address,Item item)
   {
-    return client.getProduct(productNumber);
+    if (order.getItems().size() == 0)
+    {
+      order.setShopAddress(address);
+    }
+    order.addItem(item);
+    client.addItemToOrder(address,item);
   }
 
-  @Override public ArrayList<Item> getItemsByProduct(Product product)
+  @Override public void removeItemFromOrder(String address, Item item, int quantityOfItem)
   {
-    return client.getItemsByProduct(product);
+    order.removeItem(item);
+    client.removeItemFromOrder(address, item,quantityOfItem);
   }
 
-  @Override public double getLowestPriceOfProduct(Product product)
+  @Override public void setDelivery(String pickUpTime)
   {
-    return client.getLowestPriceOfProduct(product);
+    order.setDelivery(pickUpTime);
   }
 
-  @Override public int getQuantityOfCertainProduct(Product product)
+  @Override public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode, String email)
   {
-    return client.getQuantityOfCertainProduct(product);
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode, email);
   }
 
-  @Override public Item getSpecificItem(Date expirationDate, int productId)
+  @Override public void setPayment(String cardName, long cardNumber,
+      int expirationMonth, int expirationYear, int securityCode)
   {
-    return client.getSpecificItem(expirationDate, productId);
+    order.setPayment(cardName, cardNumber, expirationMonth, expirationYear, securityCode);
   }
 
-  @Override public Order getCurrentOrder()
+  @Override public Product getProduct(String address, int productNumber)
   {
-    return client.getCurrentOrder();
+    return client.getProduct(address, productNumber);
+  }
+
+  @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
+  {
+    return client.getItemsByProduct(address, product);
+  }
+
+  @Override public double getLowestPriceOfProduct(String address, Product product)
+  {
+    return client.getLowestPriceOfProduct(address, product);
+  }
+
+  @Override public int getQuantityOfCertainProduct(String address, Product product)
+  {
+    return client.getQuantityOfCertainProduct(address, product);
+  }
+
+  @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
+  {
+    return client.getSpecificItem(address, expirationDate, productId);
   }
 
   @Override public int getQuantityOfItemsInBag()
   {
-    return client.getQuantityOfItemsInBag();
+    return order.getQuantityOfItemsInOrder();
+  }
+
+  @Override public ArrayList<Shop> getAllShops()
+  {
+    return client.getAllShops();
   }
 
   @Override public void addListener(PropertyChangeListener listener)
@@ -101,14 +141,32 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getUser(username,password);
   }
 
-  @Override public void addItem(String productName, int productID, double price,
+  @Override public void addItem(String address, String productName, int productID, double price,
       Date expirationDate, int quantity, ArrayList<Category> categories)
   {
-    client.addItem(productName, productID, price, expirationDate, quantity, categories);
+    client.addItem(address, productName, productID, price, expirationDate, quantity,
+        categories);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+  }
+
+  @Override public Order getOrder(String shopAddress ,int day, int month, int year, int hour,
+      int minute, int second, String deliveryOptions)
+  {
+    return client.getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+    return client.getOrderList(shopAddress);
+  }
+
+  @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
+      int minute, int second, String deliveryOptions)
+  {
+    client.removeOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
   }
 }

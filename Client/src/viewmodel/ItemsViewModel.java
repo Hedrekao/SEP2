@@ -1,30 +1,30 @@
 package viewmodel;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Date;
-import model.Item;
-import model.ModelUser;
-import model.Product;
+import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class ItemsViewModel implements PropertyChangeListener
 {
-    private ModelUser model;
+    private ClientUserModel model;
     private StringProperty errorProperty;
     private StringProperty productIdProperty;
     private StringProperty productNameProperty;
     private ObservableList<ItemsTableVM> items;
     private StringProperty bagCounter;
     private ItemViewState itemViewState;
+    private ShopViewState shopViewState;
 
-    public ItemsViewModel(ModelUser model, ItemViewState itemViewState)
+    public ItemsViewModel(ClientUserModel model, ItemViewState itemViewState, ShopViewState shopViewState)
     {
         this.model = model;
+        this.shopViewState = shopViewState;
         this.itemViewState = itemViewState;
         errorProperty = new SimpleStringProperty();
         items = FXCollections.observableArrayList();
@@ -51,12 +51,16 @@ public class ItemsViewModel implements PropertyChangeListener
 
     public void update(Product product)
     {
-        items.clear();
-        for (Item item : model.getItemsByProduct(product))
+        if (shopViewState.getShopAddress() != null)
         {
-            add(item);
+            items.clear();
+            for (Item item : model.getItemsByProduct(shopViewState.getShopAddress(),product))
+            {
+                add(item);
+            }
         }
-    }
+        }
+
 
     public void add(Item item)
     {
@@ -76,10 +80,13 @@ public class ItemsViewModel implements PropertyChangeListener
 
     public boolean addToBag(ItemsTableVM selectedItem)
     {
-        Item item = model.getSpecificItem(new Date(selectedItem.getDateProperty().get()), itemViewState.getProduct().getProductID());
-        model.addItemToOrder(item);
-        update(itemViewState.getProduct());
-        bagCounter.set("Bag ("+model.getQuantityOfItemsInBag()+")");
+        Item item = model.getSpecificItem(shopViewState.getShopAddress(),new Date(selectedItem.getDateProperty().get()), itemViewState.getProduct().getProductID());
+        if (model.getOrder().getShopAddress() == null || model.getOrder().getShopAddress().equals(shopViewState.getShopAddress()))
+        {
+            model.addItemToOrder(shopViewState.getShopAddress(), item);
+            bagCounter.set("Bag ("+model.getQuantityOfItemsInBag()+")");
+        }
+
 
         return (item.getQuantity() - 1) == 0;
     }
@@ -103,7 +110,10 @@ public class ItemsViewModel implements PropertyChangeListener
     {
         if (evt.getPropertyName().equals("StockUpdate"))
         {
-            update(itemViewState.getProduct());
+            Platform.runLater(() -> {
+                update(itemViewState.getProduct());
+            });
+
         }
     }
 }

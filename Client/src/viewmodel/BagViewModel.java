@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.ClientUserModel;
 import model.Item;
 import model.ModelUser;
 
@@ -14,14 +15,16 @@ public class BagViewModel
     private StringProperty errorProperty;
     private StringProperty priceProperty;
     private ObservableList<ItemsTableVM> items;
-    private ModelUser model;
+    private ClientUserModel model;
+    private ShopViewState shopViewState;
 
-    public BagViewModel(ModelUser model)
+    public BagViewModel(ClientUserModel model, ShopViewState shopViewState)
     {
         this.model = model;
         errorProperty = new SimpleStringProperty();
         priceProperty = new SimpleStringProperty();
         items = FXCollections.observableArrayList();
+        this.shopViewState = shopViewState;
 
 
         update();
@@ -31,7 +34,7 @@ public class BagViewModel
     {
         items.clear();
 
-            for (Map.Entry<Item, Integer> entry : model.getCurrentOrder().getItems().entrySet())
+            for (Map.Entry<Item, Integer> entry : model.getOrder().getItems().entrySet())
             {
                 int orderQuantity = entry.getValue();
                 add(entry.getKey(), orderQuantity);
@@ -53,14 +56,10 @@ public class BagViewModel
     public void clear()
     {
         errorProperty.set("");
-        priceProperty.set("Total price: " + model.getCurrentOrder().getTotalPrice() +"DKK");
+        priceProperty.set("Total price: " + model.getOrder().getTotalPrice() +"DKK");
         update();
     }
 
-    public void checkout()
-    {
-        model.completeOrder(model.getCurrentOrder());
-    }
 
     public StringProperty getErrorProperty()
     {
