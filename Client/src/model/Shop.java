@@ -18,11 +18,19 @@ public class Shop implements Serializable
    this.name = name;
    this.productList = productList;
    this.itemList = itemList;
+   this.orderList = new ArrayList<>();
+
+
   }
 
   public String getName()
   {
     return name;
+  }
+
+  public void setOrderList(ArrayList<Order> orderList)
+  {
+    this.orderList = orderList;
   }
 
   public String getAddress()
@@ -123,5 +131,44 @@ public class Shop implements Serializable
   public int getQuantityOfAllItemsInShop()
   {
     return itemList.getQuantityOfAllItems();
+  }
+
+  public void addOrder(Order order)
+  {
+    orderList.add(order);
+  }
+
+  public Order getOrder(int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    Date date = new Date();
+    date.set(day, month, year);
+    for(Order o : orderList)
+    {
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && o.getOrderDescription().equals(o.getOrderDescription()))
+      {
+        return o;
+      }
+    }
+    throw new IllegalArgumentException("Order does not exist.");
+  }
+
+  public void removeOrder(int day, int month, int year, int hour,
+      int minute, int second, String addressLinePrimary)
+  {
+    Date date = new Date();
+    date.set(day, month, year);
+    for(Order o : orderList)
+    {
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && o.getOrderDescription().equals(o.getOrderDescription()))
+      {
+        o.setCompleted(true);
+      }
+    }
+  }
+
+  public ArrayList<Order> getOrderList()
+  {
+    return orderList;
   }
 }

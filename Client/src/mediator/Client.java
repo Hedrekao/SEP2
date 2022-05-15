@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client implements RemoteListener<Item, String>, Model
+public class Client implements RemoteListener<Item, String>, ModelEmployee, ModelUser
 {
     private RemoteModel server;
     private PropertyChangeSupport property;
@@ -35,11 +35,11 @@ public class Client implements RemoteListener<Item, String>, Model
 
 
 
-   @Override public void removeItemFromOrder(String address, Item item)
+   @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
     {
       try
       {
-        server.removeItemFromOrder(address, item);
+        server.removeItemFromOrder(address, item, quantityOfItem);
       }
       catch (RemoteException e)
       {
@@ -118,15 +118,7 @@ public class Client implements RemoteListener<Item, String>, Model
 
   @Override public int getQuantityOfItemsInBag()
   {
-    try
-    {
-      return server.getQuantityOfItemsInBag();
-    }
-    catch (RemoteException e)
-    {
-      e.printStackTrace();
-      return 0;
-    }
+    return -1;
   }
 
   @Override public ArrayList<Shop> getAllShops()
@@ -181,10 +173,6 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
-  @Override public Order getOrder()
-  {
-    return null;
-  }
 
   public void completeOrder(String address, Order order)
     {
@@ -252,46 +240,50 @@ public class Client implements RemoteListener<Item, String>, Model
     }
   }
 
+
   @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
       int minute, int second, String addressLinePrimary)
   {
-    return server.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    try
+    {
+      return server.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override public ArrayList<Order> getOrderList(String shopAddress)
   {
-    return null;
+    try
+    {
+      return server.getOrderList(shopAddress);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
       int minute, int second, String addressLinePrimary)
   {
-    server.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    try
+    {
+      server.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+    }
   }
 
-  //not needed
-  @Override public void setDelivery(String pickUpTime)
-  {
 
-  }
 
-  @Override public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode)
-  {
 
-  }
-
-  @Override public void setPayment(String cardName, long cardNumber,
-      int expirationMonth, int expirationYear, int securityCode)
-  {
-
-  }
-
-  //not needed
-  @Override public void completeOrder(String address)
-  {
-
-  }
 }
 
 

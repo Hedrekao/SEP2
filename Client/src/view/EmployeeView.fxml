@@ -37,7 +37,7 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="410.0" layoutY="421.0" mnemonicParsing="false" text="Manage orders">
+      <Button layoutX="410.0" layoutY="421.0" mnemonicParsing="false" text="Manage orders" onAction="#manageOrdersButton">
          <font>
             <Font name="Arial" size="24.0" />
          </font>

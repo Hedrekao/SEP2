@@ -1,123 +1,85 @@
 package viewmodel;
 
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+
 import model.Item;
 import model.Model;
 import model.ModelEmployee;
-import model.Product;
+import model.Order;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.*;
+import java.util.Map;
 
-public class EmployeeOrderView implements PropertyChangeListener
+public class EmployeeOrderView
 {
-    private StringProperty address1;
-    private StringProperty address2;
-    private StringProperty city;
-    private StringProperty postalCode;
-    private StringProperty email;
-    private ObservableList<EmployeeOrderTableVM> employeeOrders;
-    private LongProperty orderNo;
-    private Model model;
-    private ModelEmployee modelEmployee;
 
-    public EmployeeOrderView(Model model, ModelEmployee modelEmployee)
-    {
-        this.address1 = new SimpleStringProperty();
-        this.address2 = new SimpleStringProperty();
-        this.city = new SimpleStringProperty();
-        this.postalCode = new SimpleStringProperty();
-        this.email = new SimpleStringProperty();
-        this.employeeOrders = FXCollections.observableArrayList();
-        this.orderNo = new SimpleLongProperty();
-        this.model = model;
-        this.modelEmployee = modelEmployee;
-        //Should i put sth into "()"??
-        clear();
-        update();
-    }
+  private StringProperty orderLabel;
+  private StringProperty orderDescription;
+  private ObservableList<EmployeeOrderTableVM> employeeOrders;
+  private ModelEmployee model;
+  private OrderViewState orderViewState;
 
-    public void remove(Product product)
-    {
-        for (int i = 0; i < employeeOrders.size(); i++)
-        {
-            if (employeeOrders.get(i).getProductName() == product.getProductName())
-            {
-                employeeOrders.remove(i);
-                break;
-            }
-        }
-    }
+  public EmployeeOrderView(Model model, OrderViewState orderViewState)
+  {
+    this.model = model;
+    this.orderViewState = orderViewState;
+    orderLabel = new SimpleStringProperty("Order summary");
+    orderDescription = new SimpleStringProperty();
+    employeeOrders = FXCollections.observableArrayList();
 
-    public void clear()
-    {
-        address1.set("");
-        address2.set("");
-        city.set("");
-        postalCode.set("");
-        email.set("");
-        orderNo.set(0);
-    }
+  }
 
-    public void update()
-    {
-        employeeOrders.clear();
-        for (Product product : model.getItemsByProduct(product))
-        {
-            add(item);
-        }
-        //sth like this tomaszenko dont be mad im trying
-    }
+  public void clear()
+  {
+    orderDescription.set(orderViewState.getOrder().getOrderDescription());
+    update();
+  }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
+  public void update()
+  {
+    employeeOrders.clear();
+    for (Map.Entry<Item, Integer> entry : orderViewState.getOrder().getItems()
+        .entrySet())
     {
-        //idk
+      add(entry.getKey(), entry.getValue());
     }
+  }
 
-    public void add(Product product)
-    {
-        employeeOrders.add(new EmployeeOrderTableVM(product));
-    }
+  public void add(Item item, int quantity)
+  {
+    employeeOrders.add(new EmployeeOrderTableVM(item, quantity));
+  }
 
-    public StringProperty getAddress1()
-    {
-        return address1;
-    }
+  public StringProperty getOrderDescription()
+  {
+    return orderDescription;
+  }
 
-    public StringProperty getAddress2()
-    {
-        return address2;
-    }
+  public StringProperty getOrderLabel()
+  {
+    return orderLabel;
+  }
 
-    public StringProperty getCity()
-    {
-        return city;
-    }
+  public ObservableList<EmployeeOrderTableVM> getEmployeeOrders()
+  {
+    return employeeOrders;
+  }
 
-    public StringProperty getPostalCode()
-    {
-        return postalCode;
-    }
+  public void completeOrder()
+  {
+    Order order = orderViewState.getOrder();
+    String[] dateString = order.getDate().toString().split("-");
 
-    public StringProperty getEmail()
-    {
-        return email;
-    }
+    int day = Integer.parseInt(dateString[2]);
+    int month = Integer.parseInt(dateString[1]);
+    int year = Integer.parseInt(dateString[0]);
 
-    public ObservableList<EmployeeOrderTableVM> getEmployeeOrders()
-    {
-        return employeeOrders;
-    }
+    model.removeOrder(order.getShopAddress(), day, month, year, order.getHour(),
+        order.getMinute(), order.getSecond(), order.getOrderDescription());
+  }
 
-    public LongProperty getOrderNo()
-    {
-        return orderNo;
-    }
 }

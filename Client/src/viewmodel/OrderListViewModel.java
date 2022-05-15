@@ -2,50 +2,86 @@ package viewmodel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Model;
-import model.Order;
-import model.Product;
+import model.*;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-public class OrderListViewModel implements PropertyChangeListener
-
+public class OrderListViewModel
 {
-    private ObservableList<OrderListTableVM> orders;
-    private Model model;
+  private ObservableList<OrderListTableVM> orders;
+  private ModelEmployee model;
+  private UserViewState userViewState;
+  private OrderViewState orderViewState;
 
-    public OrderListViewModel(Model model)
+  public OrderListViewModel(Model model, UserViewState userViewState, OrderViewState orderViewState)
+  {
+    this.model = model;
+    this.userViewState = userViewState;
+    this.orderViewState = orderViewState;
+    orders = FXCollections.observableArrayList();
+  }
+
+  public void remove(OrderListTableVM orderListTableVM)
+  {
+    String[] timeString = orderListTableVM.getTime().get().split(":");
+    String[] dateString = orderListTableVM.getDate().get().split("-");
+
+    int day = Integer.parseInt(dateString[2]);
+    int month = Integer.parseInt(dateString[1]);
+    int year = Integer.parseInt(dateString[0]);
+    int hour = Integer.parseInt(timeString[0]);
+    int minute = Integer.parseInt(timeString[1]);
+    int second = Integer.parseInt(timeString[2]);
+
+    model.removeOrder(userViewState.getShopAddress(), day,month,year,hour,minute,second, orderListTableVM.getDeliveryOptions().get());
+    update();
+  }
+
+  public void update()
+  {
+    orders.clear();
+    for (Order order : model.getOrderList(userViewState.getShopAddress()))
     {
-        this.model = model;
-        orders = FXCollections.observableArrayList();
+      if (!order.isCompleted())
+      {
+        add(order);
+      }
     }
+  }
 
-    public void remove(Order order)
-    {
-        for (int i = 0; i < orders.size(); i++)
-        {
-            if (orders.get(i).getId() == order.getProductID())
-            {
-                orders.remove(i);
-                break;
-            }
-        }
-    }
+  public void add(Order order)
+  {
+    orders.add(new OrderListTableVM(order));
+  }
 
-    public void update()
-    {
-        // so sad tomaszonko dont be mad pls
-    }
+  public ObservableList<OrderListTableVM> getOrders()
+  {
+    return orders;
+  }
 
-    public ObservableList<OrderListTableVM> getOrders()
-    {
-        return orders;
-    }
+  public void clear()
+  {
+    update();
+  }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+  public void chooseOrder(OrderListTableVM orderListTableVM)
+  {
 
-    }
+    orderViewState.setOrder(findOrder(orderListTableVM));
+  }
+
+  private Order findOrder(OrderListTableVM orderListTableVM)
+  {
+    String[] timeString = orderListTableVM.getTime().get().split(":");
+    String[] dateString = orderListTableVM.getDate().get().split("-");
+
+    int day = Integer.parseInt(dateString[2]);
+    int month = Integer.parseInt(dateString[1]);
+    int year = Integer.parseInt(dateString[0]);
+    int hour = Integer.parseInt(timeString[0]);
+    int minute = Integer.parseInt(timeString[1]);
+    int second = Integer.parseInt(timeString[2]);
+
+    Order order = model.getOrder(userViewState.getShopAddress(), day,month,year,hour,minute,second, orderListTableVM.getDeliveryOptions().get());
+
+    return order;
+  }
 }

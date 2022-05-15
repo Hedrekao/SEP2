@@ -34,5 +34,6 @@ public class EmployeeViewModel
     public void clear()
     {
         username.set(viewState.getUsername());
+        workplace.set(viewState.getShopAddress());
     }
 }

@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
@@ -38,23 +39,34 @@ public class ModelManager implements Model, PropertyChangeListener
     return order;
   }
 
-  @Override public void completeOrder(String address)
+  @Override public void clearBag()
   {
-    //might be this.order instead of passed variable
+    for(Map.Entry<Item, Integer> entry : order.getItems().entrySet())
+    {
+      client.removeItemFromOrder(order.getShopAddress(), entry.getKey(), entry.getValue());
+    }
+  }
+
+  @Override public void completeOrder(String address, Order order)
+  {
     client.completeOrder(address, order);
-    order = new Order();
+    this.order = new Order();
   }
 
   @Override public void addItemToOrder(String address,Item item)
   {
+    if (order.getItems().size() == 0)
+    {
+      order.setShopAddress(address);
+    }
     order.addItem(item);
     client.addItemToOrder(address,item);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item)
+  @Override public void removeItemFromOrder(String address, Item item, int quantityOfItem)
   {
     order.removeItem(item);
-    client.removeItemFromOrder(address, item);
+    client.removeItemFromOrder(address, item,quantityOfItem);
   }
 
   @Override public void setDelivery(String pickUpTime)
@@ -63,9 +75,9 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode)
+      String addressLineSecondary, String city, int postalCode, String email)
   {
-    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode);
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode, email);
   }
 
   @Override public void setPayment(String cardName, long cardNumber,
@@ -101,7 +113,7 @@ public class ModelManager implements Model, PropertyChangeListener
 
   @Override public int getQuantityOfItemsInBag()
   {
-    return client.getQuantityOfItemsInBag();
+    return order.getQuantityOfItemsInOrder();
   }
 
   @Override public ArrayList<Shop> getAllShops()
@@ -136,10 +148,15 @@ public class ModelManager implements Model, PropertyChangeListener
         categories);
   }
 
-  @Override public Order getOrder(String shopAddress ,int day, int month, int year, int hour,
-      int minute, int second, String addressLinePrimary)
+  @Override public void propertyChange(PropertyChangeEvent evt)
   {
-    return client.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
+    property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+  }
+
+  @Override public Order getOrder(String shopAddress ,int day, int month, int year, int hour,
+      int minute, int second, String deliveryOptions)
+  {
+    return client.getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
   }
 
   @Override public ArrayList<Order> getOrderList(String shopAddress)
@@ -148,13 +165,8 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
-      int minute, int second, String addressLinePrimary)
+      int minute, int second, String deliveryOptions)
   {
-    client.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
-  }
-
-  @Override public void propertyChange(PropertyChangeEvent evt)
-  {
-    property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+    client.removeOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
   }
 }

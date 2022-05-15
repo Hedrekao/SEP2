@@ -5,29 +5,36 @@ import model.Order;
 
 public class OrderListTableVM
 {
-    private LongProperty orderNo;
-    private StringProperty date;
-    private DoubleProperty totalPrice;
+  private StringProperty time;
+  private StringProperty date;
+  private DoubleProperty totalPrice;
+  private StringProperty deliveryOptions;
 
-    public OrderListTableVM(Order order)
-    {
-        orderNo = new SimpleLongProperty(order.getOrderNo());
-        date = new SimpleStringProperty(order.getDate());
-        totalPrice = new SimpleDoubleProperty(order.getTotalPrice);
-    }
+  public OrderListTableVM(Order order)
+  {
+    time = new SimpleStringProperty(order.toStringTime());
+    date = new SimpleStringProperty(order.getDate().toString());
+    totalPrice = new SimpleDoubleProperty(order.getTotalPrice());
+    deliveryOptions = new SimpleStringProperty(order.getOrderDescription());
+  }
 
-    public LongProperty getOrderNo()
-    {
-        return orderNo;
-    }
+  public StringProperty getTime()
+  {
+    return time;
+  }
 
-    public StringProperty getDate()
-    {
-        return date;
-    }
+  public StringProperty getDate()
+  {
+    return date;
+  }
 
-    public DoubleProperty getTotalPrice()
-    {
-        return totalPrice;
-    }
+  public DoubleProperty getTotalPrice()
+  {
+    return totalPrice;
+  }
+
+  public StringProperty getDeliveryOptions()
+  {
+    return deliveryOptions;
+  }
 }
