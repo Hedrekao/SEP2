@@ -18,11 +18,19 @@ public class Shop implements Serializable
    this.name = name;
    this.productList = productList;
    this.itemList = itemList;
+   this.orderList = new ArrayList<>();
+
+
   }
 
   public String getName()
   {
     return name;
+  }
+
+  public void setOrderList(ArrayList<Order> orderList)
+  {
+    this.orderList = orderList;
   }
 
   public String getAddress()
@@ -120,6 +128,16 @@ public class Shop implements Serializable
     itemList.addItem(item);
   }
 
+  public int getQuantityOfAllItemsInShop()
+  {
+    return itemList.getQuantityOfAllItems();
+  }
+
+  public void addOrder(Order order)
+  {
+    orderList.add(order);
+  }
+
   public Order getOrder(int day, int month, int year, int hour,
       int minute, int second, String addressLinePrimary)
   {
@@ -127,7 +145,7 @@ public class Shop implements Serializable
     date.set(day, month, year);
     for(Order o : orderList)
     {
-      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && addressLinePrimary.equals(o.getAddressLinePrimary()))
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && o.getOrderDescription().equals(o.getOrderDescription()))
       {
         return o;
       }
@@ -142,9 +160,9 @@ public class Shop implements Serializable
     date.set(day, month, year);
     for(Order o : orderList)
     {
-      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && addressLinePrimary.equals(o.getAddressLinePrimary()))
+      if(o.getDate().equals(date) && hour == o.getHour() && minute == o.getMinute() && second == o.getSecond() && o.getOrderDescription().equals(o.getOrderDescription()))
       {
-        orderList.remove(o);
+        o.setCompleted(true);
       }
     }
   }
@@ -152,10 +170,5 @@ public class Shop implements Serializable
   public ArrayList<Order> getOrderList()
   {
     return orderList;
-  }
-
-  public int getQuantityOfAllItemsInShop()
-  {
-    return itemList.getQuantityOfAllItems();
   }
 }

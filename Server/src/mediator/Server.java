@@ -69,9 +69,9 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.completeOrder(address, order);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item) throws RemoteException
+  @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem) throws RemoteException
   {
-    model.removeItemFromOrder(address, item);
+    model.removeItemFromOrder(address, item,quantityOfItem);
   }
 
   @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
@@ -130,23 +130,6 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getAllShops();
   }
 
-  @Override public Order getOrder(String shopAddress, int day, int month,
-      int year, int hour, int minute, int second, String addressLinePrimary)
-  {
-    return model.getOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
-  }
-
-  @Override public void removeOrder(String shopAddress, int day, int month,
-      int year, int hour, int minute, int second, String addressLinePrimary)
-  {
-    model.removeOrder(shopAddress, day, month, year, hour, minute, second, addressLinePrimary);
-  }
-
-  @Override public ArrayList<Order> getOrderList(String shopAddress)
-  {
-    return model.getOrderList(shopAddress);
-  }
-
   @Override public boolean addListener(GeneralListener<Item, String> listener,
       String... propertyNames) throws RemoteException
   {
@@ -160,9 +143,23 @@ public class Server implements RemoteModel, PropertyChangeListener
     return property.removeListener(listener,propertyNames);
   }
 
-  //not needed
-  @Override public int getQuantityOfItemsInBag() throws RemoteException
+  @Override public Order getOrder(String shopAddress, int day, int month,
+      int year, int hour, int minute, int second, String deliveryOptions)
   {
-    return 0;
+    return model.getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
   }
+
+  @Override public void removeOrder(String shopAddress, int day, int month,
+      int year, int hour, int minute, int second, String deliveryOptions)
+  {
+
+    model.removeOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions);
+  }
+
+  @Override public ArrayList<Order> getOrderList(String shopAddress)
+  {
+
+    return model.getOrderList(shopAddress);
+  }
+
 }

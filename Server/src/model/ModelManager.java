@@ -16,6 +16,12 @@ public class ModelManager implements Model
 
     this.shopList = modelPersistence.loadShops();
 
+    for (Shop shop : getAllShops())
+    {
+      shop.setOrderList(modelPersistence.loadOrdersFromShop(shop.getAddress()));
+
+    }
+
     userList = modelPersistence.loadUsers();
     property = new PropertyChangeSupport(this);
   }
@@ -33,21 +39,25 @@ public class ModelManager implements Model
 
   @Override public void completeOrder(String address, Order order)
   {
-    //modelPersistence.save(address, order); //todo
+    shopList.getShop(address).addOrder(order);
+    modelPersistence.save(address, order);
   }
 
   @Override public void addItemToOrder(String address, Item item)
   {
     Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
     item1.setQuantity(item1.getQuantity() - 1);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
-  @Override public void removeItemFromOrder(String address, Item item)
+  @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
   {
-    //tomciu czy to ci doda do systemu ten item co jest usuwany
 
     Item item1 = getSpecificItem(address, item.getExpirationDate(), item.getProduct().getProductID());
-    item1.setQuantity(item1.getQuantity() + 1);
+    item1.setQuantity(item1.getQuantity() + quantityOfItem);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 
   @Override public Product getProduct(String address, int productNumber)
@@ -149,20 +159,22 @@ public class ModelManager implements Model
   }
 
   @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
-      int minute, int second, String addressLinePrimary)
+      int minute, int second, String deliveryOptions)
   {
-    return shopList.getShop(addressLinePrimary).getOrder(day,month,year,hour,minute,second,addressLinePrimary);
+    return shopList.getShop(shopAddress).getOrder(day,month,year,hour,minute,second,deliveryOptions);
   }
 
   @Override public void removeOrder(String shopAddress, int day, int month, int year, int hour,
-      int minute, int second, String addressLinePrimary)
+      int minute, int second, String deliveryOptions)
   {
-    shopList.getShop(shopAddress).removeOrder(day,month,year,hour,minute,second,addressLinePrimary);
-    //modelPersistance.removeOrder() czy cos
+
+    shopList.getShop(shopAddress).removeOrder(day,month,year,hour,minute,second,deliveryOptions);
+    modelPersistence.updateCompletedOrder(getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions));
   }
 
   @Override public ArrayList<Order> getOrderList(String shopAddress)
   {
     return shopList.getShop(shopAddress).getOrderList();
+
   }
 }
