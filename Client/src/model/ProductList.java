@@ -34,14 +34,20 @@ public class ProductList implements Serializable
     return products;
   }
 
-  public ArrayList<Product> getProductsByCategory(String category)
+  public ArrayList<Product> getProductsByCategory(ArrayList<String> categories)
   {
-    ArrayList<Product> temp = products;
-    for(int i = 0; i < temp.size(); i++)
+    ArrayList<Product> temp = new ArrayList<>();
+    for(int i = 0; i < products.size(); i++)
     {
-      if(!temp.get(i).hasCategory(category))
+      for(int j = 0; j < categories.size(); j++)
       {
-        temp.remove(i);
+        if(products.get(i).getCategories().contains(categories.get(j)))
+        {
+          if(!(temp.contains(products.get(i))))
+          {
+            temp.add(products.get(i));
+          }
+        }
       }
     }
     return temp;
@@ -55,5 +61,10 @@ public class ProductList implements Serializable
     }
     ProductList other = (ProductList) obj;
     return this.products.equals(other.products);
+  }
+
+  public int size()
+  {
+    return products.size();
   }
 }
