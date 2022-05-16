@@ -129,13 +129,17 @@ public class ModelDatabase implements ModelPersistence
 
       if (results.size() == 0)
       {
-        sql = "INSERT INTO food_waste.product (product_number, category, name)"
-            + " VALUES (? , ? , ? )";
-        Object[] updateResult = db.update(sql, product.getProductID(),
-            product.getCategories().get(0).getName(), product.getProductName());
-      }
+        sql = "INSERT INTO food_waste.product (product_number, name)"
+            + " VALUES (? , ? )";
+        Object[] updateResult = db.update(sql, product.getProductID(), product.getProductName());
 
-      //change shit with categories
+        for (int i = 0; i < product.getCategories().size(); i++)
+        {
+          sql = "INSERT INTO food_waste.category (product_number, category_name)"
+              + " VALUES (? , ? )";
+           updateResult = db.update(sql, product.getProductID(), product.getCategories().get(i).getName());
+        }
+      }
     }
     catch (SQLException e)
     {
@@ -245,7 +249,7 @@ public class ModelDatabase implements ModelPersistence
   private Product loadProduct(int productNumber)
   {
     Product product = null;
-    String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+    String sql = "SELECT product.product_number, product.name FROM food_waste.product WHERE product.product_number = ?";
 
     try
     {
@@ -255,7 +259,14 @@ public class ModelDatabase implements ModelPersistence
       {
         Object[] result = results.get(i);
         ArrayList<Category> categories = new ArrayList<>();
-        categories.add(new Category((String) result[2]));
+        sql = "SELECT category.category_name FROM food_waste.category WHERE category.product_number = ?";
+        ArrayList<Object[]> categoriesResults = db.query(sql, productNumber);
+        for (int j = 0; j < categoriesResults.size(); j++)
+        {
+          Object[] categoriesFromDatabase =  categoriesResults.get(j);
+          categories.add(new Category((String) categoriesFromDatabase[0]));
+        }
+
         product = new Product((String) result[1], (int) result[0], categories);
       }
     }

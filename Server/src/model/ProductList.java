@@ -36,12 +36,17 @@ public class ProductList implements Serializable
 
   public ArrayList<Product> getProductsByCategory(ArrayList<String> categories)
   {
+    if (categories.size() == 0)
+    {
+      return getAllProducts();
+    }
+
     ArrayList<Product> temp = new ArrayList<>();
     for(int i = 0; i < products.size(); i++)
     {
       for(int j = 0; j < categories.size(); j++)
       {
-        if(products.get(i).getCategories().contains(categories.get(j)))
+        if(products.get(i).getCategories().contains(new Category(categories.get(j))))
         {
           if(!(temp.contains(products.get(i))))
           {
