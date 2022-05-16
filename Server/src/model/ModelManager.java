@@ -129,7 +129,7 @@ public class ModelManager implements Model
       Product product = new Product(productName, productID, categories);
       modelPersistence.save(product);
       Item item = new Item(product, price, expirationDate, quantity);
-      modelPersistence.save(item);
+      modelPersistence.save(address, item);
       shopList.addItem(address,item,product);
     }
     else
@@ -143,14 +143,14 @@ public class ModelManager implements Model
       if (searchedItem == null)
       {
         Item item = new Item(getProduct(address,productID), price, expirationDate, quantity);
-        modelPersistence.save(item);
+        modelPersistence.save(address,item);
         shopList.addItem(address,item);
       }
       else
       {
         searchedItem.setCurrentPrice(price);
         searchedItem.setQuantity(quantity);
-        modelPersistence.update(searchedItem);
+        modelPersistence.update(address,searchedItem);
       }
     }
 

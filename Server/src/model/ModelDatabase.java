@@ -99,17 +99,17 @@ public class ModelDatabase implements ModelPersistence
     }
   }
 
-  @Override public void save(Item item)
+  @Override public void save(String address, Item item)
   {
     try
     {
       String sql =
-          "INSERT INTO food_waste.item (quantity_in_stock, price, expiration_date, product_number)"
-              + " VALUES (? , ? , ? , ?)";
+          "INSERT INTO food_waste.item (quantity_in_stock, price, expiration_date, product_number, shop_address)"
+              + " VALUES (? , ? , ? , ? , ?)";
       Object[] updateResult = db.update(sql, item.getQuantity(),
           item.getCurrentPrice(),
           java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()),
-          item.getProduct().getProductID());
+          item.getProduct().getProductID(), address);
 
     }
     catch (SQLException e)
@@ -123,7 +123,7 @@ public class ModelDatabase implements ModelPersistence
   {
     try
     {
-      String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+      String sql = "SELECT product.product_number, product.name FROM food_waste.product WHERE product.product_number = ?";
 
       ArrayList<Object[]> results = db.query(sql, product.getProductID());
 
@@ -147,15 +147,15 @@ public class ModelDatabase implements ModelPersistence
     }
   }
 
-  @Override public void update(Item item)
+  @Override public void update(String address, Item item)
   {
-    String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ? WHERE product_number = ? AND expiration_date = ?";
+    String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ? WHERE product_number = ? AND expiration_date = ? AND shop_address = ?";
 
     try
     {
       db.update(sql, item.getQuantity(), item.getCurrentPrice(),
           item.getProduct().getProductID(),
-          java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()));
+          java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()), address);
     }
     catch (SQLException e)
     {
