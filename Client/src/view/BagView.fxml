@@ -19,7 +19,7 @@
             <Font name="Arial" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="checkOut" layoutX="429.0" layoutY="628.0" mnemonicParsing="false" onAction="#goToCheckOut" text="Checkout" AnchorPane.bottomAnchor="28.799999999999955">
+      <Button fx:id="checkOut" layoutX="429.0" layoutY="628.0" mnemonicParsing="false" onAction="#goToCheckOut" text="Checkout" AnchorPane.bottomAnchor="40.0">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
@@ -38,6 +38,11 @@
          </font>
       </Button>
       <Button layoutX="872.0" layoutY="38.0" mnemonicParsing="false" onAction="#loginButton" text="Login">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="609.0" layoutY="628.0" mnemonicParsing="false" onAction="#removeButton" text="Remove" textFill="RED" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
