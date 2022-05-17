@@ -148,6 +148,12 @@ public class ModelManager implements Model, PropertyChangeListener
         categories);
   }
 
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID)
+  {
+    client.removeItem(address, expirationDate, productID);
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     property.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
