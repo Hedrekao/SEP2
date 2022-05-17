@@ -74,8 +74,6 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.removeItemFromOrder(address, item,quantityOfItem);
   }
 
-
-
   @Override public ArrayList<Item> getItemsByProduct(String address, Product product)
       throws RemoteException
   {
@@ -127,12 +125,6 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.addItem(address,productName, productID, price, expirationDate, quantity, categories);
   }
 
-  @Override public void removeItem(String address, Date expirationDate,
-      int productID) throws RemoteException
-  {
-    model.removeItem(address, expirationDate, productID);
-  }
-
   @Override public ArrayList<Shop> getAllShops() throws RemoteException
   {
     return model.getAllShops();
@@ -168,6 +160,12 @@ public class Server implements RemoteModel, PropertyChangeListener
   {
 
     return model.getOrderList(shopAddress);
+  }
+
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID) throws RemoteException
+  {
+    model.removeItem(address, expirationDate, productID);
   }
 
 }

@@ -155,13 +155,7 @@ public class ModelManager implements Model
     }
 
     property.firePropertyChange("StockUpdate", null, 1);
-  }
 
-  @Override public void removeItem(String address, Date expirationDate, int productID)
-  {
-    Item item  = shopList.getSpecificItem(address, expirationDate, productID);
-    item.setQuantity(item.getQuantity() - 1);
-    modelPersistence.update(address, item);
   }
 
   @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
@@ -182,5 +176,12 @@ public class ModelManager implements Model
   {
     return shopList.getShop(shopAddress).getOrderList();
 
+  }
+
+  @Override public void removeItem(String address, Date expirationDate, int productID)
+  {
+    Item item  = shopList.getSpecificItem(address, expirationDate, productID);
+    item.setQuantity(item.getQuantity() - 1);
+    modelPersistence.update(address, item);
   }
 }
