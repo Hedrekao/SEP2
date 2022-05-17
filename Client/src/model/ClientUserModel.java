@@ -7,4 +7,5 @@ public interface ClientUserModel extends ModelUser
   void setPayment(String cardName, long cardNumber, int expirationMonth, int expirationYear, int securityCode);
   Order getOrder();
   void clearBag();
+  void removeItemFromBag(Item item);
 }

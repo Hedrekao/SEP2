@@ -6,6 +6,7 @@ import model.Item;
 public class ItemsTableVM
 {
     private StringProperty name;
+    private IntegerProperty id;
     private StringProperty date;
     private IntegerProperty quantity;
     private DoubleProperty price;
@@ -13,6 +14,7 @@ public class ItemsTableVM
     public ItemsTableVM(Item item, int orderQuantity)
     {
         name = new SimpleStringProperty(item.getProduct().getProductName());
+        id = new SimpleIntegerProperty(item.getProduct().getProductID());
         date = new SimpleStringProperty(item.getExpirationDate().toString());
         quantity = new SimpleIntegerProperty(orderQuantity == -1 ? item.getQuantity() : orderQuantity);
         price = new SimpleDoubleProperty(item.getCurrentPrice());
@@ -36,5 +38,10 @@ public class ItemsTableVM
     public DoubleProperty getPriceProperty()
     {
         return price;
+    }
+
+    public IntegerProperty getIdProperty()
+    {
+        return id;
     }
 }

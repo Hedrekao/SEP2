@@ -5,6 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -45,6 +46,20 @@ public class ModelManager implements Model, PropertyChangeListener
     {
       client.removeItemFromOrder(order.getShopAddress(), entry.getKey(), entry.getValue());
     }
+  }
+
+  @Override public void removeItemFromBag(Item item)
+  {
+    order.removeItem(item);
+    client.removeItemFromOrder(order.getShopAddress(), item, 1);
+  }
+
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID)
+  {
+
+    client.removeItem(address, expirationDate, productID);
+
   }
 
   @Override public void completeOrder(String address, Order order)
@@ -146,12 +161,6 @@ public class ModelManager implements Model, PropertyChangeListener
   {
     client.addItem(address, productName, productID, price, expirationDate, quantity,
         categories);
-  }
-
-  @Override public void removeItem(String address, Date expirationDate,
-      int productID)
-  {
-    client.removeItem(address, expirationDate, productID);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)

@@ -48,7 +48,26 @@ public class Order implements Serializable
 
   public String toStringTime()
   {
-    return localTime.getHour() + ":" + localTime.getMinute() + ":" + localTime.getSecond();
+    String s = "";
+
+    if (localTime.getHour() < 10)
+    {
+      s += "0";
+    }
+    s += localTime.getHour() + ":";
+
+    if (localTime.getMinute() < 10)
+    {
+      s += "0";
+    }
+    s += localTime.getMinute() + ":";
+    if (localTime.getSecond() < 10)
+    {
+      s += "0";
+    }
+    s += localTime.getSecond();
+
+    return s;
   }
 
   public void setLocalTime(String timeString)
@@ -72,6 +91,7 @@ public class Order implements Serializable
     expirationYear = 0;
     securityCode = 0;
     shopAddress = null;
+    localTime = null;
     this.isCompleted = isCompleted;
   }
 
@@ -107,7 +127,8 @@ public class Order implements Serializable
 
       items.put(item, items.get(item) + 1);
     }
-    else {
+    else
+    {
       items.put(item, 1);
     }
   }
@@ -115,12 +136,14 @@ public class Order implements Serializable
   public void addItem(Item item, int quantity)
   {
 
-      items.put(item, quantity);
+    items.put(item, quantity);
   }
 
-  public void setDelivery(String addressLinePrimary, String addressLineSecondary, String city, int postalCode, String email)
+  public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode, String email)
   {
-    if(addressLinePrimary == null || city == null || postalCode < 1 || !email.contains("@"))
+    if (addressLinePrimary == null || city == null || postalCode < 1
+        || !email.contains("@"))
     {
       throw new IllegalArgumentException("Check input fields.");
     }
@@ -136,7 +159,7 @@ public class Order implements Serializable
 
   public void setDelivery(String pickUpTime)
   {
-    if(pickUpTime == null)
+    if (pickUpTime == null)
     {
       throw new IllegalArgumentException("Please, select pick-up time.");
     }
@@ -146,9 +169,12 @@ public class Order implements Serializable
     }
   }
 
-  public void setPayment(String cardName, long cardNumber, int expirationMonth, int expirationYear, int securityCode)
+  public void setPayment(String cardName, long cardNumber, int expirationMonth,
+      int expirationYear, int securityCode)
   {
-    if(cardNumber < 0 || cardName == null || expirationMonth > 12 || expirationMonth < 0 ||expirationYear > 2030 ||expirationYear < 2022 || securityCode > 999 || securityCode < 0)
+    if (cardNumber < 0 || cardName == null || expirationMonth > 12
+        || expirationMonth < 0 || expirationYear > 2030 || expirationYear < 2022
+        || securityCode > 999 || securityCode < 0)
     {
       throw new IllegalArgumentException();
     }
@@ -207,8 +233,18 @@ public class Order implements Serializable
     return pickUpTime;
   }
 
+  public void removeItem(Item item)
+  {
+    if (items.get(item) == 1)
+    {
+      items.remove(item);
+    }
+    else
+    {
+      items.put(item, items.get(item) - 1);
+    }
 
-  public void removeItem(Item item) {items.remove(item);}
+  }
 
   public Date getDate()
   {
@@ -219,7 +255,8 @@ public class Order implements Serializable
   {
     double sum = 0;
 
-    for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+    for (Map.Entry<Item, Integer> entry : items.entrySet())
+    {
       sum += entry.getValue() * entry.getKey().getCurrentPrice();
     }
     return sum;
@@ -229,7 +266,8 @@ public class Order implements Serializable
   {
     int sum = 0;
 
-    for (Map.Entry<Item, Integer> entry : items.entrySet()) {
+    for (Map.Entry<Item, Integer> entry : items.entrySet())
+    {
       sum += entry.getValue();
     }
     return sum;
@@ -237,19 +275,21 @@ public class Order implements Serializable
 
   public String getOrderDescription()
   {
-    if(addressLinePrimary == null)
+    if (addressLinePrimary == null)
     {
       return "Pick-up time: " + pickUpTime;
     }
     else
     {
-      return "Address: " + getAddressLinePrimary() + ", " + getAddressLineSecondary() + ", " + getPostalCode() + " " + getCity() + ", email: " + getEmail();
+      return "Address: " + getAddressLinePrimary() + ", "
+          + getAddressLineSecondary() + ", " + getPostalCode() + " " + getCity()
+          + ", email: " + getEmail();
     }
   }
 
   public boolean equals(Object obj)
   {
-    if(!(obj instanceof Order))
+    if (!(obj instanceof Order))
     {
       return false;
     }
