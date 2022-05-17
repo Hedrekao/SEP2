@@ -26,10 +26,11 @@
       </Button>
       <TableView fx:id="table" layoutX="40.0" layoutY="254.0" prefHeight="338.0" prefWidth="920.0" AnchorPane.bottomAnchor="107.60000000000002" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
         <columns>
-          <TableColumn fx:id="nameOfProduct" prefWidth="75.0" text="Product name" />
-          <TableColumn fx:id="quantity" prefWidth="75.0" text="quantity" />
-            <TableColumn fx:id="expiration" prefWidth="131.0" text="Expiration date" />
-            <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+          <TableColumn fx:id="nameOfProduct" prefWidth="340.4571838378906" text="Product name" />
+            <TableColumn fx:id="price1" prefWidth="186.0428009033203" text="Product ID" />
+            <TableColumn fx:id="expiration" prefWidth="157.93563842773438" text="Expiration date" />
+          <TableColumn fx:id="quantity" prefWidth="111.88995361328125" text="quantity" />
+            <TableColumn fx:id="price" prefWidth="116.02099609375" text="Price" />
         </columns>
       </TableView>
       <Button layoutX="41.0" layoutY="37.0" mnemonicParsing="false" onAction="#goBackButton" text="&lt;">
