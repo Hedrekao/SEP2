@@ -183,5 +183,7 @@ public class ModelManager implements Model
     Item item  = shopList.getSpecificItem(address, expirationDate, productID);
     item.setQuantity(item.getQuantity() - 1);
     modelPersistence.update(address, item);
+
+    property.firePropertyChange("StockUpdate", null, 1);
   }
 }

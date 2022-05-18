@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EmployeeOrderViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EmployeeManageItemsController">
    <children>
       <VBox alignment="CENTER" layoutX="107.0" layoutY="12.0" prefHeight="468.0" prefWidth="920.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
          <children>
@@ -29,10 +29,10 @@
             <TableView fx:id="table" prefHeight="435.0" prefWidth="920.0">
                <columns>
                   <TableColumn fx:id="nameOfProduct" prefWidth="307.1587104797363" text="Product name" />
-                  <TableColumn fx:id="quantity" prefWidth="146.34129333496094" text="Product number" />
+                  <TableColumn fx:id="productNumber" prefWidth="146.34129333496094" text="Product number" />
                   <TableColumn fx:id="expiration" prefWidth="204.5028076171875" text="Expiration date" />
-                  <TableColumn fx:id="price" prefWidth="156.33782958984375" text="Quantity" />
-                  <TableColumn fx:id="price1" prefWidth="104.5078125" text="Price" />
+                  <TableColumn fx:id="quantity" prefWidth="156.33782958984375" text="Quantity" />
+                  <TableColumn fx:id="price" prefWidth="104.5078125" text="Price" />
                </columns>
             </TableView>
             <Button mnemonicParsing="false" onAction="#removeButton" text="Remove product" textFill="RED">

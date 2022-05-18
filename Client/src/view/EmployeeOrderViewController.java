@@ -51,7 +51,7 @@ public class EmployeeOrderViewController extends ViewController
         getViewHandler().openView("EmployeeViewOrderList");
     }
     
-    @FXML public void reset()
+     public void reset()
     {
         employeeOrderViewModel.clear();
     }
