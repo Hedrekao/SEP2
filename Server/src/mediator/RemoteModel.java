@@ -26,5 +26,6 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   void removeOrder(String shopAddress, int day, int month, int year, int hour, int minute, int second, String deliveryOptions) throws RemoteException;
   ArrayList<Order> getOrderList(String shopAddress) throws RemoteException;
   void removeItem(String address, Date expirationDate, int productID) throws RemoteException;
+  ArrayList<Item> getAllItemsFromShop(String address) throws RemoteException;
 
 }

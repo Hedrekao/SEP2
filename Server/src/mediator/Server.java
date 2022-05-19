@@ -168,4 +168,10 @@ public class Server implements RemoteModel, PropertyChangeListener
     model.removeItem(address, expirationDate, productID);
   }
 
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+      throws RemoteException
+  {
+    return model.getAllItemsFromShop(address);
+  }
+
 }

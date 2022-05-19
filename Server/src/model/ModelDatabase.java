@@ -324,6 +324,7 @@ public class ModelDatabase implements ModelPersistence
             (boolean) result[6]);
         order.setLocalTime((String) result[7]);
         order.setShopAddress((String) result[8]);
+        order.setEmail((String) result[2]);
         if ((result[4]).equals("pick-up"))
         {
           order.setDelivery((String) result[5]);
@@ -335,12 +336,12 @@ public class ModelDatabase implements ModelPersistence
           if (words.length == 4)
           {
             order.setDelivery(words[0].trim(), words[1].trim(), words[3].trim(),
-                Integer.parseInt(words[2].trim()), (String) result[2]);
+                Integer.parseInt(words[2].trim()));
           }
           else
           {
             order.setDelivery(words[0], null, words[2],
-                Integer.parseInt(words[1]), (String) result[2]);
+                Integer.parseInt(words[1]));
           }
 
         }

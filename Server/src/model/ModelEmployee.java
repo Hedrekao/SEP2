@@ -14,4 +14,5 @@ public interface ModelEmployee
   ArrayList<Order> getOrderList(String shopAddress);
   void removeOrder(String shopAddress, int day, int month, int year, int hour, int minute, int second, String deliveryOptions);
   void removeItem(String address, Date expirationDate, int productID);
+  ArrayList<Item> getAllItemsFromShop(String address);
 }

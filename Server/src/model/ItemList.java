@@ -11,6 +11,11 @@ public class ItemList implements Serializable
     this.list = new ArrayList<>();
   }
 
+  public ArrayList<Item> getItems()
+  {
+    return list;
+  }
+
   public void addItem(Item item)
   {
     list.add(item);

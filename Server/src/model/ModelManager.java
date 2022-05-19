@@ -185,5 +185,12 @@ public class ModelManager implements Model
     modelPersistence.update(address, item);
 
     property.firePropertyChange("StockUpdate", null, 1);
+    property.firePropertyChange("RemoveItemFromShop", null, 1);
+
+  }
+
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+  {
+    return shopList.getShop(address).getAllItems();
   }
 }

@@ -139,11 +139,19 @@ public class Order implements Serializable
     items.put(item, quantity);
   }
 
-  public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode, String email)
+  public void setEmail(String email)
   {
-    if (addressLinePrimary == null || city == null || postalCode < 1
-        || !email.contains("@"))
+    if (email == null || !email.contains("@"))
+    {
+      throw new IllegalArgumentException("Enter valid email");
+    }
+    this.email = email;
+  }
+
+  public void setDelivery(String addressLinePrimary,
+      String addressLineSecondary, String city, int postalCode)
+  {
+    if (addressLinePrimary == null || city == null || postalCode < 1)
     {
       throw new IllegalArgumentException("Check input fields.");
     }
@@ -153,7 +161,6 @@ public class Order implements Serializable
       this.addressLineSecondary = addressLineSecondary;
       this.city = city;
       this.postalCode = postalCode;
-      this.email = email;
     }
   }
 
