@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import viewmodel.EmployeeManageItemsViewModel;
 import viewmodel.ItemsTableVM;
 
 import java.io.IOException;
@@ -20,7 +21,6 @@ public class EmployeeManageItemsController extends ViewController
 
   private EmployeeManageItemsViewModel employeeManageItemsViewModel;
 
-
   public void goBackButton() throws IOException
   {
     getViewHandler().openView("Employee");
@@ -30,31 +30,36 @@ public class EmployeeManageItemsController extends ViewController
   {
     ItemsTableVM itemsTableVM = table.getSelectionModel().getSelectedItem();
 
-    employeeManageItemsViewModel.removeItem(itemsTableVM);
+    if (itemsTableVM != null)
+    {
+      employeeManageItemsViewModel.removeItem(itemsTableVM);
+    }
+
   }
 
   @Override protected void init()
   {
 
-
     employeeManageItemsViewModel = getViewModelFactory().getEmployeeManageItemsViewModel();
 
-    nameOfProduct.setCellValueFactory(cellData -> cellData.getValue().getNameProperty());
-    productNumber.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
-    quantity.setCellValueFactory(cellData -> cellData.getValue().getQuantityProperty());
-    expiration.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
-    price.setCellValueFactory(cellData -> cellData.getValue().getPriceProperty());
+    nameOfProduct.setCellValueFactory(
+        cellData -> cellData.getValue().getNameProperty());
+    productNumber.setCellValueFactory(
+        cellData -> cellData.getValue().getIdProperty());
+    quantity.setCellValueFactory(
+        cellData -> cellData.getValue().getQuantityProperty());
+    expiration.setCellValueFactory(
+        cellData -> cellData.getValue().getDateProperty());
+    price.setCellValueFactory(
+        cellData -> cellData.getValue().getPriceProperty());
 
     table.setItems(employeeManageItemsViewModel.getItems());
 
   }
 
-
   public void reset()
   {
     employeeManageItemsViewModel.clear();
   }
-
-
 
 }

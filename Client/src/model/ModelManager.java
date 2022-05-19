@@ -29,6 +29,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getAllProducts(address);
   }
 
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+  {
+    return client.getAllItemsFromShop(address);
+  }
+
   @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {
@@ -90,9 +95,14 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode, String email)
+      String addressLineSecondary, String city, int postalCode)
   {
-    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode, email);
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode);
+  }
+
+  @Override public void setEmail(String email)
+  {
+    order.setEmail(email);
   }
 
   @Override public void setPayment(String cardName, long cardNumber,

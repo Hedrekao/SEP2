@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface ModelUser extends UnnamedPropertyChangeSubject
 {
-  ArrayList<Product> getAllProducts(String address);
+
   ArrayList<Product> getProductsByCategory(String address, ArrayList<String> categories);
 
   Product getProduct(String address, int productNumber);
@@ -17,6 +17,7 @@ public interface ModelUser extends UnnamedPropertyChangeSubject
   Item getSpecificItem(String address, Date expirationDate, int productId);
   int getQuantityOfItemsInBag();
   ArrayList<Shop> getAllShops();
+  ArrayList<Product> getAllProducts(String address);
 
   void completeOrder(String address, Order order);
   void addItemToOrder(String address, Item item);

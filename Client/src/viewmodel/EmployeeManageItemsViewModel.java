@@ -1,50 +1,48 @@
 package viewmodel;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-public class EmployeeManageItemsViewModel
+public class EmployeeManageItemsViewModel implements PropertyChangeListener
 {
     private ObservableList<ItemsTableVM> itemsTableVM;
-    private ClientUserModel clientUserModel;
+    private ModelEmployee modelEmployee;
+    private ModelUser modelUser;
+    private UserViewState userViewState;
 
-    public EmployeeManageItemsViewModel(ClientUserModel clientUserModel)
+    public EmployeeManageItemsViewModel(Model model, UserViewState userViewState)
     {
         this.itemsTableVM = FXCollections.observableArrayList();
-        this.clientUserModel = clientUserModel;
+        this.modelEmployee = model;
+        this.userViewState = userViewState;
+        model.addListener(this);
 
-        //not sure how many models do we need
-
-        update();
     }
 
-    public void update() //CHECK tomaszenko
+    public void update()
     {
         itemsTableVM.clear();
 
-        for (Map.Entry<Item, Integer> entry : clientUserModel.getOrder().getItems()
-                .entrySet())
+        for (Item item : modelEmployee.getAllItemsFromShop(userViewState.getShopAddress()))
         {
-            int orderQuantity = entry.getValue();
-            add(entry.getKey(), orderQuantity);
+            add(item);
         }
     }
 
-    private void add(Item item, int orderQuantity)
+    private void add(Item item)
     {
-        itemsTableVM.add(new ItemsTableVM(item, orderQuantity));
+        itemsTableVM.add(new ItemsTableVM(item, -1));
     }
 
     public void removeItem(ItemsTableVM itemsTableVM)
     {
-        Item item = clientUserModel.getSpecificItem(clientUserModel.getOrder().getShopAddress(),
-                new Date(itemsTableVM.getDateProperty().get()),
-                itemsTableVM.getIdProperty().get());
-
-        clientUserModel.removeItemFromBag(item);
+        modelEmployee.removeItem(userViewState.getShopAddress(), new Date(itemsTableVM.getDateProperty().get()) ,itemsTableVM.getIdProperty().get());
     }
 
     public ObservableList<ItemsTableVM> getItems()
@@ -54,7 +52,15 @@ public class EmployeeManageItemsViewModel
 
     public void clear()
     {
-        //nothing to clear - this method is used in Controller
         update();
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("RemoveItemFromShop"))
+        {
+            Platform.runLater(this::update);
+
+        }
     }
 }

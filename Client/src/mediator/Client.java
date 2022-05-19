@@ -172,6 +172,19 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
     }
   }
 
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+  {
+    try
+    {
+      return server.getAllItemsFromShop(address);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {

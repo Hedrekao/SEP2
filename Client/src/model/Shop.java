@@ -48,6 +48,11 @@ public class Shop implements Serializable
     return itemList;
   }
 
+  public ArrayList<Item> getAllItems()
+  {
+    return itemList.getItems();
+  }
+
   public ArrayList<Product> getAllProducts()
   {
     return productList.getAllProducts();

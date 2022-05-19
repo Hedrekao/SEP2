@@ -9,6 +9,8 @@ public interface ModelEmployee
   void addItem(String address, String productName, int productID, double price, Date expirationDate, int quantity, ArrayList<Category> categories);
   void removeItem(String address, Date expirationDate, int productID);
 
+  ArrayList<Item> getAllItemsFromShop(String address);
+
   Order getOrder(String shopAddress, int day, int month, int year, int hour, int minute, int second, String deliveryOptions);
   ArrayList<Order> getOrderList(String shopAddress);
   void removeOrder(String shopAddress, int day, int month, int year, int hour, int minute, int second, String deliveryOptions);
