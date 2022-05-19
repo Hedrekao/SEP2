@@ -47,6 +47,19 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
       }
     }
 
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID)
+  {
+      try
+      {
+        server.removeItem(address, expirationDate, productID);
+      }
+      catch (RemoteException e)
+      {
+        e.printStackTrace();
+      }
+  }
+
   @Override public Product getProduct(String address, int productNumber)
   {
     try
@@ -151,6 +164,19 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
     try
     {
       return server.getAllProducts(address);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+  {
+    try
+    {
+      return server.getAllItemsFromShop(address);
     }
     catch (RemoteException e)
     {

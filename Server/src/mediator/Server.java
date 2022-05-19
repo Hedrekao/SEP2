@@ -162,4 +162,16 @@ public class Server implements RemoteModel, PropertyChangeListener
     return model.getOrderList(shopAddress);
   }
 
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID) throws RemoteException
+  {
+    model.removeItem(address, expirationDate, productID);
+  }
+
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+      throws RemoteException
+  {
+    return model.getAllItemsFromShop(address);
+  }
+
 }

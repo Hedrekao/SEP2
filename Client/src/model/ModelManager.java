@@ -5,6 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -28,6 +29,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getAllProducts(address);
   }
 
+  @Override public ArrayList<Item> getAllItemsFromShop(String address)
+  {
+    return client.getAllItemsFromShop(address);
+  }
+
   @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {
@@ -45,6 +51,20 @@ public class ModelManager implements Model, PropertyChangeListener
     {
       client.removeItemFromOrder(order.getShopAddress(), entry.getKey(), entry.getValue());
     }
+  }
+
+  @Override public void removeItemFromBag(Item item)
+  {
+    order.removeItem(item);
+    client.removeItemFromOrder(order.getShopAddress(), item, 1);
+  }
+
+  @Override public void removeItem(String address, Date expirationDate,
+      int productID)
+  {
+
+    client.removeItem(address, expirationDate, productID);
+
   }
 
   @Override public void completeOrder(String address, Order order)
@@ -75,9 +95,14 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void setDelivery(String addressLinePrimary,
-      String addressLineSecondary, String city, int postalCode, String email)
+      String addressLineSecondary, String city, int postalCode)
   {
-    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode, email);
+    order.setDelivery(addressLinePrimary, addressLineSecondary, city, postalCode);
+  }
+
+  @Override public void setEmail(String email)
+  {
+    order.setEmail(email);
   }
 
   @Override public void setPayment(String cardName, long cardNumber,

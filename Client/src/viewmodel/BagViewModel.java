@@ -5,6 +5,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.ClientUserModel;
+import model.Date;
 import model.Item;
 import model.ModelUser;
 
@@ -12,67 +13,75 @@ import java.util.Map;
 
 public class BagViewModel
 {
-    private StringProperty errorProperty;
-    private StringProperty priceProperty;
-    private ObservableList<ItemsTableVM> items;
-    private ClientUserModel model;
-    private ShopViewState shopViewState;
+  private StringProperty errorProperty;
+  private StringProperty priceProperty;
+  private ObservableList<ItemsTableVM> items;
+  private ClientUserModel model;
+  private ShopViewState shopViewState;
 
-    public BagViewModel(ClientUserModel model, ShopViewState shopViewState)
+  public BagViewModel(ClientUserModel model, ShopViewState shopViewState)
+  {
+    this.model = model;
+    errorProperty = new SimpleStringProperty();
+    priceProperty = new SimpleStringProperty();
+    items = FXCollections.observableArrayList();
+    this.shopViewState = shopViewState;
+
+    update();
+  }
+
+  public void update()
+  {
+    items.clear();
+
+    for (Map.Entry<Item, Integer> entry : model.getOrder().getItems()
+        .entrySet())
     {
-        this.model = model;
-        errorProperty = new SimpleStringProperty();
-        priceProperty = new SimpleStringProperty();
-        items = FXCollections.observableArrayList();
-        this.shopViewState = shopViewState;
-
-
-        update();
+      int orderQuantity = entry.getValue();
+      add(entry.getKey(), orderQuantity);
     }
+  }
 
-    public void update()
-    {
-        items.clear();
+  private void add(Item item)
+  {
+    items.add(new ItemsTableVM(item, -1));
+  }
 
-            for (Map.Entry<Item, Integer> entry : model.getOrder().getItems().entrySet())
-            {
-                int orderQuantity = entry.getValue();
-                add(entry.getKey(), orderQuantity);
-            }
-        }
+  private void add(Item item, int orderQuantity)
+  {
+    items.add(new ItemsTableVM(item, orderQuantity));
+  }
 
+  public void clear()
+  {
+    errorProperty.set("");
+    priceProperty.set(
+        "Total price: " + model.getOrder().getTotalPrice() + "DKK");
+    update();
+  }
 
-    private void add(Item item)
-    {
-        items.add(new ItemsTableVM(item, -1));
-    }
+  public StringProperty getErrorProperty()
+  {
+    return errorProperty;
+  }
 
-    private void add(Item item, int orderQuantity)
-    {
-        items.add(new ItemsTableVM(item, orderQuantity));
-    }
+  public StringProperty priceProperty()
+  {
+    return priceProperty;
+  }
 
+  public ObservableList<ItemsTableVM> getItemsList()
+  {
+    return items;
+  }
 
-    public void clear()
-    {
-        errorProperty.set("");
-        priceProperty.set("Total price: " + model.getOrder().getTotalPrice() +"DKK");
-        update();
-    }
+  public void removeItemFromBag(ItemsTableVM itemsTableVM)
+  {
+    Item item = model.getSpecificItem(model.getOrder().getShopAddress(),
+        new Date(itemsTableVM.getDateProperty().get()),
+        itemsTableVM.getIdProperty().get());
 
-
-    public StringProperty getErrorProperty()
-    {
-        return errorProperty;
-    }
-
-    public StringProperty priceProperty()
-    {
-        return priceProperty;
-    }
-
-    public ObservableList<ItemsTableVM> getItemsList()
-    {
-        return items;
-    }
+    model.removeItemFromBag(item);
+    clear();
+  }
 }

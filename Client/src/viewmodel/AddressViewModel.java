@@ -13,7 +13,6 @@ public class AddressViewModel
     private StringProperty address2;
     private StringProperty city;
     private IntegerProperty postalCode;
-    private StringProperty email;
     private StringProperty error;
     private Model model;
 
@@ -24,7 +23,6 @@ public class AddressViewModel
         address2 = new SimpleStringProperty();
         city = new SimpleStringProperty();
         postalCode = new SimpleIntegerProperty();
-        email = new SimpleStringProperty();
         error = new SimpleStringProperty();
     }
 
@@ -33,7 +31,6 @@ public class AddressViewModel
         address1.set("");
         address2.set("");
         city.set("");
-        email.set("");
         postalCode.set(0);
         error.set("");
 
@@ -44,8 +41,7 @@ public class AddressViewModel
 
         try
         {
-            model.setDelivery(address1.get(), address2.get(), city.get(), postalCode.get(),
-                email.get());
+            model.setDelivery(address1.get(), address2.get(), city.get(), postalCode.get());
             return true;
         }
         catch (Exception e)
@@ -74,11 +70,6 @@ public class AddressViewModel
     public IntegerProperty getPostalCode()
     {
         return postalCode;
-    }
-
-    public StringProperty getEmail()
-    {
-        return email;
     }
 
     public StringProperty getError()

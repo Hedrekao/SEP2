@@ -48,6 +48,11 @@ public class Shop implements Serializable
     return itemList;
   }
 
+  public ArrayList<Item> getAllItems()
+  {
+    return itemList.getItems();
+  }
+
   public ArrayList<Product> getAllProducts()
   {
     return productList.getAllProducts();
@@ -56,7 +61,7 @@ public class Shop implements Serializable
   public ArrayList<Product> getProductsByCategory(
       ArrayList<String> categories)
   {
-    return null;
+    return productList.getProductsByCategory(categories);
   }
 
   public Product getProduct(int productNumber)

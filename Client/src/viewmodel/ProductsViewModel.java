@@ -10,6 +10,7 @@ import model.Product;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class ProductsViewModel implements PropertyChangeListener
 {
@@ -38,7 +39,8 @@ public class ProductsViewModel implements PropertyChangeListener
         if(shopViewState.getShopAddress() != null)
         {
             products.clear();
-            for (Product product : model.getAllProducts(shopViewState.getShopAddress()))
+            ArrayList<String> categoriesNames = new ArrayList<>(pickedCategory);
+            for (Product product : model.getProductsByCategory(shopViewState.getShopAddress(),categoriesNames))
             {
                 add(product);
             }

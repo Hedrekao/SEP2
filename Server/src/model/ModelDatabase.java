@@ -99,17 +99,17 @@ public class ModelDatabase implements ModelPersistence
     }
   }
 
-  @Override public void save(Item item)
+  @Override public void save(String address, Item item)
   {
     try
     {
       String sql =
-          "INSERT INTO food_waste.item (quantity_in_stock, price, expiration_date, product_number)"
-              + " VALUES (? , ? , ? , ?)";
+          "INSERT INTO food_waste.item (quantity_in_stock, price, expiration_date, product_number, shop_address)"
+              + " VALUES (? , ? , ? , ? , ?)";
       Object[] updateResult = db.update(sql, item.getQuantity(),
           item.getCurrentPrice(),
           java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()),
-          item.getProduct().getProductID());
+          item.getProduct().getProductID(), address);
 
     }
     catch (SQLException e)
@@ -123,19 +123,23 @@ public class ModelDatabase implements ModelPersistence
   {
     try
     {
-      String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+      String sql = "SELECT product.product_number, product.name FROM food_waste.product WHERE product.product_number = ?";
 
       ArrayList<Object[]> results = db.query(sql, product.getProductID());
 
       if (results.size() == 0)
       {
-        sql = "INSERT INTO food_waste.product (product_number, category, name)"
-            + " VALUES (? , ? , ? )";
-        Object[] updateResult = db.update(sql, product.getProductID(),
-            product.getCategories().get(0).getName(), product.getProductName());
-      }
+        sql = "INSERT INTO food_waste.product (product_number, name)"
+            + " VALUES (? , ? )";
+        Object[] updateResult = db.update(sql, product.getProductID(), product.getProductName());
 
-      //change shit with categories
+        for (int i = 0; i < product.getCategories().size(); i++)
+        {
+          sql = "INSERT INTO food_waste.category (product_number, category_name)"
+              + " VALUES (? , ? )";
+           updateResult = db.update(sql, product.getProductID(), product.getCategories().get(i).getName());
+        }
+      }
     }
     catch (SQLException e)
     {
@@ -143,15 +147,15 @@ public class ModelDatabase implements ModelPersistence
     }
   }
 
-  @Override public void update(Item item)
+  @Override public void update(String address, Item item)
   {
-    String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ? WHERE product_number = ? AND expiration_date = ?";
+    String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ? WHERE product_number = ? AND expiration_date = ? AND shop_address = ?";
 
     try
     {
       db.update(sql, item.getQuantity(), item.getCurrentPrice(),
           item.getProduct().getProductID(),
-          java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()));
+          java.sql.Date.valueOf(item.getExpirationDate().getDatabaseFormat()), address);
     }
     catch (SQLException e)
     {
@@ -245,7 +249,7 @@ public class ModelDatabase implements ModelPersistence
   private Product loadProduct(int productNumber)
   {
     Product product = null;
-    String sql = "SELECT product.product_number, product.name, product.category FROM food_waste.product WHERE product.product_number = ?";
+    String sql = "SELECT product.product_number, product.name FROM food_waste.product WHERE product.product_number = ?";
 
     try
     {
@@ -255,7 +259,14 @@ public class ModelDatabase implements ModelPersistence
       {
         Object[] result = results.get(i);
         ArrayList<Category> categories = new ArrayList<>();
-        categories.add(new Category((String) result[2]));
+        sql = "SELECT category.category_name FROM food_waste.category WHERE category.product_number = ?";
+        ArrayList<Object[]> categoriesResults = db.query(sql, productNumber);
+        for (int j = 0; j < categoriesResults.size(); j++)
+        {
+          Object[] categoriesFromDatabase =  categoriesResults.get(j);
+          categories.add(new Category((String) categoriesFromDatabase[0]));
+        }
+
         product = new Product((String) result[1], (int) result[0], categories);
       }
     }
@@ -313,6 +324,7 @@ public class ModelDatabase implements ModelPersistence
             (boolean) result[6]);
         order.setLocalTime((String) result[7]);
         order.setShopAddress((String) result[8]);
+        order.setEmail((String) result[2]);
         if ((result[4]).equals("pick-up"))
         {
           order.setDelivery((String) result[5]);
@@ -324,12 +336,12 @@ public class ModelDatabase implements ModelPersistence
           if (words.length == 4)
           {
             order.setDelivery(words[0].trim(), words[1].trim(), words[3].trim(),
-                Integer.parseInt(words[2].trim()), (String) result[2]);
+                Integer.parseInt(words[2].trim()));
           }
           else
           {
             order.setDelivery(words[0], null, words[2],
-                Integer.parseInt(words[1]), (String) result[2]);
+                Integer.parseInt(words[1]));
           }
 
         }

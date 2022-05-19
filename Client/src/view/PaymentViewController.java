@@ -59,6 +59,8 @@ public class PaymentViewController extends ViewController
 
   public void reset()
   {
+    monthField.valueProperty().set(null);
+    yearField.valueProperty().set(null);
     paymentViewModel.clear();
   }
 

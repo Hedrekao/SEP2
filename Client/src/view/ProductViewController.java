@@ -50,10 +50,12 @@ public class ProductViewController extends ViewController
                 if (currentCheckBox.isSelected())
                 {
                     productViewModel.addCategory(currentCheckBox.getText());
+                    productViewModel.update();
                 }
                 else
                 {
                     productViewModel.removeCategory(currentCheckBox.getText());
+                    productViewModel.update();
                 }
             };
 

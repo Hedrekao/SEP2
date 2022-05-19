@@ -25,6 +25,7 @@ public class ViewModelFactory
     private PaymentViewModel paymentViewModel;
     private PickUpViewModel pickUpViewModel;
     private OrderViewState orderViewState;
+    private EmployeeManageItemsViewModel employeeManageItemsViewModel;
 
     public ViewModelFactory(Model model)
     {
@@ -46,6 +47,7 @@ public class ViewModelFactory
         orderViewModel = new OrderViewModel(model, orderViewState);
         paymentViewModel = new PaymentViewModel(model, shopViewState, orderViewState);
         pickUpViewModel = new PickUpViewModel(model);
+        employeeManageItemsViewModel = new EmployeeManageItemsViewModel(model, userViewState);
     }
 
     public AddressViewModel getAddressViewModel()
@@ -118,5 +120,10 @@ public class ViewModelFactory
     public AddProductViewModel getAddProductViewModel()
     {
         return addProductViewModel;
+    }
+
+    public EmployeeManageItemsViewModel getEmployeeManageItemsViewModel()
+    {
+        return employeeManageItemsViewModel;
     }
 }

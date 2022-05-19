@@ -16,7 +16,6 @@ public class AddressViewController extends ViewController
   @FXML private TextField addressSecondaryField;
   @FXML private TextField cityField;
   @FXML private TextField postalCodeField;
-  @FXML private TextField emailField;
   @FXML private Label errorLabel;
 
   private AddressViewModel addressViewModel;
@@ -35,8 +34,6 @@ public class AddressViewController extends ViewController
 
     Bindings.bindBidirectional(postalCodeField.textProperty(),
         addressViewModel.getPostalCode(), new NumberStringConverter());
-    emailField.textProperty().bindBidirectional(addressViewModel.getEmail());
-
   }
 
   @FXML private void submitButton() throws IOException

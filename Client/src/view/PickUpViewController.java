@@ -44,4 +44,9 @@ public class PickUpViewController extends ViewController
           //
       }
   }
+
+  public void reset()
+  {
+    timeSelection.valueProperty().set(null);
+  }
 }
