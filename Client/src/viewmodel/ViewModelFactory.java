@@ -1,8 +1,6 @@
 package viewmodel;
 
 import model.Model;
-import model.ModelEmployee;
-import model.ModelUser;
 
 public class ViewModelFactory
 {
@@ -10,7 +8,7 @@ public class ViewModelFactory
     private ProductsViewModel productsViewModel;
     private ItemsViewModel itemsViewModel;
     private BagViewModel bagViewModel;
-    private ItemViewState itemViewState;
+    private ProductViewState productViewState;
     private LoginViewModel loginViewModel;
     private AddProductViewModel addProductViewModel;
     private EmployeeViewModel employeeViewModel;
@@ -30,12 +28,12 @@ public class ViewModelFactory
     public ViewModelFactory(Model model)
     {
         userViewState = new UserViewState();
-        itemViewState = new ItemViewState();
+        productViewState = new ProductViewState();
         shopViewState = new ShopViewState();
         orderViewState = new OrderViewState();
         shopsViewModel = new ShopsViewModel(model, shopViewState);
-        productsViewModel = new ProductsViewModel(model, itemViewState, shopViewState);
-        itemsViewModel = new ItemsViewModel(model, itemViewState, shopViewState);
+        productsViewModel = new ProductsViewModel(model, productViewState, shopViewState);
+        itemsViewModel = new ItemsViewModel(model, productViewState, shopViewState);
         bagViewModel = new BagViewModel(model, shopViewState);
         loginViewModel = new LoginViewModel(model, userViewState);
         addProductViewModel = new AddProductViewModel(model,userViewState);
