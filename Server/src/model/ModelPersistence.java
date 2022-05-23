@@ -8,6 +8,7 @@ public interface ModelPersistence
   void save(String address, Item item);
   void save(Product product);
   void update(String address, Item item);
+  void update(String address, Item item, Date expirationDateFromDb, int productNumberFromDb, boolean isProductChanged);
   void updateCompletedOrder(Order order);
   UserList loadUsers();
   ShopList loadShops();

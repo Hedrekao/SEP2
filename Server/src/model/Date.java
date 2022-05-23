@@ -169,6 +169,18 @@ public class Date implements Serializable
 
   public String getDatabaseFormat()
   {
-    return year + "-" + month + "-" + day;
+    String s = year + "-";
+    if (month < 10)
+    {
+      s += "0";
+    }
+    s += month + "-";
+    if (day < 10)
+    {
+      s += "0";
+    }
+    s+=day;
+
+    return s;
   }
 }

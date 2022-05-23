@@ -26,6 +26,11 @@ public class Product implements Serializable
     return productID;
   }
 
+  public void setProductID(int productID)
+  {
+    this.productID = productID;
+  }
+
   public String getProductName()
   {
     return productName;
@@ -36,6 +41,15 @@ public class Product implements Serializable
     return categories;
   }
 
+  public void setProductName(String productName)
+  {
+    this.productName = productName;
+  }
+
+  public void setCategories(ArrayList<Category> categories)
+  {
+    this.categories = categories;
+  }
 
   public boolean hasCategory(String category)
   {

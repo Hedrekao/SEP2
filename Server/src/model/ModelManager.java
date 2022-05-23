@@ -193,4 +193,39 @@ public class ModelManager implements Model
   {
     return shopList.getShop(address).getAllItems();
   }
+
+  @Override public void updateItem(String shopAddress, String previousDate,
+      int previousNumber, Date date, ArrayList<Category> categories,
+      long newNumber, String newName, double newPrice, int newQuantity)
+  {
+    Item item = getSpecificItem(shopAddress,new Date(previousDate), previousNumber);
+    boolean changedProduct = false;
+
+    Product product = getProduct(shopAddress, previousNumber);
+
+    if (!product.getProductName().equals(newName))
+    {
+      product.setProductName(newName);
+      changedProduct = true;
+    }
+    else if(previousNumber != newNumber)
+    {
+      product.setProductID((int)newNumber);
+      changedProduct = true;
+    }
+    else if(!product.getCategories().equals(categories))
+    {
+      product.setCategories(categories);
+      changedProduct = true;
+    }
+
+    item.setDefaultPrice(newPrice);
+    item.setQuantity(newQuantity);
+    item.setExpirationDate(date);
+
+
+    modelPersistence.update(shopAddress,item, new Date(previousDate), previousNumber, changedProduct);
+    property.firePropertyChange("StockUpdate", null, 1);
+    System.out.println("works");
+  }
 }

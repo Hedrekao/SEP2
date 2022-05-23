@@ -22,6 +22,17 @@ public class Item implements Serializable
     this.currentPrice = price;
     this.expirationDate = expirationDate;
     this.quantity = quantity;
+    updatePrice();
+  }
+
+  public double getDefaultPrice()
+  {
+    return defaultPrice;
+  }
+
+  public void setDefaultPrice(double defaultPrice)
+  {
+    this.defaultPrice = defaultPrice;
   }
 
   public void setCurrentPrice(double currentPrice)
