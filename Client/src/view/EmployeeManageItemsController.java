@@ -6,6 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import viewmodel.EmployeeManageItemsViewModel;
 import viewmodel.ItemsTableVM;
+import viewmodel.ProductsTableVM;
 
 import java.io.IOException;
 
@@ -54,6 +55,22 @@ public class EmployeeManageItemsController extends ViewController
         cellData -> cellData.getValue().getPriceProperty());
 
     table.setItems(employeeManageItemsViewModel.getItems());
+
+    table.setOnMouseClicked(event -> {
+
+      ItemsTableVM selectedItem = table.getSelectionModel().getSelectedItem();
+      if (selectedItem != null) {
+        employeeManageItemsViewModel.chooseItem(selectedItem);
+        try
+        {
+          getViewHandler().openView("EditProduct");
+        }
+        catch (IOException e)
+        {
+          e.printStackTrace();
+        }
+      }
+    });
 
   }
 

@@ -9,6 +9,7 @@ public class ViewModelFactory
     private ItemsViewModel itemsViewModel;
     private BagViewModel bagViewModel;
     private ProductViewState productViewState;
+    private ItemViewState itemViewState;
     private LoginViewModel loginViewModel;
     private AddProductViewModel addProductViewModel;
     private EmployeeViewModel employeeViewModel;
@@ -24,11 +25,13 @@ public class ViewModelFactory
     private PickUpViewModel pickUpViewModel;
     private OrderViewState orderViewState;
     private EmployeeManageItemsViewModel employeeManageItemsViewModel;
+    private EditProductViewModel editProductViewModel;
 
     public ViewModelFactory(Model model)
     {
         userViewState = new UserViewState();
         productViewState = new ProductViewState();
+        itemViewState = new ItemViewState();
         shopViewState = new ShopViewState();
         orderViewState = new OrderViewState();
         shopsViewModel = new ShopsViewModel(model, shopViewState);
@@ -45,7 +48,8 @@ public class ViewModelFactory
         orderViewModel = new OrderViewModel(model, orderViewState);
         paymentViewModel = new PaymentViewModel(model, shopViewState, orderViewState);
         pickUpViewModel = new PickUpViewModel(model);
-        employeeManageItemsViewModel = new EmployeeManageItemsViewModel(model, userViewState);
+        employeeManageItemsViewModel = new EmployeeManageItemsViewModel(model, userViewState, itemViewState);
+        editProductViewModel = new EditProductViewModel(model,userViewState,itemViewState);
     }
 
     public AddressViewModel getAddressViewModel()
@@ -123,5 +127,10 @@ public class ViewModelFactory
     public EmployeeManageItemsViewModel getEmployeeManageItemsViewModel()
     {
         return employeeManageItemsViewModel;
+    }
+
+    public EditProductViewModel getEditProductViewModel()
+    {
+        return editProductViewModel;
     }
 }

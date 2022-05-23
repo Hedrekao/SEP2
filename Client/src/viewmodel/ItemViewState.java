@@ -12,7 +12,7 @@ public class ItemViewState
     item = null;
   }
 
-  public void setProduct(Item item)
+  public void setItem(Item item)
   {
     this.item = item;
   }

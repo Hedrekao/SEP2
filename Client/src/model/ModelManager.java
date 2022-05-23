@@ -34,6 +34,13 @@ public class ModelManager implements Model, PropertyChangeListener
     return client.getAllItemsFromShop(address);
   }
 
+  @Override public void updateItem(String shopAddress, String previousDate,
+      int previousNumber, Date date, ArrayList<Category> categories,
+      long newNumber, String newName, double newPrice, int newQuantity)
+  {
+    client.updateItem(shopAddress, previousDate, previousNumber, date, categories, newNumber, newName, newPrice, newQuantity);
+  }
+
   @Override public ArrayList<Product> getProductsByCategory(String address,
       ArrayList<String> categories)
   {

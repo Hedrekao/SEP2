@@ -25,7 +25,7 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
       }
       catch (Exception e)
       {
-        System.out.println("xd");
+
         e.printStackTrace();
       }
       UnicastRemoteObject.exportObject(this, 0);
@@ -182,6 +182,20 @@ public class Client implements RemoteListener<Item, String>, ModelEmployee, Mode
     {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  @Override public void updateItem(String shopAddress, String previousDate,
+      int previousNumber, Date date, ArrayList<Category> categories,
+      long newNumber, String newName, double newPrice, int newQuantity)
+  {
+    try
+    {
+      server.updateItem(shopAddress, previousDate, previousNumber, date, categories, newNumber, newName, newPrice, newQuantity);
+    }
+    catch (RemoteException e)
+    {
+      e.printStackTrace();
     }
   }
 

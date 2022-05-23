@@ -18,12 +18,17 @@ public class Product implements Serializable
 
   @Override public String toString()
   {
-    return productName + " / " + " / " +  "DKK";
+    return productName;
   }
 
   public int getProductID()
   {
     return productID;
+  }
+
+  public void setProductID(int productID)
+  {
+    this.productID = productID;
   }
 
   public String getProductName()
@@ -36,6 +41,15 @@ public class Product implements Serializable
     return categories;
   }
 
+  public void setProductName(String productName)
+  {
+    this.productName = productName;
+  }
+
+  public void setCategories(ArrayList<Category> categories)
+  {
+    this.categories = categories;
+  }
 
   public boolean hasCategory(String category)
   {
