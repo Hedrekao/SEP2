@@ -64,7 +64,7 @@ public class AddProductViewController extends ViewController
 
         productNameField.textProperty().bindBidirectional(addProductViewModel.getProductNameProperty());
         Bindings.bindBidirectional(productNumberField.textProperty(),addProductViewModel.getProductNumberProperty(),new NumberStringConverter());
-        Bindings.bindBidirectional(priceField.textProperty(),addProductViewModel.getPriceProperty(),new NumberStringConverter());
+        Bindings.bindBidirectional(priceField.textProperty(),addProductViewModel.getPriceProperty());
         Bindings.bindBidirectional(quantityField.textProperty(),addProductViewModel.getQuantityProperty(),new NumberStringConverter());
         dateField.valueProperty().bindBidirectional(addProductViewModel.getExpirationDateProperty());
         errorLabel.textProperty().bind(addProductViewModel.getErrorLabelProperty());

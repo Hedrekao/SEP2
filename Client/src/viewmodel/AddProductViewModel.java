@@ -15,7 +15,7 @@ public class AddProductViewModel
 {
     private StringProperty productName;
     private LongProperty productNumber;
-    private DoubleProperty price;
+    private StringProperty price;
     private ObjectProperty<LocalDate> expirationDate;
     private IntegerProperty quantity;
     private StringProperty errorLabel;
@@ -29,7 +29,7 @@ public class AddProductViewModel
         this.userViewState = userViewState;
         productName = new SimpleStringProperty();
         productNumber = new SimpleLongProperty();
-        price = new SimpleDoubleProperty();
+        price = new SimpleStringProperty();
         expirationDate = new SimpleObjectProperty<>();
         quantity = new SimpleIntegerProperty();
         errorLabel = new SimpleStringProperty();
@@ -41,7 +41,7 @@ public class AddProductViewModel
     {
         productName.set("");
         productNumber.set(0);
-        price.set(0);
+        price.set(null);
         quantity.set(0);
         errorLabel.set("");
         expirationDate.set(null);
@@ -71,7 +71,7 @@ public class AddProductViewModel
         try
         {
             modelEmployee.addItem(userViewState.getShopAddress(), productName.get(),
-                (int) productNumber.get(), price.get(), date, quantity.get(),
+                (int) productNumber.get(), Double.parseDouble(price.get()), date, quantity.get(),
                 categories);
             clear();
         }
@@ -91,7 +91,7 @@ public class AddProductViewModel
         return productNumber;
     }
 
-    public DoubleProperty getPriceProperty()
+    public StringProperty getPriceProperty()
     {
         return price;
     }

@@ -13,7 +13,7 @@ public class EditProductViewModel
 {
   private StringProperty productName;
   private LongProperty productNumber;
-  private DoubleProperty price;
+  private StringProperty price;
   private ObjectProperty<LocalDate> expirationDate;
   private IntegerProperty quantity;
   private StringProperty errorLabel;
@@ -30,7 +30,7 @@ public class EditProductViewModel
     this.itemViewState = itemViewState;
     productName = new SimpleStringProperty();
     productNumber = new SimpleLongProperty();
-    price = new SimpleDoubleProperty();
+    price = new SimpleStringProperty();
     expirationDate = new SimpleObjectProperty<>();
     quantity = new SimpleIntegerProperty();
     errorLabel = new SimpleStringProperty();
@@ -51,7 +51,7 @@ public class EditProductViewModel
   {
     productName.set(itemViewState.getItem().getProduct().getProductName());
     productNumber.set(itemViewState.getItem().getProduct().getProductID());
-    price.set(itemViewState.getItem().getCurrentPrice());
+    price.set(String.valueOf(itemViewState.getItem().getDefaultPrice()));
     quantity.set(itemViewState.getItem().getQuantity());
     errorLabel.set("");
     expirationDate.set(LocalDate.parse(
@@ -85,7 +85,7 @@ public class EditProductViewModel
     {
       modelEmployee.updateItem(userViewState.getShopAddress(), previousDate,
           previousNumber, date, categories, productNumber.get(),
-          productName.get(), price.get(), quantity.get());
+          productName.get(), Double.parseDouble(price.get()), quantity.get());
 
       errorLabel.set("Item was updated");
       itemViewState.setItem(modelEmployee.getSpecificItem(userViewState.getShopAddress(), date, (int) productNumber.get()));
@@ -107,7 +107,7 @@ public class EditProductViewModel
     return productNumber;
   }
 
-  public DoubleProperty getPriceProperty()
+  public StringProperty getPriceProperty()
   {
     return price;
   }

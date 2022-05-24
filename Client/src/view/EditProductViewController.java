@@ -58,7 +58,7 @@ public class EditProductViewController extends ViewController
     }
 
     productNameField.textProperty().bindBidirectional(editProductViewModel.getProductNameProperty());
-    Bindings.bindBidirectional(priceField.textProperty(),editProductViewModel.getPriceProperty(), new NumberStringConverter());
+    Bindings.bindBidirectional(priceField.textProperty(),editProductViewModel.getPriceProperty());
     Bindings.bindBidirectional(quantityField.textProperty(),editProductViewModel.getQuantityProperty(), new NumberStringConverter());
     errorLabel.textProperty().bind(editProductViewModel.getErrorLabelProperty());
     Bindings.bindBidirectional(productNumberField.textProperty(),editProductViewModel.getProductNumberProperty(), new NumberStringConverter());
