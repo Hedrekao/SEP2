@@ -100,7 +100,9 @@ public class Server implements RemoteModel, PropertyChangeListener
   @Override public int getQuantityOfCertainProduct(String address, Product product)
       throws RemoteException
   {
+
     return model.getQuantityOfCertainProduct(address, product);
+
   }
 
   @Override public Item getSpecificItem(String address, Date expirationDate, int productId)

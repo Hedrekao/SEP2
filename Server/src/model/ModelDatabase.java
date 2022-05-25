@@ -408,7 +408,7 @@ public class ModelDatabase implements ModelPersistence
         Object[] result = results.get(i);
 
         Order order = new Order(new Date((result[3]).toString()),
-            (boolean) result[6]);
+            (boolean) result[6], ((BigDecimal) result[1]).doubleValue());
         order.setLocalTime((String) result[7]);
         order.setShopAddress((String) result[8]);
         order.setEmail((String) result[2]);
