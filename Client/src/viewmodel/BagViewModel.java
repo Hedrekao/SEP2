@@ -77,8 +77,11 @@ public class BagViewModel
 
   public void removeItemFromBag(ItemsTableVM itemsTableVM)
   {
+    String[] dateString = itemsTableVM.getDateProperty().get().split("-");
+
     Item item = model.getSpecificItem(model.getOrder().getShopAddress(),
-        new Date(itemsTableVM.getDateProperty().get()),
+        new Date(Integer.parseInt(dateString[0]),
+            Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2])),
         itemsTableVM.getIdProperty().get());
 
     model.removeItemFromBag(item);

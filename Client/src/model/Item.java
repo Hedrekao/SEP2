@@ -32,6 +32,7 @@ public class Item implements Serializable
   public void setDefaultPrice(double defaultPrice)
   {
     this.defaultPrice = defaultPrice;
+    updatePrice();
   }
 
   public void setCurrentPrice(double currentPrice)
@@ -62,12 +63,12 @@ public class Item implements Serializable
   public void updatePrice()
   {
     double temp = 0.5;
-    if(expirationDate.daysBetween(new Date()) <= 5)
+    if(expirationDate.daysBetween(new Date()) <= 10)
     {
-      temp = (double) expirationDate.daysBetween(new Date()) /10;
+      temp = (double) expirationDate.daysBetween(new Date()) /20;
     }
 
-    this.currentPrice = defaultPrice * (0.5 + temp);
+    this.currentPrice = Math.round((defaultPrice * (0.5 + temp)) * 100.0) / 100.0;
   }
 
   public double getCurrentPrice()

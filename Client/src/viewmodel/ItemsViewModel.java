@@ -80,7 +80,10 @@ public class ItemsViewModel implements PropertyChangeListener
 
     public boolean addToBag(ItemsTableVM selectedItem)
     {
-        Item item = model.getSpecificItem(shopViewState.getShopAddress(),new Date(selectedItem.getDateProperty().get()), productViewState.getProduct().getProductID());
+        String[] dateString = selectedItem.getDateProperty().get().split("-");
+
+        Item item = model.getSpecificItem(shopViewState.getShopAddress(),new Date(Integer.parseInt(dateString[0]),
+            Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2])), productViewState.getProduct().getProductID());
         if (model.getOrder().getShopAddress() == null || model.getOrder().getShopAddress().equals(shopViewState.getShopAddress()))
         {
             model.addItemToOrder(shopViewState.getShopAddress(), item);

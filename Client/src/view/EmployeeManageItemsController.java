@@ -56,22 +56,22 @@ public class EmployeeManageItemsController extends ViewController
 
     table.setItems(employeeManageItemsViewModel.getItems());
 
-    table.setOnMouseClicked(event -> {
+  }
 
-      ItemsTableVM selectedItem = table.getSelectionModel().getSelectedItem();
-      if (selectedItem != null) {
-        employeeManageItemsViewModel.chooseItem(selectedItem);
-        try
-        {
-          getViewHandler().openView("EditProduct");
-        }
-        catch (IOException e)
-        {
-          e.printStackTrace();
-        }
+  @FXML private void updateButton()
+  {
+    ItemsTableVM selectedItem = table.getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      employeeManageItemsViewModel.chooseItem(selectedItem);
+      try
+      {
+        getViewHandler().openView("EditProduct");
       }
-    });
-
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
+    }
   }
 
   public void reset()

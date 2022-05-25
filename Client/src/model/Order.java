@@ -14,6 +14,7 @@ public class Order implements Serializable
   private String city;
   private int postalCode;
   private boolean isCompleted;
+  private double totalPrice;
 
   private String pickUpTime;
   private LocalTime localTime;
@@ -44,6 +45,7 @@ public class Order implements Serializable
     shopAddress = null;
     localTime = LocalTime.now();
     isCompleted = false;
+    totalPrice = 0;
   }
 
   public String toStringTime()
@@ -75,7 +77,7 @@ public class Order implements Serializable
     localTime = LocalTime.parse(timeString);
   }
 
-  public Order(Date date, boolean isCompleted)
+  public Order(Date date, boolean isCompleted, double totalPrice)
   {
     items = new HashMap<>();
     this.date = date;
@@ -93,6 +95,7 @@ public class Order implements Serializable
     shopAddress = null;
     localTime = null;
     this.isCompleted = isCompleted;
+    this.totalPrice = totalPrice;
   }
 
   public HashMap<Item, Integer> getItems()
@@ -131,6 +134,7 @@ public class Order implements Serializable
     {
       items.put(item, 1);
     }
+    totalPrice = calculateTotalPrice();
   }
 
   public void addItem(Item item, int quantity)
@@ -251,6 +255,7 @@ public class Order implements Serializable
       items.put(item, items.get(item) - 1);
     }
 
+    totalPrice = calculateTotalPrice();
   }
 
   public Date getDate()
@@ -259,6 +264,10 @@ public class Order implements Serializable
   }
 
   public double getTotalPrice()
+  {
+    return totalPrice;
+  }
+  private double calculateTotalPrice()
   {
     double sum = 0;
 
