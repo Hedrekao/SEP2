@@ -12,9 +12,9 @@ public class Item implements Serializable
 
   public Item(Product product, double price, Date expirationDate, int quantity)
   {
-    if(product == null)
+    if(product == null || quantity < 0 || price < 0 || expirationDate == null)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Enter correct data");
     }
     this.product = product;
     this.defaultPrice = price;
@@ -24,43 +24,59 @@ public class Item implements Serializable
     updatePrice();
   }
 
-  public double getDefaultPrice()
+  public synchronized double getDefaultPrice()
   {
     return defaultPrice;
   }
 
-  public void setDefaultPrice(double defaultPrice)
+  public synchronized void setDefaultPrice(double defaultPrice)
   {
     this.defaultPrice = defaultPrice;
     updatePrice();
   }
 
-  public void setCurrentPrice(double currentPrice)
+  public synchronized void setCurrentPrice(double currentPrice)
   {
     this.currentPrice = currentPrice;
   }
 
-  public void setQuantity(int quantity)
+  public synchronized void setQuantity(int quantity)
   {
+    if (quantity < this.quantity)
+    {
+      while(this.quantity <= 0)
+      {
+        try
+        {
+          wait();
+        }
+        catch (InterruptedException e)
+        {
+          e.printStackTrace();
+        }
+      }
+    }
+
     this.quantity = quantity;
+    notifyAll();
   }
 
-  public void setExpirationDate(Date expirationDate)
+  public synchronized void setExpirationDate(Date expirationDate)
   {
     this.expirationDate = expirationDate;
   }
 
-  public int getQuantity()
+  public synchronized int getQuantity()
   {
     return quantity;
   }
 
-  public Product getProduct()
+  public synchronized Product getProduct()
   {
     return product;
   }
 
-  public void updatePrice()
+  public synchronized void updatePrice()
   {
     double temp = 0.5;
     if(expirationDate.daysBetween(new Date()) <= 10)
@@ -71,17 +87,17 @@ public class Item implements Serializable
     this.currentPrice = Math.round((defaultPrice * (0.5 + temp)) * 100.0) / 100.0;
   }
 
-  public double getCurrentPrice()
+  public synchronized double getCurrentPrice()
   {
     return currentPrice;
   }
 
-  public Date getExpirationDate()
+  public synchronized Date getExpirationDate()
   {
     return expirationDate;
   }
 
-  public boolean equals(Object obj)
+  public synchronized boolean equals(Object obj)
   {
     if(!(obj instanceof Item))
     {
@@ -91,7 +107,7 @@ public class Item implements Serializable
     return this.expirationDate.equals(other.expirationDate) && product.equals(other.product);
   }
 
-  @Override public int hashCode()
+  @Override public synchronized int hashCode()
   {
     return product.getProductID() + expirationDate.toString().hashCode();
   }

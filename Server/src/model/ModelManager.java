@@ -49,6 +49,7 @@ public class ModelManager implements Model
     item1.setQuantity(item1.getQuantity() - 1);
 
     property.firePropertyChange("StockUpdate", null, 1);
+
   }
 
   @Override public void removeItemFromOrder(String address, Item item,int quantityOfItem)
@@ -124,6 +125,7 @@ public class ModelManager implements Model
     }
     Product searchedProduct = getProduct(address,productID);
 
+
     if(searchedProduct == null)
     {
       Product product = new Product(productName, productID, categories);
@@ -156,6 +158,8 @@ public class ModelManager implements Model
 
     property.firePropertyChange("StockUpdate", null, 1);
 
+    Log.getInstance(new Date().getDatabaseFormat()).addLog( address+ " - item was added to database");
+
   }
 
   @Override public Order getOrder(String shopAddress, int day, int month, int year, int hour,
@@ -170,6 +174,8 @@ public class ModelManager implements Model
 
     shopList.getShop(shopAddress).removeOrder(day,month,year,hour,minute,second,deliveryOptions);
     modelPersistence.updateCompletedOrder(getOrder(shopAddress, day, month, year, hour, minute, second, deliveryOptions));
+
+    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress+ "- order was completed");
   }
 
   @Override public ArrayList<Order> getOrderList(String shopAddress)
@@ -186,6 +192,8 @@ public class ModelManager implements Model
 
     property.firePropertyChange("StockUpdate", null, 1);
     property.firePropertyChange("RemoveItemFromShop", null, 1);
+
+    Log.getInstance(new Date().getDatabaseFormat()).addLog(address +" " + item + " - item was removed by 1 from database");
 
   }
 
@@ -226,6 +234,6 @@ public class ModelManager implements Model
 
     modelPersistence.update(shopAddress,item, new Date(previousDate), previousNumber, changedProduct);
     property.firePropertyChange("StockUpdate", null, 1);
-    System.out.println("works");
+    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress + " " + item+ " - item was updated in database");
   }
 }
