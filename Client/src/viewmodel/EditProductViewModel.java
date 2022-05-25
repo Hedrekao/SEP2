@@ -72,9 +72,7 @@ public class EditProductViewModel
         .getDatabaseFormat();
     int previousNumber = itemViewState.getItem().getProduct().getProductID();
 
-    LocalDate localdate = expirationDate.get();
-    Date date = new Date(localdate.getDayOfMonth(), localdate.getMonthValue(),
-        localdate.getYear());
+
 
     ArrayList<Category> categories = new ArrayList<>();
     for (String s : pickedCategory)
@@ -83,6 +81,10 @@ public class EditProductViewModel
     }
     try
     {
+      LocalDate localdate = expirationDate.get();
+      Date date = new Date(localdate.getDayOfMonth(), localdate.getMonthValue(),
+          localdate.getYear());
+
       modelEmployee.updateItem(userViewState.getShopAddress(), previousDate,
           previousNumber, date, categories, productNumber.get(),
           productName.get(), Double.parseDouble(price.get()), quantity.get());
@@ -92,7 +94,7 @@ public class EditProductViewModel
     }
     catch (Exception e)
     {
-      errorLabel.set(e.getMessage());
+      errorLabel.set(e.getMessage() == null ? "Use valid data" : e.getMessage());
     }
 
   }

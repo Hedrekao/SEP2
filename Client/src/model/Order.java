@@ -185,9 +185,9 @@ public class Order implements Serializable
   {
     if (cardNumber < 0 || cardName == null || expirationMonth > 12
         || expirationMonth < 0 || expirationYear > 2030 || expirationYear < 2022
-        || securityCode > 999 || securityCode < 0)
+        || securityCode > 999 || securityCode < 100)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Check you payment indo");
     }
     else
     {
@@ -267,6 +267,8 @@ public class Order implements Serializable
   {
     return totalPrice;
   }
+
+
   private double calculateTotalPrice()
   {
     double sum = 0;

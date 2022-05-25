@@ -11,6 +11,16 @@ public class Product implements Serializable
 
   public Product(String productName, int productID, ArrayList<Category> categories)
   {
+    if (categories.size() == 0)
+    {
+      throw new IllegalArgumentException("Product has to have at least 1 category");
+    }
+
+    if (productName == null || productID <= 0)
+    {
+      throw new IllegalArgumentException("Enter correct data");
+    }
+
     this.productID = productID;
     this.productName = productName;
     this.categories = categories;

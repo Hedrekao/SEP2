@@ -74,12 +74,23 @@ public class AddProductViewController extends ViewController
     public void reset()
     {
         addProductViewModel.clear();
+
+        CheckBox [] checkBox = {frozen, seafood, diary, bakery, beverages, snacks, fruits, vegetables};
+
+        for (int i =0; i < 8; i++)
+        {
+            checkBox[i].setSelected(false);
+        }
+
     }
 
     @FXML private void addProductButton()
     {
 
        addProductViewModel.addProduct();
+        productNumberField.setText("");
+        quantityField.setText("");
+        dateField.valueProperty().set(null);
     }
 
     @FXML private void backButton(ActionEvent actionEvent) throws IOException

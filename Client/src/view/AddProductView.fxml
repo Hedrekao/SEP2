@@ -128,7 +128,7 @@
             </TextField>
          </children>
       </VBox>
-      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="481.0" layoutY="449.0" text="errorLabel" textAlignment="CENTER" textFill="RED">
+      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="481.0" layoutY="454.0" text="errorLabel" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Arial" size="16.0" />
          </font>

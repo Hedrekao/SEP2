@@ -57,8 +57,12 @@ public class EmployeeManageItemsViewModel implements PropertyChangeListener
 
   public void removeItem(ItemsTableVM itemsTableVM)
   {
+
+    String[] dateString = itemsTableVM.getDateProperty().get().split("-");
+
     modelEmployee.removeItem(userViewState.getShopAddress(),
-        new Date(itemsTableVM.getDateProperty().get()),
+        new Date(Integer.parseInt(dateString[0]),
+            Integer.parseInt(dateString[1]), Integer.parseInt(dateString[2])),
         itemsTableVM.getIdProperty().get());
   }
 

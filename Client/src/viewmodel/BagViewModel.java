@@ -87,4 +87,9 @@ public class BagViewModel
     model.removeItemFromBag(item);
     clear();
   }
+
+  public boolean validateCheckout()
+  {
+    return model.getOrder().getItems().size() > 0;
+  }
 }
