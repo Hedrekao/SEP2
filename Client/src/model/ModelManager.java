@@ -64,6 +64,10 @@ public class ModelManager implements Model, PropertyChangeListener
   {
     order.removeItem(item);
     client.removeItemFromOrder(order.getShopAddress(), item, 1);
+    if (order.getItems().size() == 0)
+    {
+      order.setShopAddress(null);
+    }
   }
 
   @Override public void removeItem(String address, Date expirationDate,
@@ -82,12 +86,15 @@ public class ModelManager implements Model, PropertyChangeListener
 
   @Override public void addItemToOrder(String address,Item item)
   {
+
     if (order.getItems().size() == 0)
     {
       order.setShopAddress(address);
     }
     order.addItem(item);
     client.addItemToOrder(address,item);
+
+
   }
 
   @Override public void removeItemFromOrder(String address, Item item, int quantityOfItem)
