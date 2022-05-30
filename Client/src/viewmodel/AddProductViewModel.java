@@ -40,7 +40,7 @@ public class AddProductViewModel
     public void clear()
     {
         productName.set("");
-        productNumber.set(-1);
+        productNumber.set(0);
         price.set("");
         quantity.set(0);
         errorLabel.set("");
@@ -73,6 +73,7 @@ public class AddProductViewModel
             LocalDate localdate = expirationDate.get();
             Date date = new Date(localdate.getDayOfMonth(), localdate.getMonthValue(),
                 localdate.getYear());
+
 
             modelEmployee.addItem(userViewState.getShopAddress(), productName.get(),
                 productNumber.get(), Double.parseDouble(price.get()), date, quantity.get(),
