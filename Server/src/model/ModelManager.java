@@ -3,12 +3,22 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ * Class implementing Model interface, connecting all classes in the Model package, executing all important actions related
+ * to the system, "brain" of the whole application
+ */
 public class ModelManager implements Model
 {
   private PropertyChangeSupport property;
   private ShopList shopList;
   private ModelPersistence modelPersistence;
   private UserList userList;
+
+  /**
+   * O argument constructor, loading information from database into instance variables that will be used while displaying data to client,
+   * establishing this class as subject in observer pattern
+   * @throws ClassNotFoundException if the class tries to load in a class that does not exist in a system
+   */
 
   public ModelManager() throws ClassNotFoundException
   {
@@ -187,13 +197,18 @@ public class ModelManager implements Model
   @Override public void removeItem(String address, Date expirationDate, int productID)
   {
     Item item  = shopList.getSpecificItem(address, expirationDate, productID);
-    item.setQuantity(item.getQuantity() - 1);
-    modelPersistence.update(address, item);
+    if (item.getQuantity() != 0)
+    {
+      item.setQuantity(item.getQuantity() - 1);
 
-    property.firePropertyChange("StockUpdate", null, 1);
-    property.firePropertyChange("RemoveItemFromShop", null, 1);
+      modelPersistence.update(address, item);
 
-    Log.getInstance(new Date().getDatabaseFormat()).addLog(address +" " + item + " - item was removed by 1 from database");
+      property.firePropertyChange("StockUpdate", null, 1);
+      property.firePropertyChange("RemoveItemFromShop", null, 1);
+
+      Log.getInstance(new Date().getDatabaseFormat()).addLog(address +", " + item + " - item was removed by 1 from database");
+
+    }
 
   }
 
@@ -234,6 +249,6 @@ public class ModelManager implements Model
 
     modelPersistence.update(shopAddress,item, new Date(previousDate), previousNumber, changedProduct);
     property.firePropertyChange("StockUpdate", null, 1);
-    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress + " " + item+ " - item was updated in database");
+    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress + ", " + item+ " - item was updated in database");
   }
 }
