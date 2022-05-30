@@ -78,6 +78,7 @@ public class Item implements Serializable
 
   public synchronized void updatePrice()
   {
+
     double temp = 0.5;
     if(expirationDate.daysBetween(new Date()) <= 10)
     {
@@ -110,5 +111,10 @@ public class Item implements Serializable
   @Override public synchronized int hashCode()
   {
     return product.getProductID() + expirationDate.toString().hashCode();
+  }
+
+  public String toString()
+  {
+    return product.getProductID() + " - " + product.getProductName() + ", date: " + expirationDate;
   }
 }

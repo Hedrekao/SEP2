@@ -16,7 +16,7 @@ public class Product implements Serializable
       throw new IllegalArgumentException("Product has to have at least 1 category");
     }
 
-    if (productName == null || productID <= 0)
+    if (productName == null || productID <= 0 || productName.equals(""))
     {
       throw new IllegalArgumentException("Enter correct data");
     }

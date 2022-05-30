@@ -187,13 +187,18 @@ public class ModelManager implements Model
   @Override public void removeItem(String address, Date expirationDate, int productID)
   {
     Item item  = shopList.getSpecificItem(address, expirationDate, productID);
-    item.setQuantity(item.getQuantity() - 1);
-    modelPersistence.update(address, item);
+    if (item.getQuantity() != 0)
+    {
+      item.setQuantity(item.getQuantity() - 1);
 
-    property.firePropertyChange("StockUpdate", null, 1);
-    property.firePropertyChange("RemoveItemFromShop", null, 1);
+      modelPersistence.update(address, item);
 
-    Log.getInstance(new Date().getDatabaseFormat()).addLog(address +" " + item + " - item was removed by 1 from database");
+      property.firePropertyChange("StockUpdate", null, 1);
+      property.firePropertyChange("RemoveItemFromShop", null, 1);
+
+      Log.getInstance(new Date().getDatabaseFormat()).addLog(address +", " + item + " - item was removed by 1 from database");
+
+    }
 
   }
 
@@ -234,6 +239,6 @@ public class ModelManager implements Model
 
     modelPersistence.update(shopAddress,item, new Date(previousDate), previousNumber, changedProduct);
     property.firePropertyChange("StockUpdate", null, 1);
-    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress + " " + item+ " - item was updated in database");
+    Log.getInstance(new Date().getDatabaseFormat()).addLog(shopAddress + ", " + item+ " - item was updated in database");
   }
 }
