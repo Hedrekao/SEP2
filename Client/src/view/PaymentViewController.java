@@ -1,6 +1,7 @@
 package view;
 
 import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -64,4 +65,8 @@ public class PaymentViewController extends ViewController
     paymentViewModel.clear();
   }
 
+  @FXML private void goBackButton() throws IOException
+  {
+    getViewHandler().openView("Delivery");
+  }
 }

@@ -100,7 +100,9 @@ public class Server implements RemoteModel, PropertyChangeListener
   @Override public int getQuantityOfCertainProduct(String address, Product product)
       throws RemoteException
   {
+
     return model.getQuantityOfCertainProduct(address, product);
+
   }
 
   @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
@@ -172,6 +174,14 @@ public class Server implements RemoteModel, PropertyChangeListener
       throws RemoteException
   {
     return model.getAllItemsFromShop(address);
+  }
+
+  @Override public void updateItem(String shopAddress, String previousDate,
+      int previousNumber, Date date, ArrayList<Category> categories,
+      long newNumber, String newName, double newPrice, int newQuantity)
+      throws RemoteException
+  {
+    model.updateItem(shopAddress, previousDate, previousNumber, date, categories, newNumber, newName, newPrice, newQuantity);
   }
 
 }

@@ -6,6 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import viewmodel.EmployeeManageItemsViewModel;
 import viewmodel.ItemsTableVM;
+import viewmodel.ProductsTableVM;
 
 import java.io.IOException;
 
@@ -55,6 +56,22 @@ public class EmployeeManageItemsController extends ViewController
 
     table.setItems(employeeManageItemsViewModel.getItems());
 
+  }
+
+  @FXML private void updateButton()
+  {
+    ItemsTableVM selectedItem = table.getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      employeeManageItemsViewModel.chooseItem(selectedItem);
+      try
+      {
+        getViewHandler().openView("EditProduct");
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
+    }
   }
 
   public void reset()

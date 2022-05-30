@@ -83,7 +83,7 @@ public class Date implements Serializable
 
   public String toString()
   {
-    return year + "-" + month + "-" + day;
+    return day + "-" + month + "-" + year;
   }
 
   public boolean equals(Object obj)
@@ -169,6 +169,18 @@ public class Date implements Serializable
 
   public String getDatabaseFormat()
   {
-    return year + "-" + month + "-" + day;
+    String s = year + "-";
+    if (month < 10)
+    {
+      s += "0";
+    }
+    s += month + "-";
+    if (day < 10)
+    {
+      s += "0";
+    }
+    s+=day;
+
+    return s;
   }
 }

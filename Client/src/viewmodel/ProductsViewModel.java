@@ -18,14 +18,14 @@ public class ProductsViewModel implements PropertyChangeListener
     private ObservableList<ProductsTableVM> products;
     private ObservableList<String> pickedCategory;
     private StringProperty bagCounter;
-    private ItemViewState itemViewState;
+    private ProductViewState productViewState;
     private ShopViewState shopViewState;
 
-    public ProductsViewModel(ModelUser model, ItemViewState itemViewState, ShopViewState shopViewState)
+    public ProductsViewModel(ModelUser model, ProductViewState productViewState, ShopViewState shopViewState)
     {
         this.model = model;
         this.shopViewState = shopViewState;
-        this.itemViewState = itemViewState;
+        this.productViewState = productViewState;
         this.products = FXCollections.observableArrayList();
         this.pickedCategory = FXCollections.observableArrayList();
         this.bagCounter = new SimpleStringProperty();
@@ -107,7 +107,7 @@ public class ProductsViewModel implements PropertyChangeListener
     public void chooseProduct(ProductsTableVM productsTableVM)
     {
         Product product = model.getProduct(shopViewState.getShopAddress(),productsTableVM.getId());
-        itemViewState.setProduct(product);
+        productViewState.setProduct(product);
     }
 
     @Override public void propertyChange(PropertyChangeEvent evt)

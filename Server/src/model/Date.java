@@ -3,16 +3,29 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * A class that represents date with instance variables day, month and year of type int.
+ */
 public class Date implements Serializable
 {
   private int day;
   private int month;
   private int year;
 
+  /**
+   * A constructor taking 3 arguments
+   * @param day
+   * @param month
+   * @param year
+   */
   public Date(int day, int month, int year)
   {
     set(day, month, year);
   }
+
+  /**
+   * A constructor taking no arguments. Sets date object to current date.
+   */
   public Date()
   {
     LocalDate localDate = LocalDate.now();
@@ -21,7 +34,10 @@ public class Date implements Serializable
     year = localDate.getYear();
   }
 
-
+  /**
+   * Sets string in format YYYY-MM-DD to this Date object.
+   * @param dateString format YYYY-MM-DD
+   */
   public Date(String dateString)
   {
     String[] arr = dateString.split("-");
@@ -33,7 +49,12 @@ public class Date implements Serializable
 
   }
 
-
+  /**
+   * Setter
+   * @param day
+   * @param month
+   * @param year
+   */
   public void set(int day, int month, int year)
   {
     if(year < 0)
@@ -81,11 +102,21 @@ public class Date implements Serializable
     this.year = year;
   }
 
+  /**
+   * Converts date object to String in DD-MM-YYYY format.
+   * @return  String in DD-MM-YYYY format.
+   */
   public String toString()
   {
     return day + "-" + month + "-" + year;
   }
 
+  /**
+   * Compares passed variable with this object.
+   *
+   * @param obj
+   * @return true if passes object is the same as this object
+   */
   public boolean equals(Object obj)
   {
     if(!(obj instanceof Date))
@@ -96,6 +127,11 @@ public class Date implements Serializable
     return this.day == other.day && this.month == other.month && this.year == other.year;
   }
 
+  /**
+   * Calculates if this object is before passed object
+   * @param other
+   * @return true if passed object is before this object
+   */
   public boolean isBefore(Date other)
   {
     return (this.year < other.year || (this.year == other.year && (
@@ -103,6 +139,11 @@ public class Date implements Serializable
             || (this.month == other.month && this.day < other.day)))));
   }
 
+  /**
+   * Calculates how many days are there between this Date object and passed object.
+   * @param obj Date object
+   * @return  days between two dates
+   */
   public int daysBetween(Date obj)
   {
     boolean condition = true;
@@ -127,6 +168,9 @@ public class Date implements Serializable
     return result;
   }
 
+  /**
+   * Increments date by one day
+   */
   public void stepForwardOneDay()
   {
     day++;
@@ -142,6 +186,10 @@ public class Date implements Serializable
     }
   }
 
+  /**
+   * Calculates how many days are in this object's month
+   * @return number of days in a given month
+   */
   public int numberOfDaysInMonth()
   {
     switch (month)
@@ -162,13 +210,33 @@ public class Date implements Serializable
     }
   }
 
+  /**
+   * Calculates if year in this object is a leap year
+   * @return true if year is leap
+   */
   public boolean isLeapYear()
   {
     return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
   }
 
+  /**
+   * Converts this object to String in format YYYY-MM-DD
+   * @return String in format YYYY-MM-DD
+   */
   public String getDatabaseFormat()
   {
-    return year + "-" + month + "-" + day;
+    String s = year + "-";
+    if (month < 10)
+    {
+      s += "0";
+    }
+    s += month + "-";
+    if (day < 10)
+    {
+      s += "0";
+    }
+    s+=day;
+
+    return s;
   }
 }

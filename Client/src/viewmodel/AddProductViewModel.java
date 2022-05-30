@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class AddProductViewModel
 {
     private StringProperty productName;
-    private LongProperty productNumber;
-    private DoubleProperty price;
+    private IntegerProperty productNumber;
+    private StringProperty price;
     private ObjectProperty<LocalDate> expirationDate;
     private IntegerProperty quantity;
     private StringProperty errorLabel;
@@ -28,8 +28,8 @@ public class AddProductViewModel
         this.modelEmployee = model;
         this.userViewState = userViewState;
         productName = new SimpleStringProperty();
-        productNumber = new SimpleLongProperty();
-        price = new SimpleDoubleProperty();
+        productNumber = new SimpleIntegerProperty();
+        price = new SimpleStringProperty();
         expirationDate = new SimpleObjectProperty<>();
         quantity = new SimpleIntegerProperty();
         errorLabel = new SimpleStringProperty();
@@ -40,8 +40,8 @@ public class AddProductViewModel
     public void clear()
     {
         productName.set("");
-        productNumber.set(0);
-        price.set(0);
+        productNumber.set(-1);
+        price.set("");
         quantity.set(0);
         errorLabel.set("");
         expirationDate.set(null);
@@ -59,25 +59,30 @@ public class AddProductViewModel
 
     public void addProduct()
     {
-        LocalDate localdate = expirationDate.get();
-        Date date = new Date(localdate.getDayOfMonth(), localdate.getMonthValue(),
-            localdate.getYear());
+
 
         ArrayList<Category> categories = new ArrayList<>();
         for(String s: pickedCategory)
         {
             categories.add(new Category(s));
         }
+
+
         try
         {
+            LocalDate localdate = expirationDate.get();
+            Date date = new Date(localdate.getDayOfMonth(), localdate.getMonthValue(),
+                localdate.getYear());
+
             modelEmployee.addItem(userViewState.getShopAddress(), productName.get(),
-                (int) productNumber.get(), price.get(), date, quantity.get(),
+                productNumber.get(), Double.parseDouble(price.get()), date, quantity.get(),
                 categories);
-            clear();
+            errorLabel.set("Item was successfully added");
         }
         catch (Exception e)
         {
-            errorLabel.set(e.getMessage());
+            clear();
+            errorLabel.set(e.getMessage() == null ? "Enter correct data" : e.getMessage());
         }
     }
 
@@ -86,12 +91,12 @@ public class AddProductViewModel
         return productName;
     }
 
-    public LongProperty getProductNumberProperty()
+    public IntegerProperty getProductNumberProperty()
     {
         return productNumber;
     }
 
-    public DoubleProperty getPriceProperty()
+    public StringProperty getPriceProperty()
     {
         return price;
     }
