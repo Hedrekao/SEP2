@@ -9,13 +9,20 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class implementing Model interface, connecting all classes in the Model package, executing all important actions related
+ * to the system, usually by delegating them to Client class that will call them on server side
+ */
 public class ModelManager implements Model, PropertyChangeListener
 {
 
   private PropertyChangeSupport property;
   private Client client;
   private Order order;
-
+  /**
+   * O argument constructor, creating new order, creating class related to RMI connection and adding itself as a listener to this class,
+   * establishing itself as a subject in observer pattern
+   */
   public ModelManager() throws ClassNotFoundException, IOException
   {
     client = new Client();
@@ -148,11 +155,6 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
   {
     return client.getSpecificItem(address, expirationDate, productId);
-  }
-
-  @Override public int getQuantityOfItemsInBag()
-  {
-    return order.getQuantityOfItemsInOrder();
   }
 
   @Override public ArrayList<Shop> getAllShops()
