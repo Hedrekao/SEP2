@@ -106,18 +106,18 @@ public class Date implements Serializable
   public int daysBetween(Date obj)
   {
     boolean condition = true;
-    Date date1 = new Date(1,1,1);
-    Date date2 = new Date(1,1,1);
+    Date date1;
+    Date date2;
     int result = 0;
     if(this.isBefore(obj))
     {
-      date1 = this;
+      date1 = new Date(this.day, this.month, this.year);
       date2 = obj;
     }
     else
     {
       date1 = obj;
-      date2 = this;
+      date2 = new Date(this.day, this.month, this.year);
     }
     while(date1.isBefore(date2))
     {

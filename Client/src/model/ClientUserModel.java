@@ -47,4 +47,9 @@ public interface ClientUserModel extends ModelUser
    * @param item item object that will be removed from an order
    */
   void removeItemFromBag(Item item);
+  /**
+   * Method returning sum of items' quantities in a current client's order
+   * @return number representing total sum of quantity of items in an order
+   */
+  int getQuantityOfItemsInBag();
 }

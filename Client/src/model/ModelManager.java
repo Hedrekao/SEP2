@@ -77,6 +77,11 @@ public class ModelManager implements Model, PropertyChangeListener
     }
   }
 
+  @Override public int getQuantityOfItemsInBag()
+  {
+    return order.getQuantityOfItemsInOrder();
+  }
+
   @Override public void removeItem(String address, Date expirationDate,
       int productID)
   {
