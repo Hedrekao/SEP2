@@ -2,7 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * A class representing a shop having name, address, productlist, itemlist and orderlist
+ */
 public class Shop implements Serializable
 {
   private String name;
@@ -11,7 +13,13 @@ public class Shop implements Serializable
   private ItemList itemList;
   private ArrayList<Order> orderList;
 
-
+  /**
+   * A 4 argument constructor taking name, address, item list and product list.
+   * @param name
+   * @param address
+   * @param itemList
+   * @param productList
+   */
   public Shop(String name, String address, ItemList itemList, ProductList productList)
   {
    this.address = address;
@@ -22,58 +30,91 @@ public class Shop implements Serializable
 
 
   }
-
+  /**
+   * A getter for shop name
+   */
   public String getName()
   {
     return name;
   }
 
+  /**
+   * A setter for order list
+   * @param orderList
+   */
   public void setOrderList(ArrayList<Order> orderList)
   {
     this.orderList = orderList;
   }
-
+  /**
+   * A getter for shop address
+   */
   public String getAddress()
   {
     return address;
   }
 
+  /**
+   * A getter for product list
+   */
   public ProductList getProductList()
   {
     return productList;
   }
-
+  /**
+   * A getter for item list
+   */
   public ItemList getItemList()
   {
     return itemList;
   }
 
+  /**
+   * A getter for item list
+   * @return ArrayList od type Item
+   */
   public ArrayList<Item> getAllItems()
   {
     return itemList.getItems();
   }
-
+  /**
+   * A getter for product list
+   * @return ArrayList od type Product
+   */
   public ArrayList<Product> getAllProducts()
   {
     return productList.getAllProducts();
   }
 
+  /**
+   * Getter for products having at least one of passed categories
+   * @param categories
+   */
   public ArrayList<Product> getProductsByCategory(
       ArrayList<String> categories)
   {
     return productList.getProductsByCategory(categories);
   }
-
+  /**
+   * A getter for product with a given product ID
+   * @return Product with a given id
+   */
   public Product getProduct(int productNumber)
   {
     return productList.getProduct(productNumber);
   }
-
+  /**
+   * A getter for items being a certain type of product
+   * @return ArrayList od type Item
+   */
   public ArrayList<Item> getItemsByProduct(Product product)
   {
     return itemList.getItems(product);
   }
-
+  /**
+   * A method returning the lowest price of an Item being a certain type of product
+   * @return lowest price
+   */
   public double getLowestPriceOfProduct(Product product)
   {
     ArrayList<Item> items = itemList.getItems(product);
@@ -96,7 +137,11 @@ public class Shop implements Serializable
     }
     return lowestSum;
   }
-
+  /**
+   * A getter for quantity of a Product
+   * @param product
+   * @return  quantity of all items being a certain type of product summed up
+   */
   public int getQuantityOfCertainProduct(Product product)
   {
 
@@ -108,7 +153,11 @@ public class Shop implements Serializable
     }
     return sum;
   }
-
+  /**
+   * A getter for a specific Item having a certain product ID and expiration date
+   * @param expirationDate
+   * @param productId
+   */
   public Item getSpecificItem(Date expirationDate, int productId)
   {
     ArrayList<Item> items = itemList.getItems(getProduct(productId));
@@ -121,28 +170,50 @@ public class Shop implements Serializable
     }
     return null;
   }
-
+  /**
+   * A method adding an Item that is type of a certain product that does not exist
+   * @param item
+   * @param product
+   */
   public void addItem(Item item, Product product)
   {
     itemList.addItem(item);
     productList.addProduct(product);
   }
-
+  /**
+   * A method adding an Item that is type of a certain product that does exist
+   * @param item
+   */
   public void addItem(Item item)
   {
     itemList.addItem(item);
   }
-
+  /**
+   * A getter for quantity of all item in shop
+   *
+   */
   public int getQuantityOfAllItemsInShop()
   {
     return itemList.getQuantityOfAllItems();
   }
-
+  /**
+   * A method adding an order to list of orders
+   * @param order
+   */
   public void addOrder(Order order)
   {
     orderList.add(order);
   }
-
+  /**
+   * A method getting an order from order list
+   * @param day
+   * @param month
+   * @param year
+   * @param hour
+   * @param minute
+   * @param second
+   * @param addressLinePrimary
+   */
   public Order getOrder(int day, int month, int year, int hour,
       int minute, int second, String addressLinePrimary)
   {
@@ -157,7 +228,16 @@ public class Shop implements Serializable
     }
     throw new IllegalArgumentException("Order does not exist.");
   }
-
+  /**
+   * A method removing an order from order list
+   * @param day
+   * @param month
+   * @param year
+   * @param hour
+   * @param minute
+   * @param second
+   * @param addressLinePrimary
+   */
   public void removeOrder(int day, int month, int year, int hour,
       int minute, int second, String addressLinePrimary)
   {
@@ -171,7 +251,9 @@ public class Shop implements Serializable
       }
     }
   }
-
+  /**
+   * A getter for orderList
+   */
   public ArrayList<Order> getOrderList()
   {
     return orderList;

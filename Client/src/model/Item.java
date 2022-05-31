@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * A class representing an Item. Has default price, current price, expiration date, product and quantity.
+ */
 public class Item implements Serializable
 {
   private double defaultPrice;
@@ -10,66 +13,136 @@ public class Item implements Serializable
   private Product product;
   private int quantity;
 
+  /**
+   * A 4 argument constructor taking product, price, expiration date, quantity.
+   *
+   * @param product
+   * @param price default price that will be dynamically adjusted and set to surrent price.
+   * @param expirationDate
+   * @param quantity
+   *
+   * @throws IllegalArgumentException if product = null, quantity smaller than 0, price smaller than 0 or expiration date = null
+   */
   public Item(Product product, double price, Date expirationDate, int quantity)
   {
-    if(product == null)
+    if(product == null || quantity < 0 || price < 0 || expirationDate == null)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Enter correct data");
     }
     this.product = product;
     this.defaultPrice = price;
     this.currentPrice = price;
     this.expirationDate = expirationDate;
     this.quantity = quantity;
+    updatePrice();
   }
-
-  public void setCurrentPrice(double currentPrice)
+  /**
+   * Getter for defaultPrice
+   * @return default price of type double
+   */
+  public synchronized double getDefaultPrice()
+  {
+    return defaultPrice;
+  }
+  /**
+   * Setter for defaultPrice
+   * @param defaultPrice
+   */
+  public synchronized void setDefaultPrice(double defaultPrice)
+  {
+    this.defaultPrice = defaultPrice;
+    updatePrice();
+  }
+  /**
+   * Setter for currentPrice
+   * @param currentPrice
+   */
+  public synchronized void setCurrentPrice(double currentPrice)
   {
     this.currentPrice = currentPrice;
   }
-
-  public void setQuantity(int quantity)
+  /**
+   * Setter for quantity
+   * @param quantity
+   */
+  public synchronized void setQuantity(int quantity)
   {
-    this.quantity = quantity;
-  }
+    if (quantity < this.quantity)
+    {
+      while(this.quantity <= 0)
+      {
+        try
+        {
+          wait();
+        }
+        catch (InterruptedException e)
+        {
+          e.printStackTrace();
+        }
+      }
+    }
 
-  public void setExpirationDate(Date expirationDate)
+    this.quantity = quantity;
+    notifyAll();
+  }
+  /**
+   * Setter for expiration date
+   * @param expirationDate
+   */
+  public synchronized void setExpirationDate(Date expirationDate)
   {
     this.expirationDate = expirationDate;
   }
-
-  public int getQuantity()
+  /**
+   * Getter for quantity
+   */
+  public synchronized int getQuantity()
   {
     return quantity;
   }
-
-  public Product getProduct()
+  /**
+   * Getter for product
+   */
+  public synchronized Product getProduct()
   {
     return product;
   }
-
-  public void updatePrice()
+  /**
+   * A method that updates current price according to how many days are there to expiration.
+   */
+  public synchronized void updatePrice()
   {
+
     double temp = 0.5;
     if(expirationDate.daysBetween(new Date()) <= 10)
     {
-      temp = (double) expirationDate.daysBetween(new Date()) /10;
+      temp = (double) expirationDate.daysBetween(new Date()) /20;
     }
 
-    this.currentPrice = defaultPrice * (0.5 + temp);
+    this.currentPrice = Math.round((defaultPrice * (0.5 + temp)) * 100.0) / 100.0;
   }
-
-  public double getCurrentPrice()
+  /**
+   * Getter for current Price
+   */
+  public synchronized double getCurrentPrice()
   {
     return currentPrice;
   }
-
-  public Date getExpirationDate()
+  /**
+   * Getter for expiration date
+   * @return
+   */
+  public synchronized Date getExpirationDate()
   {
     return expirationDate;
   }
-
-  public boolean equals(Object obj)
+  /**
+   * Compares passed variable with this object.
+   *
+   * @param obj
+   * @return true if passes object is the same as this object
+   */
+  public synchronized boolean equals(Object obj)
   {
     if(!(obj instanceof Item))
     {
@@ -78,9 +151,21 @@ public class Item implements Serializable
     Item other = (Item) obj;
     return this.expirationDate.equals(other.expirationDate) && product.equals(other.product);
   }
-
-  @Override public int hashCode()
+  /**
+   * A method hashing the item
+   * @return hash value of item
+   */
+  @Override public synchronized int hashCode()
   {
     return product.getProductID() + expirationDate.toString().hashCode();
+  }
+
+  /**
+   * Method creating a String describing an item
+   * @return String with description of an item
+   */
+  public String toString()
+  {
+    return product.getProductID() + " - " + product.getProductName() + ", date: " + expirationDate;
   }
 }

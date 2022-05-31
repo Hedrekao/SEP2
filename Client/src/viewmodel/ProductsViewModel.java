@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import mediator.Client;
+import model.ClientUserModel;
 import model.ModelUser;
 import model.Product;
 
@@ -14,18 +16,18 @@ import java.util.ArrayList;
 
 public class ProductsViewModel implements PropertyChangeListener
 {
-    private ModelUser model;
+    private ClientUserModel model;
     private ObservableList<ProductsTableVM> products;
     private ObservableList<String> pickedCategory;
     private StringProperty bagCounter;
-    private ItemViewState itemViewState;
+    private ProductViewState productViewState;
     private ShopViewState shopViewState;
 
-    public ProductsViewModel(ModelUser model, ItemViewState itemViewState, ShopViewState shopViewState)
+    public ProductsViewModel(ClientUserModel model, ProductViewState productViewState, ShopViewState shopViewState)
     {
         this.model = model;
         this.shopViewState = shopViewState;
-        this.itemViewState = itemViewState;
+        this.productViewState = productViewState;
         this.products = FXCollections.observableArrayList();
         this.pickedCategory = FXCollections.observableArrayList();
         this.bagCounter = new SimpleStringProperty();
@@ -107,7 +109,7 @@ public class ProductsViewModel implements PropertyChangeListener
     public void chooseProduct(ProductsTableVM productsTableVM)
     {
         Product product = model.getProduct(shopViewState.getShopAddress(),productsTableVM.getId());
-        itemViewState.setProduct(product);
+        productViewState.setProduct(product);
     }
 
     @Override public void propertyChange(PropertyChangeEvent evt)

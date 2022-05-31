@@ -7,17 +7,17 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EmployeeViewController">
    <children>
-      <Button layoutX="35.0" layoutY="29.0" mnemonicParsing="false" text="&lt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" onAction="#backButton">
+      <Button layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#backButton" text="&lt;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
       </Button>
-      <Button alignment="CENTER" layoutX="417.0" layoutY="280.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#addProductsButton" text="Add products" AnchorPane.leftAnchor="417.0">
+      <Button alignment="CENTER" layoutX="430.0" layoutY="278.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#addProductsButton" text="Add items" AnchorPane.leftAnchor="430.0">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
       </Button>
-      <Button alignment="CENTER" layoutX="394.0" layoutY="352.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Manage products" AnchorPane.leftAnchor="394.0" onAction="#manageProductsButton">
+      <Button alignment="CENTER" layoutX="408.0" layoutY="351.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#manageProductsButton" text="Manage items" AnchorPane.leftAnchor="408.0">
          <font>
             <Font name="Arial" size="24.0" />
          </font>
@@ -37,7 +37,7 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="410.0" layoutY="421.0" mnemonicParsing="false" text="Manage orders" onAction="#manageOrdersButton">
+      <Button layoutX="403.0" layoutY="420.0" mnemonicParsing="false" onAction="#manageOrdersButton" text="Manage orders">
          <font>
             <Font name="Arial" size="24.0" />
          </font>

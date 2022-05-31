@@ -19,7 +19,7 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   int getQuantityOfCertainProduct(String address, Product product) throws RemoteException;
   Item getSpecificItem(String address, Date expirationDate, int productId) throws RemoteException;
   void addUser(String username, String password) throws RemoteException;
-  User getUser(String username, String password) throws RemoteException;
+    User getUser(String username, String password) throws RemoteException;
   void addItem(String address, String productName, int productID, double price, Date expirationDate, int quantity, ArrayList<Category> categories) throws RemoteException;
   ArrayList<Shop> getAllShops() throws RemoteException;
   Order getOrder(String shopAddress, int day, int month, int year, int hour, int minute, int second, String deliveryOptions) throws RemoteException;
@@ -27,5 +27,8 @@ public interface RemoteModel extends RemoteSubject<Item, String>
   ArrayList<Order> getOrderList(String shopAddress) throws RemoteException;
   void removeItem(String address, Date expirationDate, int productID) throws RemoteException;
   ArrayList<Item> getAllItemsFromShop(String address) throws RemoteException;
+  void updateItem(String shopAddress, String previousDate, int previousNumber,
+      Date date, ArrayList<Category> categories, long newNumber, String newName, double newPrice,
+      int newQuantity) throws RemoteException;
 
 }

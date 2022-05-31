@@ -19,7 +19,7 @@
             <Font name="Arial" size="24.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordField" layoutX="363.0" layoutY="316.0" prefHeight="43.0" prefWidth="301.0" />
+      <PasswordField fx:id="passwordField" layoutX="363.0" layoutY="316.0" onAction="#clickLogin" prefHeight="43.0" prefWidth="301.0" />
       <Label layoutX="368.0" layoutY="225.0" text="Enter username">
          <font>
             <Font name="Arial" size="13.0" />

@@ -92,6 +92,10 @@ public class ViewHandler extends ViewCreator
                 viewController = getViewController("EmployeeManageItemsView");
                 root = viewController.getRoot();
                 break;
+            case "EditProduct":
+                viewController = getViewController("EditProductView");
+                root = viewController.getRoot();
+                break;
         }
         currentScene.setRoot(root);
 

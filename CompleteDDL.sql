@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS category
     PRIMARY KEY (product_number, category_name),
 
     FOREIGN KEY (product_number)
-        REFERENCES product (product_number)
+        REFERENCES product (product_number) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS employee

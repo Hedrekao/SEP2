@@ -1,23 +1,24 @@
 package viewmodel;
 
+import model.Item;
 import model.Product;
 
 public class ItemViewState
 {
-  private Product product;
+  private Item item;
 
   public ItemViewState()
   {
-    product = null;
+    item = null;
   }
 
-  public void setProduct(Product product)
+  public void setItem(Item item)
   {
-    this.product = product;
+    this.item = item;
   }
 
-  public Product getProduct()
+  public Item getItem()
   {
-    return product;
+    return item;
   }
 }

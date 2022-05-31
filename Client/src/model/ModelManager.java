@@ -9,13 +9,20 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class implementing Model interface, connecting all classes in the Model package, executing all important actions related
+ * to the system, usually by delegating them to Client class that will call them on server side
+ */
 public class ModelManager implements Model, PropertyChangeListener
 {
 
   private PropertyChangeSupport property;
   private Client client;
   private Order order;
-
+  /**
+   * O argument constructor, creating new order, creating class related to RMI connection and adding itself as a listener to this class,
+   * establishing itself as a subject in observer pattern
+   */
   public ModelManager() throws ClassNotFoundException, IOException
   {
     client = new Client();
@@ -32,6 +39,13 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override public ArrayList<Item> getAllItemsFromShop(String address)
   {
     return client.getAllItemsFromShop(address);
+  }
+
+  @Override public void updateItem(String shopAddress, String previousDate,
+      int previousNumber, Date date, ArrayList<Category> categories,
+      long newNumber, String newName, double newPrice, int newQuantity)
+  {
+    client.updateItem(shopAddress, previousDate, previousNumber, date, categories, newNumber, newName, newPrice, newQuantity);
   }
 
   @Override public ArrayList<Product> getProductsByCategory(String address,
@@ -57,6 +71,15 @@ public class ModelManager implements Model, PropertyChangeListener
   {
     order.removeItem(item);
     client.removeItemFromOrder(order.getShopAddress(), item, 1);
+    if (order.getItems().size() == 0)
+    {
+      order.setShopAddress(null);
+    }
+  }
+
+  @Override public int getQuantityOfItemsInBag()
+  {
+    return order.getQuantityOfItemsInOrder();
   }
 
   @Override public void removeItem(String address, Date expirationDate,
@@ -75,12 +98,15 @@ public class ModelManager implements Model, PropertyChangeListener
 
   @Override public void addItemToOrder(String address,Item item)
   {
+
     if (order.getItems().size() == 0)
     {
       order.setShopAddress(address);
     }
     order.addItem(item);
     client.addItemToOrder(address,item);
+
+
   }
 
   @Override public void removeItemFromOrder(String address, Item item, int quantityOfItem)
@@ -134,11 +160,6 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override public Item getSpecificItem(String address, Date expirationDate, int productId)
   {
     return client.getSpecificItem(address, expirationDate, productId);
-  }
-
-  @Override public int getQuantityOfItemsInBag()
-  {
-    return order.getQuantityOfItemsInOrder();
   }
 
   @Override public ArrayList<Shop> getAllShops()

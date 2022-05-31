@@ -24,9 +24,9 @@ public class OrderListViewModel
     String[] timeString = orderListTableVM.getTime().get().split(":");
     String[] dateString = orderListTableVM.getDate().get().split("-");
 
-    int day = Integer.parseInt(dateString[2]);
+    int day = Integer.parseInt(dateString[0]);
     int month = Integer.parseInt(dateString[1]);
-    int year = Integer.parseInt(dateString[0]);
+    int year = Integer.parseInt(dateString[2]);
     int hour = Integer.parseInt(timeString[0]);
     int minute = Integer.parseInt(timeString[1]);
     int second = Integer.parseInt(timeString[2]);
@@ -73,9 +73,9 @@ public class OrderListViewModel
     String[] timeString = orderListTableVM.getTime().get().split(":");
     String[] dateString = orderListTableVM.getDate().get().split("-");
 
-    int day = Integer.parseInt(dateString[2]);
+    int day = Integer.parseInt(dateString[0]);
     int month = Integer.parseInt(dateString[1]);
-    int year = Integer.parseInt(dateString[0]);
+    int year = Integer.parseInt(dateString[2]);
     int hour = Integer.parseInt(timeString[0]);
     int minute = Integer.parseInt(timeString[1]);
     int second = Integer.parseInt(timeString[2]);

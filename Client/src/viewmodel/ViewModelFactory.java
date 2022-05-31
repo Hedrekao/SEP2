@@ -1,8 +1,6 @@
 package viewmodel;
 
 import model.Model;
-import model.ModelEmployee;
-import model.ModelUser;
 
 public class ViewModelFactory
 {
@@ -10,6 +8,7 @@ public class ViewModelFactory
     private ProductsViewModel productsViewModel;
     private ItemsViewModel itemsViewModel;
     private BagViewModel bagViewModel;
+    private ProductViewState productViewState;
     private ItemViewState itemViewState;
     private LoginViewModel loginViewModel;
     private AddProductViewModel addProductViewModel;
@@ -26,16 +25,18 @@ public class ViewModelFactory
     private PickUpViewModel pickUpViewModel;
     private OrderViewState orderViewState;
     private EmployeeManageItemsViewModel employeeManageItemsViewModel;
+    private EditProductViewModel editProductViewModel;
 
     public ViewModelFactory(Model model)
     {
         userViewState = new UserViewState();
+        productViewState = new ProductViewState();
         itemViewState = new ItemViewState();
         shopViewState = new ShopViewState();
         orderViewState = new OrderViewState();
         shopsViewModel = new ShopsViewModel(model, shopViewState);
-        productsViewModel = new ProductsViewModel(model, itemViewState, shopViewState);
-        itemsViewModel = new ItemsViewModel(model, itemViewState, shopViewState);
+        productsViewModel = new ProductsViewModel(model, productViewState, shopViewState);
+        itemsViewModel = new ItemsViewModel(model, productViewState, shopViewState);
         bagViewModel = new BagViewModel(model, shopViewState);
         loginViewModel = new LoginViewModel(model, userViewState);
         addProductViewModel = new AddProductViewModel(model,userViewState);
@@ -47,7 +48,8 @@ public class ViewModelFactory
         orderViewModel = new OrderViewModel(model, orderViewState);
         paymentViewModel = new PaymentViewModel(model, shopViewState, orderViewState);
         pickUpViewModel = new PickUpViewModel(model);
-        employeeManageItemsViewModel = new EmployeeManageItemsViewModel(model, userViewState);
+        employeeManageItemsViewModel = new EmployeeManageItemsViewModel(model, userViewState, itemViewState);
+        editProductViewModel = new EditProductViewModel(model,userViewState,itemViewState);
     }
 
     public AddressViewModel getAddressViewModel()
@@ -125,5 +127,10 @@ public class ViewModelFactory
     public EmployeeManageItemsViewModel getEmployeeManageItemsViewModel()
     {
         return employeeManageItemsViewModel;
+    }
+
+    public EditProductViewModel getEditProductViewModel()
+    {
+        return editProductViewModel;
     }
 }
