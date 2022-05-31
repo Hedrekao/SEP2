@@ -3,12 +3,22 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ * Class implementing Model interface, connecting all classes in the Model package, executing all important actions related
+ * to the system, "brain" of the whole application
+ */
 public class ModelManager implements Model
 {
   private PropertyChangeSupport property;
   private ShopList shopList;
   private ModelPersistence modelPersistence;
   private UserList userList;
+
+  /**
+   * O argument constructor, loading information from database into instance variables that will be used while displaying data to client,
+   * establishing this class as subject in observer pattern
+   * @throws ClassNotFoundException if the class tries to load in a class that does not exist in a system
+   */
 
   public ModelManager() throws ClassNotFoundException
   {

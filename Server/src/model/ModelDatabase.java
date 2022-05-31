@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class implementing ModelPersistence interface, ensuring persistence of the system by creating sql statements and running them in relational database (written in postgres)
+ */
 public class ModelDatabase implements ModelPersistence
 {
 
@@ -16,27 +19,18 @@ public class ModelDatabase implements ModelPersistence
   private static final String PASSWORD = "tom2002";
   private Model model;
 
+  /**
+   * 1 argument constructor, setting model instance variable and setting up connection with database using class MyDatabaseV2
+   *
+   * @param model model from which data is saved into database and into which data is loaded from database
+   * @throws ClassNotFoundException if the class tries to load in a class that does not exist in a system
+   */
+
   public ModelDatabase(Model model) throws ClassNotFoundException
   {
     this.db = new MyDatabasev2(DRIVER, URL, USER, PASSWORD);
     this.model = model;
   }
-
-  //  @Override public void clear()
-  //    {
-  //    try
-  //    {
-  //      String sql = "TRUNCATE TABLE food_waste.order CASCADE;";
-  //      db.update(sql);
-  //      sql = "TRUNCATE TABLE food_waste.item CASCADE;";
-  //      db.update(sql);
-  //
-  //    }
-  //    catch (SQLException e)
-  //    {
-  //      e.printStackTrace();
-  //    }
-  //  }
 
   @Override public void save(String address, Order order)
   {
@@ -119,6 +113,12 @@ public class ModelDatabase implements ModelPersistence
 
   }
 
+  /**
+   * Supporting method saving categories of the product into database
+   *
+   * @param product Product object which categories have to be saved
+   */
+
   private void saveCategories(Product product)
   {
     for (int i = 0; i < product.getCategories().size(); i++)
@@ -153,7 +153,6 @@ public class ModelDatabase implements ModelPersistence
         Object[] updateResult = db.update(sql, product.getProductID(),
             product.getProductName());
 
-
         saveCategories(product);
       }
     }
@@ -181,7 +180,8 @@ public class ModelDatabase implements ModelPersistence
   }
 
   @Override public void update(String address, Item item,
-      Date expirationDateFromDb, int productNumberFromDb, boolean isProductChanged)
+      Date expirationDateFromDb, int productNumberFromDb,
+      boolean isProductChanged)
   {
     String sql = "UPDATE food_waste.item SET quantity_in_stock = ? , price = ?, expiration_date = ? WHERE product_number = ? AND expiration_date = ? AND shop_address = ?";
 
@@ -333,6 +333,12 @@ public class ModelDatabase implements ModelPersistence
     return shopList;
   }
 
+  /**
+   * Supporting method loading singular product from database
+   *
+   * @param productNumber number representing product number
+   * @return Product object created from data from database with passed product number
+   */
   private Product loadProduct(int productNumber)
   {
     Product product = null;
@@ -365,6 +371,12 @@ public class ModelDatabase implements ModelPersistence
     return product;
   }
 
+  /**
+   * Supporting method loading itemList and productList from certain shop from database
+   *
+   * @param address String containing address of the shop
+   * @return itemList with items created from data from database and productList with products created from data from database, both located at passed shop address
+   */
   private Object[] loadItemsAndProductsFromShop(String address)
   {
     ItemList itemList = new ItemList();
